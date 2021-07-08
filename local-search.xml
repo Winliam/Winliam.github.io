@@ -4,6 +4,19 @@
   
   
   <entry>
+    <title>markdown-ize vim</title>
+    <link href="/2021/07/08/markdown-ize-vim/"/>
+    <url>/2021/07/08/markdown-ize-vim/</url>
+    
+    <content type="html"><![CDATA[<h1 id="安装neovim"><a href="#安装neovim" class="headerlink" title="安装neovim"></a>安装neovim</h1><blockquote><p>sudo apt-get install neovim<br>neovim<br>:checkhealth</p></blockquote><h1 id="安装vim插件管理器vim-plug"><a href="#安装vim插件管理器vim-plug" class="headerlink" title="安装vim插件管理器vim-plug"></a>安装vim插件管理器vim-plug</h1><blockquote><p>sh -c ‘curl -fLo “${XDG_DATA_HOME:-$HOME/.local/share}”/nvim/site/autoload/plug.vim –create-dirs<br><a href="https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim&#39;">https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim&#39;</a></p></blockquote><p>链接不上的话，需要：<br></p><blockquote><p>sudo nvim /etc/hosts<br></p></blockquote><p>添加一行：<br></p><blockquote><p>199.232.96.133 raw.githubusercontent.com<br></p></blockquote><p>其中的ip地址来自于<em><a href="https://githubusercontent.com.ipaddress.com/raw.githubusercontent.com">https://githubusercontent.com.ipaddress.com/raw.githubusercontent.com</a></em></p><h1 id="创建neovim配置文件init-vim"><a href="#创建neovim配置文件init-vim" class="headerlink" title="创建neovim配置文件init.vim"></a>创建neovim配置文件init.vim</h1><blockquote><p>mkdir .config/nvim<br>touch .config/nvim/init.vim</p></blockquote><h1 id="修改init-vim以添加插件"><a href="#修改init-vim以添加插件" class="headerlink" title="修改init.vim以添加插件"></a>修改init.vim以添加插件</h1><p>目录，markdown，preview一共三个暂时（修改的内容直接看文件）,<br>中间: </p><ul><li>遇到了自动折叠问题：修改配置文件解决  </li><li>又遇到了无法预览的问题，看github<a href="https://github.com/iamcco/markdown-preview.nvim/issues/120">作者回复</a>解决</li></ul>]]></content>
+    
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>Hello World</title>
     <link href="/2021/07/07/hello-world/"/>
     <url>/2021/07/07/hello-world/</url>
