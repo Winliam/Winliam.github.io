@@ -283,6 +283,23 @@
                   
                 
                 
+  <div id="twikoo"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/twikoo@1.3.1/dist/twikoo.all.min.js', function() {
+        var options = Object.assign(
+          {"envId":"hello-cloudbase-6g4yvpi4f079ee0a","region":"ap-shanghai","path":"window.location.pathname"},
+          {
+            el: '#twikoo',
+            path: 'window.location.pathname'
+          }
+        )
+        twikoo.init(options)
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
 
               </article>
             
@@ -342,7 +359,7 @@
 
   <footer class="text-center mt-5 py-3">
   <div class="footer-content">
-     <a href="" target="_blank" rel="nofollow noopener"><span>---------我是有底线的---------</span></a> 
+     <small><span>——————————我是有底线的——————————</span></small> 
   </div>
   
 
