@@ -185,7 +185,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      1.3k 字
+      2k 字
     </span>
   
 
@@ -195,7 +195,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      22
+      30
        分钟
     </span>
   
@@ -228,8 +228,31 @@
             <h1 style="display: none">神经网络的数学原理</h1>
             
             <div class="markdown-body">
-              <p>DNN</p>
-<h2 id="模型的结构"><a href="#模型的结构" class="headerlink" title="模型的结构"></a>模型的结构</h2><h2 id="预测的原理"><a href="#预测的原理" class="headerlink" title="预测的原理"></a>预测的原理</h2><p>正向计算，用于得到所需的预测结果：</p>
+              <h2 id="模型的结构"><a href="#模型的结构" class="headerlink" title="模型的结构"></a>模型的结构</h2><h3 id="神经元的数学原理"><a href="#神经元的数学原理" class="headerlink" title="神经元的数学原理"></a>神经元的数学原理</h3><p><strong>神经网络</strong>的基础单元是<strong>神经元</strong>，多个<strong>神经元</strong>纵向堆叠形成神经<strong>网络层</strong>，神经<strong>网络层</strong>横向堆叠形成<strong>神经网络</strong>。</p>
+<p><div align=center><img title="" src="/img/article/神经网络的数学原理/神经网络.png" srcset="/img/loading.gif" lazyload width="50%" height="50%" align=center></div><br><br></p>
+<p><div align=center><img title="" src="/img/article/神经网络的数学原理/神经元.png" srcset="/img/loading.gif" lazyload width="60%" height="60%" align=center></div><br><br></p>
+<p>对于一个神经元，进行的数学计算为：</p>
+<blockquote>
+<p>接受一个向量$\boldsymbol{a}^{[j-1]}$，通过与$\boldsymbol{w}^{[j]}_i$进行向量内积运算产生一个中间值$z_i^{[j]}$（标量），然后用激活函数$g_i^{[j]}()$将$z$转换为$a_i^{[j]}$。</p>
+</blockquote>
+<p>其中:</p>
+<blockquote>
+<p>上标用来定位该神经元位于哪一层，一般输入层后的第一层为1；<br><br>下标用来定位该神经元位于第几个，一般最上方的序号为0；</p>
+</blockquote>
+<h3 id="矩阵维度确认的数学原理"><a href="#矩阵维度确认的数学原理" class="headerlink" title="矩阵维度确认的数学原理"></a>矩阵维度确认的数学原理</h3><p>首先区分开这4个概念：<strong>模型的参数</strong>，<strong>层的参数</strong>，<strong>神经元的参数</strong>，<strong>数据及数据的中间值</strong>。然后，仔细理解上面两段话，神经网络中最为tricky的维度问题便迎刃而解：</p>
+<ol>
+<li>对于$\boldsymbol{x}$和$\boldsymbol{y}$，其维度看样本就知道，已经定义好了;</li>
+<li>对于某一个神经元的权重参数$\boldsymbol{w}^{[j]}_i$，由于要跟输入的向量$\boldsymbol{a}^{[j-1]}$进行内积，所以两者的维度必然是相同的，而后者作为一个列向量，其行数等于上一层的神经元数量（因为每个神经元输出一个标量）。然后由于本层的每一个神经元都有一个权重参数$\boldsymbol{w}^{[j]}$，那么由${\boldsymbol{w}^{[j]}}^T$纵向堆叠形成的${\boldsymbol{W}^{[j]}}^T$的行数就是$\boldsymbol{w}^{[j]}$的个数，亦即本层的神经元数量，其列数前面已经说了，就是$\boldsymbol{w}^{[j]}$的行数，亦即上一层的神经元数量。</li>
+<li>对于某一个神经元的偏移量参数${b}^{[j]}$，自然是一个标量。那么本层的偏移量参数$\boldsymbol{b}^{[j]}$的行数就是${b}^{[j]}$的数量，亦即本层的神经元数量。</li>
+<li>对于每一层的中间值$\boldsymbol{z}^{[j]}$，输出值$\boldsymbol{a}^{[j]}$，其维度确定方式与$\boldsymbol{b}^{[j]}$一样。</li>
+<li>另外对于激活函数，一般同一层都一样，所以$\boldsymbol{g}^{[j]}()$退化为${g}^{[j]}()$。</li>
+</ol>
+<h3 id="矢量化的数学原理"><a href="#矢量化的数学原理" class="headerlink" title="矢量化的数学原理"></a>矢量化的数学原理</h3><p>矢量化的本质是将样本在时间轴上被神经网络模型处理的序列转化为空间上的序列：<br></p>
+<blockquote>
+<p>$X= (\boldsymbol{x}^1,\boldsymbol{x}^2, …,  \boldsymbol{x}^)$</p>
+</blockquote>
+<p>说人话就是，原来每次送入模型一个列向量，计算得到一个列向量。现在每次送入m个列向量，计算的到m个列向量。当然了，各层的中间值$\boldsymbol{z}^{[j]}$和输出值$\boldsymbol{a}^{[j]}$也都将因此横向扩充一个维度。</p>
+<h2 id="预测的原理"><a href="#预测的原理" class="headerlink" title="预测的原理"></a>预测的原理</h2><p>正向计算，用于得到所需的预测结果：</p>
 <ol>
 <li>输入一个列向量：<br><blockquote>
 <p> $\boldsymbol{x} = (x_1, x_2, … , x_n)^T$</p>
@@ -250,7 +273,7 @@
 </blockquote>
 </li>
 </ol>
-<h2 id="训练的原理"><a href="#训练的原理" class="headerlink" title="训练的原理"></a>训练的原理</h2><p>反向传播，用于找到合适的模型参数。其中“合适”的标准是，整个训练集形成的代价$J$足够小。“找”的方法是，先随机初始化各层的$W$和$b$，然后不断更新之，直到$W$和$b$合适。具体步骤为：</p>
+<h2 id="训练的原理"><a href="#训练的原理" class="headerlink" title="训练的原理"></a>训练的原理</h2><p>反向传播，用于找到合适的模型参数。其中“合适”的标准是，整个训练集形成的代价$J$足够小。“找”的方法是，先随机初始化各层的$\boldsymbol{W}$和$\boldsymbol{b}$，然后不断更新之，直到$\boldsymbol{W}$和$\boldsymbol{b}$合适。具体步骤为：</p>
 <ol>
 <li>单个样本$\boldsymbol{x}$ 正向计算，得到各层的$\boldsymbol{z}$和$\boldsymbol{a}$  </li>
 <li><p>求得损失$L$对$\boldsymbol{z}^{[l]}$的偏导$\frac{\partial{L}}{\partial{\boldsymbol{z}^{[l]}}}$，记作$d\boldsymbol{z}^{[l]}$</p>
@@ -305,6 +328,15 @@
                     
                   </div>
                 
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/DNN/">DNN</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">神经网络</a>
+                    
+                  </div>
                 
               </div>
               
