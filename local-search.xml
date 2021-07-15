@@ -4,6 +4,37 @@
   
   
   <entry>
+    <title>CNN的数学原理</title>
+    <link href="/2021/07/15/CNN%E7%9A%84%E6%95%B0%E5%AD%A6%E5%8E%9F%E7%90%86/"/>
+    <url>/2021/07/15/CNN%E7%9A%84%E6%95%B0%E5%AD%A6%E5%8E%9F%E7%90%86/</url>
+    
+    <content type="html"><![CDATA[<h2 id="二维卷积的数学原理"><a href="#二维卷积的数学原理" class="headerlink" title="二维卷积的数学原理"></a>二维卷积的数学原理</h2><p>不管信号处理中“卷积”和“相关”的定义如何，至少在CNN中卷积的含义是明确的。就是</p><ol><li>将卷积核(一个尺寸较小的方阵)与矩阵$\boldsymbol{A}$左上角对齐</li><li>两个矩阵逐元素相乘后求和，作为结果矩阵$\boldsymbol{B}$的左上角第一个元素</li><li>向右/下移动卷积核的位置，重复2，直到卷积核到达矩阵$\boldsymbol{A}$的右下角</li></ol><p>由此带来了<strong>padding</strong>和<strong>stride</strong>的概念：</p><ul><li><strong>padding</strong>：为了解决卷积带来的尺寸缩减，在卷积之前在$\boldsymbol{A}$周围补上p圈0。</li><li><strong>stride</strong>：卷积核每次向右/下移动s个元素。</li></ul><p>综上，有以下公式计算卷积前后的尺寸变化：</p><blockquote><p>$(n,n) and (f,f) \Longrightarrow \lfloor \frac{n+2p-f}{s}+1 \rfloor$</p></blockquote><h2 id="多维度卷积的数学原理"><a href="#多维度卷积的数学原理" class="headerlink" title="多维度卷积的数学原理"></a>多维度卷积的数学原理</h2><p><strong>关键字</strong>：<strong>卷积</strong>-&gt;<strong>偏移</strong>-&gt;<strong>激活</strong></p><p>CNN模型的输入——RGB三通道图像可以看做一个三层的2D矩阵，对其卷积的含义是：</p><ol><li>将一个层数相同的卷积核与这个3层的2D矩阵左上角对齐，然后做逐元素的乘积求和，并不断移动到右下角为止</li><li>由于求和是跨通道的，因此卷积的结果是一个单层的2D矩阵。</li><li>然后，仿照DNN对这个单层的2D矩阵中的每一个元素进行偏移和激活，得到作为输出的单层的2D矩阵。</li><li>选取另一个同尺寸的卷积核重复1-3，得到另一个单层的2D矩阵</li><li>将输入量与本层所有卷积核的卷积结果堆叠后，得到一个新的多层2D矩阵，作为本层的输出。</li><li>经过若干个卷积层处理后，将最后一个卷积层输出的多层2D矩阵看做一个列向量，将这个列向量作为$\boldsymbol{a}^{[l-1]}$，送入输出层处理。</li><li>若是二分类，则输出层是一个DNN神经元；若是多分类，则输出层是一个以$softmax$为激活函数的DNN网络层。此处DNN的含义指，通过矩阵乘法产生$\boldsymbol{z}^[l]$，而不是卷积操作。</li></ol><blockquote><ul><li>显然输出的层数等于本层卷积核的数量，而输出的每一层的尺寸则由前文提及的公式计算得到。</li><li>与DNN不同这里的权重矩阵$\boldsymbol{W}$的维度，都是人为指定的。这也正式CNN存在的理由，减少参数。</li></ul></blockquote><h2 id="池化的数学原理"><a href="#池化的数学原理" class="headerlink" title="池化的数学原理"></a>池化的数学原理</h2><p>与卷积操作的过程相同，但是每个核与输入矩阵进行的不是卷积操作，而是选取区域最大值的操作（最大池化）或者计算区域平均值的操作（平均池化）。一般用于降维。最大池化比较常用，并且一般伴随着0 padding。</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>工作技能</category>
+      
+      <category>神经网络</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>深度学习</tag>
+      
+      <tag>CNN</tag>
+      
+      <tag>卷积神经网络</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>神经网络的数学原理-无公式版</title>
     <link href="/2021/07/12/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84%E6%95%B0%E5%AD%A6%E5%8E%9F%E7%90%86-%E6%97%A0%E5%85%AC%E5%BC%8F%E7%89%88/"/>
     <url>/2021/07/12/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84%E6%95%B0%E5%AD%A6%E5%8E%9F%E7%90%86-%E6%97%A0%E5%85%AC%E5%BC%8F%E7%89%88/</url>
@@ -111,19 +142,6 @@
     <url>/2021/07/08/markdown-ize-vim/</url>
     
     <content type="html"><![CDATA[<h1 id="安装neovim"><a href="#安装neovim" class="headerlink" title="安装neovim"></a>安装neovim</h1><blockquote><p>sudo apt-get install neovim<br>neovim<br>:checkhealth</p></blockquote><h1 id="安装vim插件管理器vim-plug"><a href="#安装vim插件管理器vim-plug" class="headerlink" title="安装vim插件管理器vim-plug"></a>安装vim插件管理器vim-plug</h1><blockquote><p>sh -c ‘curl -fLo “${XDG_DATA_HOME:-$HOME/.local/share}”/nvim/site/autoload/plug.vim —create-dirs<br><a href="https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim">https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim</a>‘</p></blockquote><p>链接不上的话，需要：<br></p><blockquote><p>sudo nvim /etc/hosts<br></p></blockquote><p>添加一行：<br></p><blockquote><p>199.232.96.133 raw.githubusercontent.com<br></p></blockquote><p>其中的ip地址来自于<em><a href="https://githubusercontent.com.ipaddress.com/raw.githubusercontent.com">https://githubusercontent.com.ipaddress.com/raw.githubusercontent.com</a></em></p><h1 id="创建neovim配置文件init-vim"><a href="#创建neovim配置文件init-vim" class="headerlink" title="创建neovim配置文件init.vim"></a>创建neovim配置文件init.vim</h1><blockquote><p>mkdir .config/nvim<br>touch .config/nvim/init.vim</p></blockquote><h1 id="修改init-vim以添加插件"><a href="#修改init-vim以添加插件" class="headerlink" title="修改init.vim以添加插件"></a>修改init.vim以添加插件</h1><p>目录，markdown，preview一共三个暂时（修改的内容直接看文件）,<br>中间: </p><ul><li>遇到了自动折叠问题：修改配置文件解决  </li><li>又遇到了无法预览的问题，看github<a href="https://github.com/iamcco/markdown-preview.nvim/issues/120">作者回复</a>解决</li></ul>]]></content>
-    
-    
-    
-  </entry>
-  
-  
-  
-  <entry>
-    <title>Hello World</title>
-    <link href="/2021/07/07/hello-world/"/>
-    <url>/2021/07/07/hello-world/</url>
-    
-    <content type="html"><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p><h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ hexo new <span class="hljs-string">&quot;My New Post&quot;</span><br></code></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p><h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ hexo server<br></code></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p><h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ hexo generate<br></code></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p><h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ hexo deploy<br></code></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>]]></content>
     
     
     

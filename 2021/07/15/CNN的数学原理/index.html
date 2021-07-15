@@ -18,7 +18,7 @@
   <meta name="author" content="William Guo">
   <meta name="keywords" content="">
   
-  <title>神经网络的数学原理-无公式版 by 电竞大师小明</title>
+  <title>CNN的数学原理 by 电竞大师小明</title>
 
   <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
 
@@ -163,7 +163,7 @@
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.7)">
           <div class="page-header text-center fade-in-up">
-            <span class="h2" id="subtitle" title="神经网络的数学原理-无公式版">
+            <span class="h2" id="subtitle" title="CNN的数学原理">
               
             </span>
 
@@ -173,8 +173,8 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2021-07-12 17:37" pubdate>
-        2021年7月12日 下午
+      <time datetime="2021-07-15 17:35" pubdate>
+        2021年7月15日 下午
       </time>
     </span>
   
@@ -185,7 +185,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      1k 字
+      722 字
     </span>
   
 
@@ -195,7 +195,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      11
+      7
        分钟
     </span>
   
@@ -225,51 +225,42 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">神经网络的数学原理-无公式版</h1>
+            <h1 style="display: none">CNN的数学原理</h1>
             
             <div class="markdown-body">
-              <h2 id="神经网络模型的结构"><a href="#神经网络模型的结构" class="headerlink" title="神经网络模型的结构"></a>神经网络模型的结构</h2><p><strong>神经网络</strong>的基础单元是<strong>神经元</strong>，多个<strong>神经元</strong>纵向堆叠形成神经<strong>网络层</strong>，神经<strong>网络层</strong>横向堆叠形成<strong>神经网络</strong>。</p>
-<div align=center><img title="" src="/img/article/神经网络的数学原理/神经网络.png" srcset="/img/loading.gif" lazyload width="50%" height="50%" align=center></div>
-<div align=center><img title="" src="/img/article/神经网络的数学原理/神经元.png" srcset="/img/loading.gif" lazyload width="60%" height="60%" align=center></div>
-
-<h2 id="神经元的数学原理"><a href="#神经元的数学原理" class="headerlink" title="神经元的数学原理"></a>神经元的数学原理</h2><p>对于一个神经元，进行的数学计算为：</p>
-<blockquote>
-<p>接受一个向量$\boldsymbol{a}^{[j-1]}$，通过与$\boldsymbol{w}^{[j]}_i$进行向量内积运算产生一个中间值$z_i^{[j]}$（标量），然后用激活函数$g_i^{[j]}()$将$z$转换为$a_i^{[j]}$。</p>
-</blockquote>
-<p>其中:</p>
-<blockquote>
-<p>上标用来定位该神经元位于哪一层，一般输入层后的第一层为1；<br>下标用来定位该神经元位于第几个，一般最上方的序号为0；</p>
-</blockquote>
-<h2 id="矩阵维度确认的数学原理"><a href="#矩阵维度确认的数学原理" class="headerlink" title="矩阵维度确认的数学原理"></a>矩阵维度确认的数学原理</h2><p>首先区分开这4个概念：<strong>模型的参数</strong>，<strong>层的参数</strong>，<strong>神经元的参数</strong>，<strong>数据及数据的中间值</strong>。然后，仔细理解上面两段话，神经网络中最为tricky的维度问题便迎刃而解：</p>
+              <h2 id="二维卷积的数学原理"><a href="#二维卷积的数学原理" class="headerlink" title="二维卷积的数学原理"></a>二维卷积的数学原理</h2><p>不管信号处理中“卷积”和“相关”的定义如何，至少在CNN中卷积的含义是明确的。就是</p>
 <ol>
-<li>对于$\boldsymbol{x}$和$\boldsymbol{y}$，其维度看样本就知道，已经定义好了;</li>
-<li>对于某一个神经元的权重参数$\boldsymbol{w}^{[j]}_i$，由于要跟输入的向量$\boldsymbol{a}^{[j-1]}$进行内积，所以两者的维度必然是相同的，而后者作为一个列向量，其行数等于上一层的神经元数量（因为每个神经元输出一个标量）。然后由于本层的每一个神经元都有一个权重参数$\boldsymbol{w}^{[j]}$，那么由${\boldsymbol{w}^{[j]}}^T$纵向堆叠形成的${\boldsymbol{W}^{[j]}}^T$的行数就是$\boldsymbol{w}^{[j]}$的个数，亦即本层的神经元数量，其列数前面已经说了，就是$\boldsymbol{w}^{[j]}$的行数，亦即上一层的神经元数量。<br></li>
-<li>对于某一个神经元的偏移量参数${b}^{[j]}$，自然是一个标量。那么本层的偏移量参数$\boldsymbol{b}^{[j]}$的行数就是${b}^{[j]}$的数量，亦即本层的神经元数量。</li>
-<li>对于每一层的中间值$\boldsymbol{z}^{[j]}$，输出值$\boldsymbol{a}^{[j]}$，其维度确定方式与$\boldsymbol{b}^{[j]}$一样。</li>
-<li>另外对于激活函数，一般同一层都一样，所以$\boldsymbol{g}^{[j]}()$退化为${g}^{[j]}()$。</li>
+<li>将卷积核(一个尺寸较小的方阵)与矩阵$\boldsymbol{A}$左上角对齐</li>
+<li>两个矩阵逐元素相乘后求和，作为结果矩阵$\boldsymbol{B}$的左上角第一个元素</li>
+<li>向右/下移动卷积核的位置，重复2，直到卷积核到达矩阵$\boldsymbol{A}$的右下角</li>
 </ol>
-<h2 id="矢量化的数学原理"><a href="#矢量化的数学原理" class="headerlink" title="矢量化的数学原理"></a>矢量化的数学原理</h2><p>矢量化的本质是将样本在时间轴上被神经网络模型处理的序列转化为空间上的序列：<br></p>
+<p>由此带来了<strong>padding</strong>和<strong>stride</strong>的概念：</p>
+<ul>
+<li><strong>padding</strong>：为了解决卷积带来的尺寸缩减，在卷积之前在$\boldsymbol{A}$周围补上p圈0。</li>
+<li><strong>stride</strong>：卷积核每次向右/下移动s个元素。</li>
+</ul>
+<p>综上，有以下公式计算卷积前后的尺寸变化：</p>
 <blockquote>
-<p>$X= (\boldsymbol{x}^1,\boldsymbol{x}^2, …,  \boldsymbol{x}^)$</p>
+<p>$(n,n) and (f,f) \Longrightarrow \lfloor \frac{n+2p-f}{s}+1 \rfloor$</p>
 </blockquote>
-<p>说人话就是，原来每次送入模型一个列向量，计算得到一个列向量。现在每次送入m个列向量，计算的到m个列向量。当然了，各层的中间值$\boldsymbol{z}^{[j]}$和输出值$\boldsymbol{a}^{[j]}$也都将因此横向扩充一个维度。</p>
-<h2 id="正向计算的数学原理"><a href="#正向计算的数学原理" class="headerlink" title="正向计算的数学原理"></a>正向计算的数学原理</h2><p>正向计算，用于得到所需的预测结果：</p>
+<h2 id="多维度卷积的数学原理"><a href="#多维度卷积的数学原理" class="headerlink" title="多维度卷积的数学原理"></a>多维度卷积的数学原理</h2><p><strong>关键字</strong>：<strong>卷积</strong>-&gt;<strong>偏移</strong>-&gt;<strong>激活</strong></p>
+<p>CNN模型的输入——RGB三通道图像可以看做一个三层的2D矩阵，对其卷积的含义是：</p>
 <ol>
-<li>输入一个列向量</li>
-<li>进行一系列矩阵计算</li>
-<li>得到一个列向量</li>
+<li>将一个层数相同的卷积核与这个3层的2D矩阵左上角对齐，然后做逐元素的乘积求和，并不断移动到右下角为止</li>
+<li>由于求和是跨通道的，因此卷积的结果是一个单层的2D矩阵。</li>
+<li>然后，仿照DNN对这个单层的2D矩阵中的每一个元素进行偏移和激活，得到作为输出的单层的2D矩阵。</li>
+<li>选取另一个同尺寸的卷积核重复1-3，得到另一个单层的2D矩阵</li>
+<li>将输入量与本层所有卷积核的卷积结果堆叠后，得到一个新的多层2D矩阵，作为本层的输出。</li>
+<li>经过若干个卷积层处理后，将最后一个卷积层输出的多层2D矩阵看做一个列向量，将这个列向量作为$\boldsymbol{a}^{[l-1]}$，送入输出层处理。</li>
+<li>若是二分类，则输出层是一个DNN神经元；若是多分类，则输出层是一个以$softmax$为激活函数的DNN网络层。此处DNN的含义指，通过矩阵乘法产生$\boldsymbol{z}^[l]$，而不是卷积操作。</li>
 </ol>
-<h2 id="反向传播的数学原理"><a href="#反向传播的数学原理" class="headerlink" title="反向传播的数学原理"></a>反向传播的数学原理</h2><p>反向传播，用于找到合适的模型参数。其中“合适”的标准是，整个训练集形成的代价$J$足够小。“找”的方法是，先随机初始化各层的$\boldsymbol{W}$和$\boldsymbol{b}$，然后不断更新之，直到$\boldsymbol{W}$和$\boldsymbol{b}$合适。</p>
-<ol>
-<li>单个样本$\boldsymbol{x}$ 正向计算，得到各层的$\boldsymbol{z}$和$\boldsymbol{a}$备用。</li>
-<li>计算输出层的参数更新量：<ol>
-<li>求得损失$L$对$\boldsymbol{z}^{[l]}$的偏导$\frac{\partial{L}}{\partial{\boldsymbol{z}^{[l]}}}$，记作$d\boldsymbol{z}^{[l]}$。上标$l$表示最后一层，即输出层。若输出层激活函数为$softmax$且损失函数为交叉熵，则有$d\boldsymbol{z}^{[l]} = softmax(\boldsymbol{z}^{[l]}) - \boldsymbol{y}$。</li>
-<li>利用微分的分解+迹技巧实现链式法则，由$d\boldsymbol{z}^{[l]}$得到$d{\boldsymbol{W}^{[l]}}^T$，$d\boldsymbol{b}^{[l]}$，$d\boldsymbol{a}^{[l-1]}$</li>
-<li>利用微分的分解+迹技巧实现链式法则，由$d\boldsymbol{a}^{[l-1]}$得到$d\boldsymbol{z}^{[l-1]}$。</li>
-</ol>
-</li>
-<li>仿照输出层的计算方式，反向传播，依次得到各层的参数更新量。</li>
-</ol>
+<blockquote>
+<ul>
+<li>显然输出的层数等于本层卷积核的数量，而输出的每一层的尺寸则由前文提及的公式计算得到。</li>
+<li>与DNN不同这里的权重矩阵$\boldsymbol{W}$的维度，都是人为指定的。这也正式CNN存在的理由，减少参数。</li>
+</ul>
+</blockquote>
+<h2 id="池化的数学原理"><a href="#池化的数学原理" class="headerlink" title="池化的数学原理"></a>池化的数学原理</h2><p>与卷积操作的过程相同，但是每个核与输入矩阵进行的不是卷积操作，而是选取区域最大值的操作（最大池化）或者计算区域平均值的操作（平均池化）。一般用于降维。最大池化比较常用，并且一般伴随着0 padding。</p>
 
             </div>
             <hr>
@@ -289,9 +280,11 @@
                   <div class="post-meta">
                     <i class="iconfont icon-tags"></i>
                     
-                      <a class="hover-with-bg" href="/tags/DNN/">DNN</a>
+                      <a class="hover-with-bg" href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a>
                     
-                      <a class="hover-with-bg" href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">神经网络</a>
+                      <a class="hover-with-bg" href="/tags/CNN/">CNN</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">卷积神经网络</a>
                     
                   </div>
                 
@@ -308,18 +301,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2021/07/15/CNN%E7%9A%84%E6%95%B0%E5%AD%A6%E5%8E%9F%E7%90%86/">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">CNN的数学原理</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2021/07/12/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84%E6%95%B0%E5%AD%A6%E5%8E%9F%E7%90%86/">
-                        <span class="hidden-mobile">DNN的数学原理</span>
+                      <a href="/2021/07/12/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84%E6%95%B0%E5%AD%A6%E5%8E%9F%E7%90%86-%E6%97%A0%E5%85%AC%E5%BC%8F%E7%89%88/">
+                        <span class="hidden-mobile">神经网络的数学原理-无公式版</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -491,45 +478,6 @@
 
 
 
-
-  
-
-  
-    <!-- MathJax -->
-    <script>
-      MathJax = {
-        tex: {
-          inlineMath: [['$', '$'], ['\\(', '\\)']]
-        },
-        options: {
-          renderActions: {
-            findScript: [10, doc => {
-              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
-                const display = !!node.type.match(/; *mode=display/);
-                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
-                const text = document.createTextNode('');
-                node.parentNode.replaceChild(text, node);
-                math.start = { node: text, delim: '', n: 0 };
-                math.end = { node: text, delim: '', n: 0 };
-                doc.math.push(math);
-              });
-            }, '', false],
-            insertedScript: [200, () => {
-              document.querySelectorAll('mjx-container').forEach(node => {
-                let target = node.parentNode;
-                if (target.nodeName.toLowerCase() === 'li') {
-                  target.parentNode.classList.add('has-jax');
-                }
-              });
-            }, '', false]
-          }
-        }
-      };
-    </script>
-
-    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.1.4/es5/tex-svg.js" ></script>
-
-  
 
 
 
