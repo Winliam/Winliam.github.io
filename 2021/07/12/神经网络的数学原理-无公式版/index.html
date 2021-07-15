@@ -18,7 +18,7 @@
   <meta name="author" content="William Guo">
   <meta name="keywords" content="">
   
-  <title>神经网络的数学原理 by 电竞大师小明</title>
+  <title>神经网络的数学原理-无公式版 by 电竞大师小明</title>
 
   <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
 
@@ -163,7 +163,7 @@
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.7)">
           <div class="page-header text-center fade-in-up">
-            <span class="h2" id="subtitle" title="神经网络的数学原理">
+            <span class="h2" id="subtitle" title="神经网络的数学原理-无公式版">
               
             </span>
 
@@ -185,7 +185,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      2k 字
+      1k 字
     </span>
   
 
@@ -195,7 +195,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      30
+      11
        分钟
     </span>
   
@@ -225,12 +225,11 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">神经网络的数学原理</h1>
+            <h1 style="display: none">神经网络的数学原理-无公式版</h1>
             
             <div class="markdown-body">
               <h2 id="神经网络模型的结构"><a href="#神经网络模型的结构" class="headerlink" title="神经网络模型的结构"></a>神经网络模型的结构</h2><p><strong>神经网络</strong>的基础单元是<strong>神经元</strong>，多个<strong>神经元</strong>纵向堆叠形成神经<strong>网络层</strong>，神经<strong>网络层</strong>横向堆叠形成<strong>神经网络</strong>。</p>
 <div align=center><img title="" src="/img/article/神经网络的数学原理/神经网络.png" srcset="/img/loading.gif" lazyload width="50%" height="50%" align=center></div>
-<br>
 <div align=center><img title="" src="/img/article/神经网络的数学原理/神经元.png" srcset="/img/loading.gif" lazyload width="60%" height="60%" align=center></div>
 
 <h2 id="神经元的数学原理"><a href="#神经元的数学原理" class="headerlink" title="神经元的数学原理"></a>神经元的数学原理</h2><p>对于一个神经元，进行的数学计算为：</p>
@@ -256,60 +255,22 @@
 <p>说人话就是，原来每次送入模型一个列向量，计算得到一个列向量。现在每次送入m个列向量，计算的到m个列向量。当然了，各层的中间值$\boldsymbol{z}^{[j]}$和输出值$\boldsymbol{a}^{[j]}$也都将因此横向扩充一个维度。</p>
 <h2 id="正向计算的数学原理"><a href="#正向计算的数学原理" class="headerlink" title="正向计算的数学原理"></a>正向计算的数学原理</h2><p>正向计算，用于得到所需的预测结果：</p>
 <ol>
-<li>输入一个列向量：<br><blockquote>
-<p> $\boldsymbol{x} = (x_1, x_2, … , x_n)^T$</p>
-</blockquote>
-</li>
-<li><p>进行一系列矩阵计算：<br></p>
-<blockquote>
-<p> $\boldsymbol{a}^{[0]} = \boldsymbol{x}$<br> $\boldsymbol{z}^{[1]} = {\boldsymbol{W}^{[1]}}^T\boldsymbol{a}^{[0]}+\boldsymbol{b}^{[1]}$<br> $\boldsymbol{a}^{[2]} = g^{[1]}(\boldsymbol{z}^{[1]})$<br> …<br> $\boldsymbol{z}^{[j]} = {\boldsymbol{W}^{[j]}}^T\boldsymbol{a}^{[j-1]}+\boldsymbol{b}^{[j]}$<br> $\boldsymbol{a}^{[j]} = g^{[j]}(\boldsymbol{z}^{[j]})$<br> …<br> $\boldsymbol{z}^{[l]} = {\boldsymbol{W}^{[l]}}^T\boldsymbol{a}^{[l-1]}+\boldsymbol{b}^{[l]}$<br> $\boldsymbol{a}^{[l]} = g^{[l]}(\boldsymbol{z}^{[l]})$<br> $\boldsymbol{\hat{y}} = \boldsymbol{a}^{[l]}$</p>
-</blockquote>
-<p>特别地，对于多分类模型的输出层（最后一层），一般有：</p>
-<blockquote>
-<p>$g^{[l]}(\boldsymbol{x}) = softmax(\boldsymbol{x}) = \frac{exp(\boldsymbol{x})}{\boldsymbol{1}^Texp(\boldsymbol{x})}$</p>
-</blockquote>
-<p>其中 $\boldsymbol{1}$ 为全1列向量，维度可从context推得。</p>
-</li>
-<li>得到一个列向量：<br><blockquote>
-<p> $\boldsymbol{\hat{y}} = (\hat{y}_1,\hat{y}_2, … , \hat{y}_n)^T$</p>
-</blockquote>
-</li>
+<li>输入一个列向量</li>
+<li>进行一系列矩阵计算</li>
+<li>得到一个列向量</li>
 </ol>
 <h2 id="反向传播的数学原理"><a href="#反向传播的数学原理" class="headerlink" title="反向传播的数学原理"></a>反向传播的数学原理</h2><p>反向传播，用于找到合适的模型参数。其中“合适”的标准是，整个训练集形成的代价$J$足够小。“找”的方法是，先随机初始化各层的$\boldsymbol{W}$和$\boldsymbol{b}$，然后不断更新之，直到$\boldsymbol{W}$和$\boldsymbol{b}$合适。</p>
 <ol>
 <li>单个样本$\boldsymbol{x}$ 正向计算，得到各层的$\boldsymbol{z}$和$\boldsymbol{a}$备用。</li>
 <li>计算输出层的参数更新量：<ol>
-<li>求得损失$L$对$\boldsymbol{z}^{[l]}$的偏导$\frac{\partial{L}}{\partial{\boldsymbol{z}^{[l]}}}$，记作$d\boldsymbol{z}^{[l]}$。上标$l$表示最后一层，即输出层。若输出层激活函数为$softmax$且损失函数为交叉熵，则有$d\boldsymbol{z}^{[l]} = softmax(\boldsymbol{z}^{[l]}) - \boldsymbol{y}$，对应的求导过程如下：<blockquote>
-<p>$L = -\boldsymbol{y}^Tlog\hat{\boldsymbol{y}}$<br>$\downarrow$<br>$dL = -d\boldsymbol{y}^Tlog\hat{\boldsymbol{y}}-\boldsymbol{y}^Td(log\hat{\boldsymbol{y}})$<br>$= -\boldsymbol{y}^T d(log\hat{\boldsymbol{y}})$<br>$= -\boldsymbol{y}^Td(log(softmax(\boldsymbol{z}^{[l]})))$<br>$= -\boldsymbol{y}^Td(log(\frac{exp(\boldsymbol{\boldsymbol{z}^{[l]}})}{\boldsymbol{1}^Texp(\boldsymbol{\boldsymbol{z}^{[l]}})}))$<br>$= -\boldsymbol{y}^Td(log(exp(\boldsymbol{\boldsymbol{z}^{[l]}}))+\boldsymbol{1}log(\boldsymbol{1}^Texp(\boldsymbol{\boldsymbol{z}^{[l]}})))$<br>$= -\boldsymbol{y}^Td\boldsymbol{z}^{[l]} + d(log(\boldsymbol{1}^Texp(\boldsymbol{\boldsymbol{z}^{[l]}})))$<br>$= -\boldsymbol{y}^Td\boldsymbol{z}^{[l]} + \frac{d(\boldsymbol{1}^Texp(\boldsymbol{\boldsymbol{z}^{[l]}}))}{\boldsymbol{1}^Texp(\boldsymbol{\boldsymbol{z}^{[l]}})}$<br>$= -\boldsymbol{y}^Td\boldsymbol{z}^{[l]} + \frac{\boldsymbol{1}^T(exp(\boldsymbol{\boldsymbol{z}^{[l]}}) \odot d\boldsymbol{z}^{[l]} )}{\boldsymbol{1}^Texp(\boldsymbol{\boldsymbol{z}^{[l]}})}$<br>$= -\boldsymbol{y}^Td\boldsymbol{z}^{[l]} + {\frac{exp(\boldsymbol{\boldsymbol{z}^{[l]}})}{\boldsymbol{1}^Texp(\boldsymbol{z}^{[l]})}}^Td\boldsymbol{z}^{[l]}$<br>$= (softmax(\boldsymbol{z}^{[l]})-\boldsymbol{y}^T)^Td\boldsymbol{z}^{[l]}$<br>$\downarrow$<br>$tr(dL) = dL = tr((softmax(\boldsymbol{z}^{[l]})-\boldsymbol{y}^T)^Td\boldsymbol{z}^{[l]}) = tr({\frac{\partial{L}}{\partial{\boldsymbol{z}^{[l]}}}}^Td\boldsymbol{z}^{[l]})$<br>$\downarrow$<br>$\frac{\partial{L}}{\partial{\boldsymbol{z}^{[l]}}} = softmax(\boldsymbol{z}^{[l]})-\boldsymbol{y}^T$<br>$\downarrow$<br>$d\boldsymbol{z}^{[l]} = softmax(\boldsymbol{z}^{[l]})-\boldsymbol{y}^T$</p>
-</blockquote>
-</li>
-<li>利用微分的分解+迹技巧实现链式法则，由$d\boldsymbol{z}^{[l]}$得到$d{\boldsymbol{W}^{[l]}}^T$，$d\boldsymbol{b}^{[l]}$，$d\boldsymbol{a}^{[l-1]}$<ul>
-<li>$d{\boldsymbol{W}^{[l]}}^T$的求导过程如下：<blockquote>
-<p>$tr(dL) = tr({\frac{\partial{L}}{\partial{\boldsymbol{z}^{[l]}}}}^Td\boldsymbol{z}^{[l]})$<br>$= tr({\frac{\partial{L}}{\partial{\boldsymbol{z}^{[l]}}}}^Td({\boldsymbol{W}^{[l]}}^T\boldsymbol{a}^{[l-1]}+\boldsymbol{b}^{[l]}))$<br>$= tr({\frac{\partial{L}}{\partial{\boldsymbol{z}^{[l]}}}}^Td{\boldsymbol{W}^{[l]}}^T\boldsymbol{a}^{[l-1]})$<br>$= tr(\boldsymbol{a}^{[l-1]}{\frac{\partial{L}}{\partial{\boldsymbol{z}^{[l]}}}}^Td{\boldsymbol{W}^{[l]}}^T)$<br>$= tr(({\frac{\partial{L}}{\partial{\boldsymbol{z}^{[l]}}}}{\boldsymbol{a}^{[l-1]}}^T)^Td{\boldsymbol{W}^{[l]}}^T)$<br>$\downarrow$<br>$\frac{\partial{L}}{\partial{\boldsymbol{W}^{[l]}}^T} = {\frac{\partial{L}}{\partial{\boldsymbol{z}^{[l]}}}}{\boldsymbol{a}^{[l-1]}}^T$<br>$\downarrow$<br>$d{\boldsymbol{W}^{[l]}}^T = d\boldsymbol{z}^{[l]}{\boldsymbol{a}^{[l-1]}}^T$</p>
-</blockquote>
-</li>
-<li>$d\boldsymbol{b}^{[l]}$的求导过程<blockquote>
-<p>$tr(dL) = tr({\frac{\partial{L}}{\partial{\boldsymbol{z}^{[l]}}}}^Td\boldsymbol{z}^{[l]})$<br>$= tr({\frac{\partial{L}}{\partial{\boldsymbol{z}^{[l]}}}}^Td({\boldsymbol{W}^{[l]}}^T\boldsymbol{a}^{[l-1]}+\boldsymbol{b}^{[l]}))$<br>$= tr({\frac{\partial{L}}{\partial{\boldsymbol{z}^{[l]}}}}^Td\boldsymbol{b}^{[l]})$<br>$\downarrow$<br>$\frac{\partial{L}}{\partial{\boldsymbol{b}^{[l]}}} = {\frac{\partial{L}}{\partial{\boldsymbol{z}^{[l]}}}}$<br>$\downarrow$<br>$d\boldsymbol{b}^{[l]} = d\boldsymbol{z}^{[l]}$</p>
-</blockquote>
-</li>
-<li>$d\boldsymbol{a}^{[l-1]}$的求导过程如下：<blockquote>
-<p>$tr(dL) = tr({\frac{\partial{L}}{\partial{\boldsymbol{z}^{[l]}}}}^Td\boldsymbol{z}^{[l]})$<br>$= tr({\frac{\partial{L}}{\partial{\boldsymbol{z}^{[l]}}}}^Td({\boldsymbol{W}^{[l]}}^T\boldsymbol{a}^{[l-1]}+\boldsymbol{b}^{[l]}))$<br>$= tr({\frac{\partial{L}}{\partial{\boldsymbol{z}^{[l]}}}}^T{\boldsymbol{W}^{[l]}}^Td\boldsymbol{a}^{[l-1]})$<br>$= tr((\boldsymbol{W}^{[l]}\frac{\partial{L}}{\partial{\boldsymbol{z}^{[l]}}})^Td\boldsymbol{a}^{[l-1]})$<br>$\downarrow$<br>$\frac{\partial{L}}{\partial{\boldsymbol{a}^{[l-1]}}} = {\boldsymbol{W}^{[l]}\frac{\partial{L}}{\partial{\boldsymbol{z}^{[l]}}}}$<br>$\downarrow$<br>$d\boldsymbol{a}^{[l-1]} = \boldsymbol{W}^{[l]}d\boldsymbol{z}^{[l]}$</p>
-</blockquote>
-</li>
-</ul>
-</li>
-<li>利用微分的分解+迹技巧实现链式法则，由$d\boldsymbol{a}^{[l-1]}$得到$d\boldsymbol{z}^{[l-1]}$，对应的求导过程如下：<blockquote>
-<p>$tr(dL) = tr({\frac{\partial{L}}{\partial{\boldsymbol{a}^{[l-1]}}}}^Td\boldsymbol{a}^{[l-1]})$<br>$= tr({\frac{\partial{L}}{\partial{\boldsymbol{a}^{[l-1]}}}}^Td(g(\boldsymbol{z}^{[l-1]}))$<br>$= tr({\frac{\partial{L}}{\partial{\boldsymbol{a}^{[l-1]}}}}^T(g’(\boldsymbol{z}^{[l-1]}) \odot d\boldsymbol{z}^{[l-1]}))$<br>$= tr((\frac{\partial{L}}{\partial{\boldsymbol{a}^{[l-1]}}} \odot g’(\boldsymbol{z}^{[l-1]}))^T d\boldsymbol{z}^{[l-1]})$<br>$\downarrow$<br>$\frac{\partial{L}}{\partial{\boldsymbol{z}^{[l-1]}}} = \frac{\partial{L}}{\partial{\boldsymbol{a}^{[l-1]}}} \odot g’(\boldsymbol{z}^{[l-1]})$<br>$\downarrow$<br>$d\boldsymbol{z}^{[l-1]} = d\boldsymbol{a}^{[l-1]}\odot g’(\boldsymbol{z}^{[l-1]})$</p>
-</blockquote>
-</li>
+<li>求得损失$L$对$\boldsymbol{z}^{[l]}$的偏导$\frac{\partial{L}}{\partial{\boldsymbol{z}^{[l]}}}$，记作$d\boldsymbol{z}^{[l]}$。上标$l$表示最后一层，即输出层。若输出层激活函数为$softmax$且损失函数为交叉熵，则有$d\boldsymbol{z}^{[l]} = softmax(\boldsymbol{z}^{[l]}) - \boldsymbol{y}$。</li>
+<li>利用微分的分解+迹技巧实现链式法则，由$d\boldsymbol{z}^{[l]}$得到$d{\boldsymbol{W}^{[l]}}^T$，$d\boldsymbol{b}^{[l]}$，$d\boldsymbol{a}^{[l-1]}$</li>
+<li>利用微分的分解+迹技巧实现链式法则，由$d\boldsymbol{a}^{[l-1]}$得到$d\boldsymbol{z}^{[l-1]}$。</li>
 </ol>
 </li>
-<li>仿照输出层的计算方式，反向传播，依次得到各层的参数更新量。<blockquote>
-<p>$d\boldsymbol{z}^{[l]} = softmax(\boldsymbol{z}^{[l]}) - \boldsymbol{y}$<br>$d{\boldsymbol{W}^{[l]}}^T = d\boldsymbol{z}^{[l]}{\boldsymbol{a}^{[l-1]}}^T$ AND $d\boldsymbol{b}^{[l]} = d\boldsymbol{z}^{[l]}$<br>…<br>$d\boldsymbol{z}^{[j]} = (\boldsymbol{W}^{[j+1]}d\boldsymbol{z}^{[j+1]}) \odot g’(\boldsymbol{z}^{[j]})$<br>$d{\boldsymbol{W}^{[j]}}^T = d\boldsymbol{z}^{[j]}{\boldsymbol{a}^{[j-1]}}^T$ AND $d\boldsymbol{b}^{[j]} = d\boldsymbol{z}^{[j]}$<br>$d\boldsymbol{z}^{[j-1]} = (\boldsymbol{W}^{[j]}d\boldsymbol{z}^{[j]}) \odot g’(\boldsymbol{z}^{[j-1]})$<br>…<br>$d{\boldsymbol{W}^{[1]}}^T = d\boldsymbol{z}^{[1]}{\boldsymbol{a}^{[0]}}^T$ AND $d\boldsymbol{b}^{[1]} = d\boldsymbol{z}^{[1]}$<br>$d\boldsymbol{z}^{[0]} = (\boldsymbol{W}^{[1]}d\boldsymbol{z}^{[1]}) \odot g’(\boldsymbol{z}^{[0]})$</p>
-</blockquote>
-</li>
+<li>仿照输出层的计算方式，反向传播，依次得到各层的参数更新量。</li>
 </ol>
-<h2 id="梯度下降的数学原理"><a href="#梯度下降的数学原理" class="headerlink" title="梯度下降的数学原理"></a>梯度下降的数学原理</h2><h2 id="归一化的数学原理"><a href="#归一化的数学原理" class="headerlink" title="归一化的数学原理"></a>归一化的数学原理</h2><h2 id="batch的数学原理"><a href="#batch的数学原理" class="headerlink" title="batch的数学原理"></a>batch的数学原理</h2>
+
             </div>
             <hr>
             <div>
@@ -347,18 +308,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2021/07/12/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84%E6%95%B0%E5%AD%A6%E5%8E%9F%E7%90%86-%E6%97%A0%E5%85%AC%E5%BC%8F%E7%89%88/">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">神经网络的数学原理-无公式版</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2021/07/09/CSAPP%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E6%80%BB%E7%BB%93/">
-                        <span class="hidden-mobile">CSAPP并发编程总结</span>
+                      <a href="/2021/07/12/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84%E6%95%B0%E5%AD%A6%E5%8E%9F%E7%90%86/">
+                        <span class="hidden-mobile">神经网络的数学原理</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
