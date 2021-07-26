@@ -185,7 +185,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      303 字
+      304 字
     </span>
   
 
@@ -232,7 +232,7 @@
 <p>nvidia-smi一看，又是一个新报错Failed to initialize NVML: Driver/library version mismatch，闹心。</p>
 <p>整半天，大概意思是作为内核模块的nvidia驱动程序版本和libnvidia-compute-460这个库的版本不一致。</p>
 <p>两者一般都应该是安装驱动的时候指定的版本（for me is 460.84），但是后者竟然通过ubuntu的后台更新程序自动更新了（460.91），所以造成了这个问题。</p>
-<p>最后，更新了驱动程序，关闭了自动更新，告一段落</p>
+<p>最后，更新了驱动程序，关闭了自动更新，reboot，告一段落。</p>
 <h2 id="用到的命令："><a href="#用到的命令：" class="headerlink" title="用到的命令："></a>用到的命令：</h2><blockquote>
 <p>lsmod | grep nvidia*<br>显示和nvidia有关的内核模块有哪些</p>
 <p>modinfo nvidiaxxx | grep version<br>显示这些内核模块的版本</p>
