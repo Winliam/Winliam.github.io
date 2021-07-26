@@ -4,6 +4,69 @@
   
   
   <entry>
+    <title>nvidia-smi突然跪了！</title>
+    <link href="/2021/07/26/nvidia-smi%E7%AA%81%E7%84%B6%E8%B7%AA%E4%BA%86%EF%BC%81/"/>
+    <url>/2021/07/26/nvidia-smi%E7%AA%81%E7%84%B6%E8%B7%AA%E4%BA%86%EF%BC%81/</url>
+    
+    <content type="html"><![CDATA[<h2 id="解决过程"><a href="#解决过程" class="headerlink" title="解决过程"></a>解决过程</h2><p>看着代码唱着歌，CUDA就突然啥啥啥初始化失败了。</p><p>nvidia-smi一看，又是一个新报错Failed to initialize NVML: Driver/library version mismatch，闹心。</p><p>整半天，大概意思是作为内核模块的nvidia驱动程序版本和libnvidia-compute-460这个库的版本不一致。</p><p>两者一般都应该是安装驱动的时候指定的版本（for me is 460.84），但是后者竟然通过ubuntu的后台更新程序自动更新了（460.91），所以造成了这个问题。</p><p>最后，更新了驱动程序，关闭了自动更新，告一段落</p><h2 id="用到的命令："><a href="#用到的命令：" class="headerlink" title="用到的命令："></a>用到的命令：</h2><blockquote><p>lsmod | grep nvidia*<br>显示和nvidia有关的内核模块有哪些</p><p>modinfo nvidiaxxx | grep version<br>显示这些内核模块的版本</p><p>dpkg —list | grep nvidia<br>显示libnvidia-compute这个库的版本</p><p>dmesg | tail -4<br>nvidia-smi的报错详情，可以看到版本差异<br>dmesg | grep nvidia<br>nvidia-smi的执行过程详情</p><p>cat /var/log/apt/history.log | grep -a -C 10 nvidia<br>libnvidia-compute的更新记录，可以看到是unattended-upgrade造成的更新</p><p>cat /etc/apt/apt.conf.d/20auto-upgrades<br>自动更新的配置文件，修改即可关闭自动更新<a href="https://unix.stackexchange.com/questions/342663/how-is-unattended-upgrades-started-and-how-can-i-modify-its-schedule">detail</a></p><p>sudo apt install nvidia-driver-460<br>更新驱动程序</p></blockquote>]]></content>
+    
+    
+    <categories>
+      
+      <category>生活</category>
+      
+      <category>电脑设置</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>Nvidia</tag>
+      
+      <tag>驱动失效</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>pytorch笔记</title>
+    <link href="/2021/07/22/pytorch%E7%AC%94%E8%AE%B0/"/>
+    <url>/2021/07/22/pytorch%E7%AC%94%E8%AE%B0/</url>
+    
+    <content type="html"><![CDATA[]]></content>
+    
+    
+    <categories>
+      
+      <category>生活</category>
+      
+      <category>电脑设置</category>
+      
+    </categories>
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title></title>
+    <link href="/2021/07/22/pytorch%E5%9F%BA%E7%A1%80/"/>
+    <url>/2021/07/22/pytorch%E5%9F%BA%E7%A1%80/</url>
+    
+    <content type="html"><![CDATA[<h3 id="搭建模型"><a href="#搭建模型" class="headerlink" title="搭建模型"></a>搭建模型</h3><figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">import</span> torch.nn as nn<br><span class="hljs-attribute">import</span> torch.nn.functional as F<br><br><span class="hljs-attribute">class</span> LeNet(nn.Module):<br><span class="hljs-comment"># 设定有哪些网络层，每层的尺寸</span><br>    <span class="hljs-attribute">def</span> __init__(self):<br>        <span class="hljs-attribute">super</span>(LeNet, self).__init__()<br>        <span class="hljs-attribute">self</span>.conv<span class="hljs-number">1</span> = nn.Conv<span class="hljs-number">2</span>d(<span class="hljs-number">3</span>, <span class="hljs-number">16</span>, <span class="hljs-number">5</span>)<br>        <span class="hljs-attribute">self</span>.pool<span class="hljs-number">1</span> = nn.MaxPool<span class="hljs-number">2</span>d(<span class="hljs-number">2</span>, <span class="hljs-number">2</span>)<br>        <span class="hljs-attribute">self</span>.conv<span class="hljs-number">2</span> = nn.Conv<span class="hljs-number">2</span>d(<span class="hljs-number">16</span>, <span class="hljs-number">32</span>, <span class="hljs-number">5</span>)<br>        <span class="hljs-attribute">self</span>.pool<span class="hljs-number">2</span> = nn.MaxPool<span class="hljs-number">2</span>d(<span class="hljs-number">2</span>, <span class="hljs-number">2</span>)<br>        <span class="hljs-attribute">self</span>.fc<span class="hljs-number">1</span> = nn.Linear(<span class="hljs-number">32</span>*<span class="hljs-number">5</span>*<span class="hljs-number">5</span>, <span class="hljs-number">120</span>)<br>        <span class="hljs-attribute">self</span>.fc<span class="hljs-number">2</span> = nn.Linear(<span class="hljs-number">120</span>, <span class="hljs-number">84</span>)<br>        <span class="hljs-attribute">self</span>.fc<span class="hljs-number">3</span> = nn.Linear(<span class="hljs-number">84</span>, <span class="hljs-number">10</span>)<br><br><span class="hljs-comment"># 设定层与层之间的怎样连接</span><br>    <span class="hljs-attribute">def</span> forward(self, x):<br>        <span class="hljs-attribute">x</span> = F.relu(self.conv<span class="hljs-number">1</span>(x))    # input(<span class="hljs-number">3</span>, <span class="hljs-number">32</span>, <span class="hljs-number">32</span>) output(<span class="hljs-number">16</span>, <span class="hljs-number">28</span>, <span class="hljs-number">28</span>)<br>        <span class="hljs-attribute">x</span> = self.pool<span class="hljs-number">1</span>(x)            # output(<span class="hljs-number">16</span>, <span class="hljs-number">14</span>, <span class="hljs-number">14</span>)<br>        <span class="hljs-attribute">x</span> = F.relu(self.conv<span class="hljs-number">2</span>(x))    # output(<span class="hljs-number">32</span>, <span class="hljs-number">10</span>, <span class="hljs-number">10</span>)<br>        <span class="hljs-attribute">x</span> = self.pool<span class="hljs-number">2</span>(x)            # output(<span class="hljs-number">32</span>, <span class="hljs-number">5</span>, <span class="hljs-number">5</span>)<br>        <span class="hljs-attribute">x</span> = x.view(-<span class="hljs-number">1</span>, <span class="hljs-number">32</span>*<span class="hljs-number">5</span>*<span class="hljs-number">5</span>)       # output(<span class="hljs-number">32</span>*<span class="hljs-number">5</span>*<span class="hljs-number">5</span>)<br>        <span class="hljs-attribute">x</span> = F.relu(self.fc<span class="hljs-number">1</span>(x))      # output(<span class="hljs-number">120</span>)<br>        <span class="hljs-attribute">x</span> = F.relu(self.fc<span class="hljs-number">2</span>(x))      # output(<span class="hljs-number">84</span>)<br>        <span class="hljs-attribute">x</span> = self.fc<span class="hljs-number">3</span>(x)              # output(<span class="hljs-number">10</span>)<br>        <span class="hljs-attribute">return</span> x<br></code></pre></td></tr></table></figure><h3 id="引入数据"><a href="#引入数据" class="headerlink" title="引入数据"></a>引入数据</h3><h4 id="数据集引入"><a href="#数据集引入" class="headerlink" title="数据集引入"></a>数据集引入</h4><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs routeros">train_set = torchvision.datasets.CIFAR10(<span class="hljs-attribute">root</span>=<span class="hljs-string">&#x27;./data&#x27;</span>, <span class="hljs-attribute">train</span>=<span class="hljs-literal">True</span>, <span class="hljs-attribute">download</span>=<span class="hljs-literal">True</span>, <span class="hljs-attribute">transform</span>=transform)<br></code></pre></td></tr></table></figure><ul><li>param[1] [in] : 待引入的数据集的路径</li><li>param[2] [in] : 引入的是数据集的训练集还是测试集</li><li>param[3] [in] : 是否需要先下载</li><li>param[4] [in] : 引入前需要对数据继续哪些变换</li><li>return : 一个troch定义的class，可看做一个vector；vector元素是tuple，tuple元素是tensor，每个tensor对应一个张量化后的图片<h4 id="数据加载"><a href="#数据加载" class="headerlink" title="数据加载"></a>数据加载</h4><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs routeros">train_loader = torch.utils.data.DataLoader(train_set, <span class="hljs-attribute">batch_size</span>=36, <span class="hljs-attribute">shuffle</span>=<span class="hljs-literal">True</span>, <span class="hljs-attribute">num_workers</span>=0)<br><br>train_data_iter = iter(train_loader)<br>img, label = train_data_iter.next()<br><br><span class="hljs-keyword">for</span> <span class="hljs-keyword">step</span>, data <span class="hljs-keyword">in</span> enumerate(train_loader, <span class="hljs-attribute">start</span>=0)<br>    img, label = data<br>    pass <span class="hljs-built_in">..</span>.<br></code></pre></td></tr></table></figure></li><li>param[1] [in] : 待导入的数据集</li><li>param[2] [in] : batchsize</li><li>param[3] [in] : 是否打乱原序列</li><li>param[4] [in] : 启用几个线程做导入任务</li><li>return : 用于<ol><li>被enumerate返回(int, [tensor,tensor]),第一个tensor代表inputs，维度为[batch_size, c, h, w], 第二个为labels，维度为[batch_size]</li><li>被iter返回一个iterator对象，iter.next()返回[tensor, tensor]含义同上<h4 id="dataset-dataset-loader-dataset-loader-iter的区别"><a href="#dataset-dataset-loader-dataset-loader-iter的区别" class="headerlink" title="dataset dataset_loader dataset_loader_iter的区别"></a><code>dataset</code> <code>dataset_loader</code> <code>dataset_loader_iter</code>的区别</h4></li></ol></li><li><code>train_set</code>不是Iterator，也不是Iterabel;</li><li><code>train_loader</code>不是Iterator，但是Iterable;</li><li>Iterable意味着可用于for循环被迭代, Iterator则是算法，不断用next产生需要的数据，Iterator必然Iterable</li></ul>]]></content>
+    
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>CNN的数学原理</title>
     <link href="/2021/07/15/CNN%E7%9A%84%E6%95%B0%E5%AD%A6%E5%8E%9F%E7%90%86/"/>
     <url>/2021/07/15/CNN%E7%9A%84%E6%95%B0%E5%AD%A6%E5%8E%9F%E7%90%86/</url>
