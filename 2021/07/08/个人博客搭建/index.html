@@ -185,7 +185,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      486 字
+      642 字
     </span>
   
 
@@ -195,7 +195,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      6
+      7
        分钟
     </span>
   
@@ -280,14 +280,18 @@
 <li>修改本地_config.yml的内容，以应用主题</li>
 </ol>
 <figure class="highlight avrasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs avrasm"><span class="hljs-symbol">theme:</span> fluid  <span class="hljs-meta"># 指定主题</span><br><span class="hljs-symbol">language:</span> <span class="hljs-built_in">zh</span>-CN  <span class="hljs-meta"># 指定语言，会影响主题显示的语言，按需修改</span><br></code></pre></td></tr></table></figure>
-<ol>
-<li>此时新建文章后便会自动生成fluid的文章，包括自动生成目录等</li>
-</ol>
 </li>
-<li><strong>添加评论插件</strong></li>
-<li><strong>添加看板娘</strong></li>
 </ul>
-
+<p>此时新建文章后便会自动生成fluid的文章，包括自动生成目录等</p>
+<h2 id="评论插件"><a href="#评论插件" class="headerlink" title="评论插件"></a>评论插件</h2><ol>
+<li>选型，综合测评，twikoo最好</li>
+<li>注册腾讯云<a target="_blank" rel="noopener" href="https://blog.zhheo.com/p/2e6bbbd0.html">参考这里</a>，建立云开发环境，建立云函数，添加域名，下载秘钥</li>
+<li>将云开发环境的ID写入到fluid的配置yml中</li>
+<li>根据twikoo版本修改，fluid配置yml中的CND地址</li>
+<li>此时部署后已经可以看到插件，此时点击齿轮再将秘钥内容粘贴进去即可设置管理员密码</li>
+<li>注册server酱，注册企业微信，按照server酱官网教程获得SENDKEY，将SENDKEY粘贴到评论插件的管理面板中，有新评论即可通过企业微信通知</li>
+</ol>
+<h2 id="看板娘"><a href="#看板娘" class="headerlink" title="看板娘"></a>看板娘</h2><h2 id="流量统计插件"><a href="#流量统计插件" class="headerlink" title="流量统计插件"></a>流量统计插件</h2>
             </div>
             <hr>
             <div>
@@ -302,6 +306,17 @@
                     
                   </div>
                 
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/hexo/">hexo</a>
+                    
+                      <a class="hover-with-bg" href="/tags/fluid/">fluid</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E7%9C%8B%E6%9D%BF%E5%A8%98/">看板娘</a>
+                    
+                  </div>
                 
               </div>
               
