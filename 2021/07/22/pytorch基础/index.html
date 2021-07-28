@@ -56,7 +56,7 @@
 
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
-    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}},"search_path":"/local-search.xml"};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"ApWFLRBvVptYicRhN7DQqrOa-gzGzoHsz","app_key":"ihFV8rR5s2zuqoKPXqW9sydt","server_url":"https://apwflrbv.lc-cn-n1-shared.com"}},"search_path":"/local-search.xml"};
   </script>
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
@@ -185,7 +185,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      464 字
+      414 字
     </span>
   
 
@@ -195,7 +195,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      7
+      6
        分钟
     </span>
   
@@ -249,11 +249,6 @@
 </ol>
 </li>
 </ul>
-<h4 id="dataset-dataset-loader-dataset-loader-iter的区别"><a href="#dataset-dataset-loader-dataset-loader-iter的区别" class="headerlink" title="dataset dataset_loader dataset_loader_iter的区别"></a><code>dataset</code> <code>dataset_loader</code> <code>dataset_loader_iter</code>的区别</h4><ul>
-<li><code>train_set</code>不是Iterator，也不是Iterabel;</li>
-<li><code>train_loader</code>不是Iterator，但是Iterable;</li>
-<li>Iterable意味着可用于for循环被迭代, Iterator则是算法，不断用next产生需要的数据，Iterator必然Iterable</li>
-</ul>
 
             </div>
             <hr>
@@ -292,9 +287,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2021/07/22/pytorch%E7%AC%94%E8%AE%B0/">
+                      <a href="/2021/07/26/nvidia-smi%E7%AA%81%E7%84%B6%E8%B7%AA%E4%BA%86%EF%BC%81/">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">pytorch笔记</span>
+                        <span class="hidden-mobile">nvidia-smi突然跪了！</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -302,8 +297,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2021/07/15/CNN%E7%9A%84%E6%95%B0%E5%AD%A6%E5%8E%9F%E7%90%86/">
-                        <span class="hidden-mobile">CNN的数学原理</span>
+                      <a href="/2021/07/22/pytorch%E7%AC%94%E8%AE%B0/">
+                        <span class="hidden-mobile">pytorch笔记</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -399,6 +394,31 @@
      <small><span>——————————我是有底线的——————————</span></small> 
   </div>
   
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- LeanCloud 统计PV -->
+        <span id="leancloud-site-pv-container" style="display: none">
+            总访问量 
+            <span id="leancloud-site-pv"></span>
+             次
+          </span>
+      
+      
+        <!-- LeanCloud 统计UV -->
+        <span id="leancloud-site-uv-container" style="display: none">
+            总访客数 
+            <span id="leancloud-site-uv"></span>
+             人
+          </span>
+      
+
+    
+  </div>
+
 
   
 
@@ -458,6 +478,8 @@
 
 
 
+
+  <script defer src="/js/leancloud.js" ></script>
 
 
 
