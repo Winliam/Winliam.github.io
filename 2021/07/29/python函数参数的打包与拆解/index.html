@@ -18,7 +18,7 @@
   <meta name="author" content="William Guo">
   <meta name="keywords" content="">
   
-  <title>nvidia-smi突然跪了！ by 电竞大师小明</title>
+  <title>python函数参数的打包与拆解 by 电竞大师小明</title>
 
   <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
 
@@ -163,7 +163,7 @@
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.7)">
           <div class="page-header text-center fade-in-up">
-            <span class="h2" id="subtitle" title="nvidia-smi突然跪了！">
+            <span class="h2" id="subtitle" title="python函数参数的打包与拆解">
               
             </span>
 
@@ -173,8 +173,8 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2021-07-26 17:51" pubdate>
-        2021年7月26日 下午
+      <time datetime="2021-07-29 18:14" pubdate>
+        2021年7月29日 晚上
       </time>
     </span>
   
@@ -185,7 +185,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      321 字
+      432 字
     </span>
   
 
@@ -195,7 +195,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      4
+      6
        分钟
     </span>
   
@@ -225,26 +225,22 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">nvidia-smi突然跪了！</h1>
+            <h1 style="display: none">python函数参数的打包与拆解</h1>
             
             <div class="markdown-body">
-              <h2 id="解决过程"><a href="#解决过程" class="headerlink" title="解决过程"></a>解决过程</h2><p>看着代码唱着歌，CUDA就突然啥啥啥初始化失败了。</p>
-<p>nvidia-smi一看，又是一个新报错Failed to initialize NVML: Driver/library version mismatch，闹心。</p>
-<p>整半天，大概意思是作为内核模块的nvidia驱动程序版本和libnvidia-compute-460这个库的版本不一致。</p>
-<p>两者一般都应该是安装驱动的时候指定的版本（for me is 460.84），但是后者竟然通过ubuntu的后台更新程序自动更新了（460.91），所以造成了这个问题。</p>
-<p>最后，更新了驱动程序，关闭了自动更新，reboot，告一段落。</p>
-<h2 id="用到的命令："><a href="#用到的命令：" class="headerlink" title="用到的命令："></a>用到的命令：</h2><blockquote>
-<p>lsmod | grep nvidia*<br>显示和nvidia有关的内核模块有哪些</p>
-<p>modinfo nvidiaxxx | grep version<br>显示这些内核模块的版本</p>
-<p>dpkg —list | grep nvidia<br>显示libnvidia-compute这个库的版本</p>
-<p>dmesg | tail -4<br>nvidia-smi的报错详情，可以看到版本差异<br>dmesg | grep nvidia<br>nvidia-smi的执行过程详情</p>
-<p>cat /var/log/apt/history.log | grep -a -C 10 nvidia<br>libnvidia-compute的更新记录，可以看到是unattended-upgrade造成的更新</p>
-<p>cat /etc/apt/apt.conf.d/20auto-upgrades<br>自动更新的配置文件，修改即可关闭自动更新<a target="_blank" rel="noopener" href="https://unix.stackexchange.com/questions/342663/how-is-unattended-upgrades-started-and-how-can-i-modify-its-schedule">detail</a></p>
-<p>sudo apt install nvidia-driver-460<br>更新驱动程序</p>
-</blockquote>
-<h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><ol>
-<li><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/62250491/nvml-driver-library-mismatch-after-libnvidia-compute-update">https://stackoverflow.com/questions/62250491/nvml-driver-library-mismatch-after-libnvidia-compute-update</a></li>
+              <p><strong>标志</strong>：单/双星号出现在入参或形参之前<br><strong>原则</strong>：</p>
+<ol>
+<li>入参前加星号代表拆解，形参前加星号代表打包</li>
+<li>list/tuple只有一种拆解方式，dictionary有两种</li>
 </ol>
+<h2 id="打包情形1：单星号出现在形参前"><a href="#打包情形1：单星号出现在形参前" class="headerlink" title="打包情形1：单星号出现在形参前"></a>打包情形1：单星号出现在形参前</h2><figure class="highlight elm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs elm"><span class="hljs-title">def</span> pack(a, *b):<br>        print <span class="hljs-keyword">type</span>(a), a<br>        print <span class="hljs-keyword">type</span>(b), b<br>	<br><span class="hljs-title">pack</span>(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>)<br><br>&gt;&gt; &lt;<span class="hljs-keyword">type</span> &#x27;int&#x27;&gt; 1<br>&gt;&gt; &lt;<span class="hljs-keyword">type</span> &#x27;tuple&#x27;&gt; (2, 3, 4, 5)<br></code></pre></td></tr></table></figure>
+<p>单星号打包，按照匹配顺序认领多个非关键字入参，打包称一个tuple。</p>
+<h2 id="打包情形2：双星号出现在形参前"><a href="#打包情形2：双星号出现在形参前" class="headerlink" title="打包情形2：双星号出现在形参前"></a>打包情形2：双星号出现在形参前</h2><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs routeros">def pack(a, *<span class="hljs-number">*b</span>):<br>        <span class="hljs-builtin-name">print</span> type(a), a<br>        <span class="hljs-builtin-name">print</span> type(b), b<br> <br>pack(1, <span class="hljs-attribute">a1</span>=2, <span class="hljs-attribute">a2</span>=3)<br><br>&gt;&gt; &lt;type <span class="hljs-string">&#x27;int&#x27;</span>&gt; 1<br>&gt;&gt; &lt;type <span class="hljs-string">&#x27;dict&#x27;</span>&gt; &#123;<span class="hljs-string">&#x27;a1&#x27;</span>: 2, <span class="hljs-string">&#x27;a2&#x27;</span>: 3&#125;<br></code></pre></td></tr></table></figure>
+<p>双星号打包，按照匹配顺序认领多个关键字入参，打包成一个dictionary</p>
+<h2 id="拆解情形1：单星号出现在入参前"><a href="#拆解情形1：单星号出现在入参前" class="headerlink" title="拆解情形1：单星号出现在入参前"></a>拆解情形1：单星号出现在入参前</h2><figure class="highlight elm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs elm"><span class="hljs-title">def</span> pack(a, b, *c):<br>        print <span class="hljs-keyword">type</span>(a), a<br>        print <span class="hljs-keyword">type</span>(b), b<br>        print <span class="hljs-keyword">type</span>(c), c<br> <br><span class="hljs-title">score</span> = [<span class="hljs-number">1.0</span>, <span class="hljs-number">2.0</span>, <span class="hljs-number">3.0</span>, <span class="hljs-number">4.0</span>]<br><span class="hljs-title">pack</span>(*score)<br><br>&gt;&gt; &lt;<span class="hljs-keyword">type</span> &#x27;float&#x27;&gt; 1.0<br>&gt;&gt; &lt;<span class="hljs-keyword">type</span> &#x27;float&#x27;&gt; 2.0<br>&gt;&gt; &lt;<span class="hljs-keyword">type</span> &#x27;tuple&#x27;&gt; (3.0, 4.0)<br></code></pre></td></tr></table></figure>
+<p>单星号拆解，将list/tuple/dictionary的内容当做独立非关键字的入参列表，其中dictionary只保留key</p>
+<h2 id="拆解情形2：双星号出现子入参前"><a href="#拆解情形2：双星号出现子入参前" class="headerlink" title="拆解情形2：双星号出现子入参前"></a>拆解情形2：双星号出现子入参前</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">pack</span>(<span class="hljs-params">*a, **b</span>):</span><br>        <span class="hljs-built_in">print</span> <span class="hljs-built_in">type</span>(a), a<br>        <span class="hljs-built_in">print</span> <span class="hljs-built_in">type</span>(b), b<br> <br>age = [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>]<br>student = &#123;<span class="hljs-string">&#x27;score&#x27;</span> : <span class="hljs-number">1.0</span>, <span class="hljs-string">&#x27;id&#x27;</span> : <span class="hljs-number">2</span>, <span class="hljs-string">&#x27;name&#x27;</span> : <span class="hljs-string">&#x27;xiaoxiao&#x27;</span>&#125;<br>pack(*age, **student)<br><br>&gt;&gt; &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;tuple&#x27;</span>&gt; (<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>)<br>&gt;&gt; &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;dict&#x27;</span>&gt; &#123;<span class="hljs-string">&#x27;score&#x27;</span>: <span class="hljs-number">1.0</span>, <span class="hljs-string">&#x27;id&#x27;</span>: <span class="hljs-number">2</span>, <span class="hljs-string">&#x27;name&#x27;</span>: <span class="hljs-string">&#x27;xiaoxiao&#x27;</span>&#125;<br></code></pre></td></tr></table></figure>
+<p>双星号拆解，只针对dictionary，将其内容拆解为关键字入参列表。</p>
 
             </div>
             <hr>
@@ -254,9 +250,9 @@
                   <div class="post-meta mr-3">
                     <i class="iconfont icon-category"></i>
                     
-                      <a class="hover-with-bg" href="/categories/%E7%94%9F%E6%B4%BB%E8%AE%B0%E5%BD%95/">生活记录</a>
+                      <a class="hover-with-bg" href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/">工作技能</a>
                     
-                      <a class="hover-with-bg" href="/categories/%E7%94%9F%E6%B4%BB%E8%AE%B0%E5%BD%95/%E7%94%B5%E8%84%91%E8%AE%BE%E7%BD%AE/">电脑设置</a>
+                      <a class="hover-with-bg" href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/Python%E7%AC%94%E8%AE%B0/">Python笔记</a>
                     
                   </div>
                 
@@ -264,9 +260,7 @@
                   <div class="post-meta">
                     <i class="iconfont icon-tags"></i>
                     
-                      <a class="hover-with-bg" href="/tags/Nvidia/">Nvidia</a>
-                    
-                      <a class="hover-with-bg" href="/tags/%E9%A9%B1%E5%8A%A8%E5%A4%B1%E6%95%88/">驱动失效</a>
+                      <a class="hover-with-bg" href="/tags/Python/">Python</a>
                     
                   </div>
                 
@@ -283,9 +277,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2021/07/29/python%E5%87%BD%E6%95%B0%E5%8F%82%E6%95%B0%E7%9A%84%E6%89%93%E5%8C%85%E4%B8%8E%E6%8B%86%E8%A7%A3/">
+                      <a href="/2021/07/29/python%E5%88%97%E8%A1%A8%E7%9A%84%E5%88%87%E7%89%87/">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">python函数参数的打包与拆解</span>
+                        <span class="hidden-mobile">python列表的切片</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -293,8 +287,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2021/07/22/pytorch%E5%9F%BA%E7%A1%80/">
-                        <span class="hidden-mobile">pytorch模型搭建</span>
+                      <a href="/2021/07/26/nvidia-smi%E7%AA%81%E7%84%B6%E8%B7%AA%E4%BA%86%EF%BC%81/">
+                        <span class="hidden-mobile">nvidia-smi突然跪了！</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
