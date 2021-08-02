@@ -4,6 +4,125 @@
   
   
   <entry>
+    <title>VGGnet</title>
+    <link href="/2021/08/01/VGGnet/"/>
+    <url>/2021/08/01/VGGnet/</url>
+    
+    <content type="html"><![CDATA[<h2 id="背景简介"><a href="#背景简介" class="headerlink" title="背景简介"></a>背景简介</h2><p>牛津VGG团队2014年提出，ImageNet分类任务第二名，定位任务第一名。结构简单，配置丰富，被广泛用作backbone。</p><h2 id="网络结构"><a href="#网络结构" class="headerlink" title="网络结构"></a>网络结构</h2><p>原作有5种配置，分别为11层，13层，16层-1，16层-3，19层。统计层数时不统计池化层和softmax，只统计有weight的网络层。</p><div align=center><img title="" src="/img/net/vgg.png" width="80%" height="80%" align=center></div><h2 id="网络特点"><a href="#网络特点" class="headerlink" title="网络特点"></a>网络特点</h2><ul><li>所有的卷积核尺寸一致，均采用3x3。</li><li><p>引入<strong>感受野（receptive field）</strong>的概念，利用小卷积核的堆叠代替大卷积核，从而减少了参数量。所谓感受野，简单说就是对于某一层的输出的矩阵中的一个元素而言，它对应直接输入层中的那一片区域，就叫做它在那一层的感受野，然后依次向前递归。<br><div align=center><img title="" src="/img/net/rf.png" width="60%" height="60%" align=center></div><br>VGG网络对于这个概念，使用了这么一个推论：<strong>相同的感受野得到的特征表达的含义应该是同质的。</strong>因此，在同一个感受野上进行一层大卷积核的卷积操作，和进行多层小卷积核的卷积操作，最终得到的特征应该是同质的。具体操作是，用两层3x3的卷积来表达一层5x5的卷积效果，用三层3x3的卷积来表达一层7x7的卷积效果。由此引入一个计算过程，即如何计算某一层L在其之前某层N上的感受野尺寸。计算公式如下：</p><blockquote><script type="math/tex; mode=display">RF_n = (RF_{n+1} - 1) * s + f</script></blockquote><p>该公式其中就是卷积尺寸计算公式的移项，可以理解为已知卷积后的尺寸为1x1，求卷积前的尺寸。并且，不考虑padding，为什么呢？因为考虑padding考虑的是全局尺寸，而感受野讨论的是局部尺寸。</p></li><li><p>参数量减少的原理</p><blockquote><p>$3<em>3</em>3 = 27$<br>$7*7 = 49$</p></blockquote></li></ul>]]></content>
+    
+    
+    <categories>
+      
+      <category>工作技能</category>
+      
+      <category>神经网络</category>
+      
+      <category>经典网络</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>深度学习</tag>
+      
+      <tag>CNN</tag>
+      
+      <tag>卷积神经网络</tag>
+      
+      <tag>神经网络</tag>
+      
+      <tag>经典网络</tag>
+      
+      <tag>VGGnet</tag>
+      
+      <tag>感受野</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>预测结果评价的量化指标</title>
+    <link href="/2021/08/01/%E9%A2%84%E6%B5%8B%E7%BB%93%E6%9E%9C%E8%AF%84%E4%BB%B7%E7%9A%84%E9%87%8F%E5%8C%96%E6%8C%87%E6%A0%87/"/>
+    <url>/2021/08/01/%E9%A2%84%E6%B5%8B%E7%BB%93%E6%9E%9C%E8%AF%84%E4%BB%B7%E7%9A%84%E9%87%8F%E5%8C%96%E6%8C%87%E6%A0%87/</url>
+    
+    <content type="html"><![CDATA[<h3 id="Positive-Negative"><a href="#Positive-Negative" class="headerlink" title="Positive/Negative"></a>Positive/Negative</h3><p>样本空间的原始分类;</p><h3 id="True-False"><a href="#True-False" class="headerlink" title="True/False"></a>True/False</h3><p>预测结果与样本原始属性的偏差情况，即P-&gt;P/N-&gt;N为T，P-&gt;N/N-&gt;P为F;因此，T和F需要再细分为：</p><ul><li>TP：P-&gt;P(正类被预测为正类，真正类)</li><li>TN：N-&gt;N(负类被预测为负类，真负类)</li><li>FP：N-&gt;P(负类被预测为正类，假正类)</li><li>FN：P-&gt;N(正类被预测为负类，假负类）</li></ul><h3 id="变量命名-personal"><a href="#变量命名-personal" class="headerlink" title="变量命名(personal)"></a>变量命名(personal)</h3><p>若以P为样本中正类数量，N为负类数量，M为样本总数，p为预测结果中的正类数量，n为负类数量，T为正确预测数量，F为错误预测数量，综上有：</p><ul><li>M = P+N = p+n = T+F（不解释）</li><li>T = TP+TN（不解释）</li><li>F = FP+FN（不解释） </li><li>P = TP+FN（样本中的正类数量=真正类数量+假负类数量）</li><li>N = TN+FP（样本中的负类数量=真负类数量+假正类数量）</li><li>p = TP+FP（预测中的正类数量=真正类数量+假正类数量）</li><li>n = TN+FN（预测中的负类数量=真负类数量+假负类数量）</li></ul><h3 id="基本指标"><a href="#基本指标" class="headerlink" title="基本指标"></a>基本指标</h3><ul><li><strong>accuracy</strong><br>T/M，模型做正确预测的能力</li><li><strong>recall/hit rate/TruePositiveRate/sensitivity</strong><br>TP/P，原始样本中的正类有多少被正确预测出来</li><li><strong>specificity/TrueNegativeRate</strong><br>TN/N，原始样本中的负类有多少被正确预测出来</li><li><strong>fall-out/FalsePositiveRate</strong><br>FP/N，原始样本中的负类有多少被错误的预测成了正类</li><li><strong>precision</strong><br>TP/p，找到的正类中有多少是真正的正类</li><li><strong>F1 score</strong><br>precision和recall的调和平均数</li></ul><h3 id="ROC曲线"><a href="#ROC曲线" class="headerlink" title="ROC曲线"></a><strong>ROC曲线</strong></h3><ul><li>横轴为FPR，样本中负类多少被错误预测成了正类</li><li>纵轴为TPR，样本中正类多少被正确预测成了正类（也就是recalll）</li><li>0-1之间选择不同的分类阈值，从而得到同一分类器的不同subversion，因此ROC曲线上一个点(x,y)的含义为：对于某个特定的分类阈值，有y%的正类被成功预测成了正类，但代价是x%的负类也被预测成了正类。</li><li>我们肯定希望x越小越好，y越大越好（所有的飞机都被找到，大雁还不被当成飞机）</li><li><strong>AUC值</strong>，ROC曲线对x轴的积分，对于同样的x值，y值越大，面积越大，越符合我们的期望，也就是分类效果越好。</li></ul><h3 id="P-R曲线"><a href="#P-R曲线" class="headerlink" title="P-R曲线"></a><strong>P-R曲线</strong></h3><ul><li>横轴为TPR/recall（真正类占全体样本正类的比例）</li><li>纵轴为precision（真正类占全体预测正类的比例）</li><li>0-1之间选择不同的分类阈值，从而得到同一分类器的不同subversion，因此P-R曲线上一个点(x,y)的含义为：对于某个特定的分类阈值，有x%的正类被成功预测成了正类，并且这些真正类占正预测的比例为y%。</li><li>我们希望x和y都越大越好，因为这意味着所有的飞机都被找到的同时，大雁还不被当成飞机（这特么的跟ROC曲线含义一样啊）</li></ul><h3 id="ROC曲线和PR曲线对比"><a href="#ROC曲线和PR曲线对比" class="headerlink" title="ROC曲线和PR曲线对比"></a><strong>ROC曲线和PR曲线对比</strong></h3><ol><li>选定一个分类阈值，那么此时的recall是相同的，那么对于达到这个recall效果:<br>ROC曲线中衡量的是FPR（FP/N），也就是样本中的这么多大雁有多少被错当成了飞机<br>PR曲线中衡量的是precision，也就是预测中的这么多飞机有多少真的是飞机（或者说有多少其实是大雁）</li><li>如果负样本增加：<ul><li>预测结果中，由于分类模型没有变，所以真负类数量和假正类数量必然会同时增加，因此FPR总体变化不会很大</li><li>预测结果中，真正类数量不会变化，但是假正类数量必然增加，precision总体会变小</li></ul></li><li>如果正样本增加：<ul><li>真负类数量不会发生变化，假正类数量也不会发生变化，因此FPR不变</li><li>假正类数量不变，真正类数量必然增加，precision总体会变大</li><li>综上所述，我们说，样本的分布情况会影响PR曲线形状，但（基本）不会影响ROC曲线形状；也因此，正负样本分布极不均匀时，优先选择PR曲线评估分类模型的性能（ROC曲线特喵的不受样本分布影响啊）</li></ul></li></ol><h3 id="mAP-待补充"><a href="#mAP-待补充" class="headerlink" title="mAP(待补充)"></a>mAP(待补充)</h3>]]></content>
+    
+    
+    <categories>
+      
+      <category>工作技能</category>
+      
+      <category>神经网络</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>ROC曲线</tag>
+      
+      <tag>PR曲线</tag>
+      
+      <tag>mAP</tag>
+      
+      <tag>mmAP</tag>
+      
+      <tag>recall</tag>
+      
+      <tag>precision</tag>
+      
+      <tag>AUC</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>AlexNet</title>
+    <link href="/2021/07/31/AlexNet/"/>
+    <url>/2021/07/31/AlexNet/</url>
+    
+    <content type="html"><![CDATA[<h2 id="背景简介"><a href="#背景简介" class="headerlink" title="背景简介"></a>背景简介</h2><p>Hinton学生Alex之作，2012年的ISLVRC冠军，深度学习方法甩开传统图像算法的开端，GPU训练的开端。</p><h2 id="网络结构"><a href="#网络结构" class="headerlink" title="网络结构"></a>网络结构</h2><div align=center><img title="" src="/img/net/AlexNet_model.pth.png" width="100%" height="100%" align=center></div><ol><li><p><strong>原始输入</strong>：尺寸为[224, 224, 3]的三通道RGB彩色图像</p></li><li><p><strong>特征提取层</strong>：上图中的第一行，(conv, relu, max_pool)经典三元结构x2 + (conv, relu)经典二元结构x3 + max_pool</p></li><li><p><strong>分类层</strong>：将特征提取层的结果flatten之后，接上2个FC层和1个softmax层，其中这两个FC层之前都用了dropout机制。</p></li></ol><h2 id="网络特点"><a href="#网络特点" class="headerlink" title="网络特点"></a>网络特点</h2><ul><li>首用RELU代替以往的sigmoid和tanh(后面补充上各种激活函数的详情文章链接)</li><li>首用LRN局部相应归一化（有时间这里展开讲一下，目前看不是很重要。。）</li><li>首用DROPOUT机制进行正则，具体的实现原理如下：<figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs livecodeserver">d = np.<span class="hljs-built_in">random</span>.rand( <span class="hljs-keyword">a</span>.shape[<span class="hljs-number">1</span>], <span class="hljs-keyword">a</span>.shape[<span class="hljs-number">1</span>] ) &lt; keep_prob<br><span class="hljs-keyword">a</span> = <span class="hljs-keyword">a</span> * d / keep_prob<br></code></pre></td></tr></table></figure><ol><li>对于一个需要进行dropout的网络层，在获得这一层的激活值a之后，输入到下一层网络之前，用一个随机生成的dropout mask矩阵和a进行逐元素乘法。当然，两者形状一致。</li><li>dropout mask矩阵一般是用rand函数产生的一个和a同尺寸的矩阵，每个元素的值为0-1之间的随机数。若某个元素小于keep_prob则得到1，大于则得到0。这解释了keep_prob的名称的由来，有比例为keep_prob的元素未被置0。</li><li>最后在将a输入到下一层之前，还要恢复a的数学期望，即代码中除以keep_prob的操作。这样就只需要在train过程考虑dropout，而在test时直接关闭dropout即可(对应pytorch中模型eval和train模式的设定)</li></ol></li></ul><h2 id="其他内容"><a href="#其他内容" class="headerlink" title="其他内容"></a>其他内容</h2><p>网络结构图中为了减少参数量，加快训练过程，所有网络层的尺寸都设为了原作的一半。这不是重点。</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>工作技能</category>
+      
+      <category>神经网络</category>
+      
+      <category>经典网络</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>深度学习</tag>
+      
+      <tag>CNN</tag>
+      
+      <tag>卷积神经网络</tag>
+      
+      <tag>神经网络</tag>
+      
+      <tag>经典网络</tag>
+      
+      <tag>AlexNet</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>python列表的切片</title>
     <link href="/2021/07/29/python%E5%88%97%E8%A1%A8%E7%9A%84%E5%88%87%E7%89%87/"/>
     <url>/2021/07/29/python%E5%88%97%E8%A1%A8%E7%9A%84%E5%88%87%E7%89%87/</url>

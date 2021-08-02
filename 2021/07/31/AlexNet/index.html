@@ -18,7 +18,7 @@
   <meta name="author" content="William Guo">
   <meta name="keywords" content="">
   
-  <title>python列表的切片 by 电竞大师小明</title>
+  <title>AlexNet by 电竞大师小明</title>
 
   <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
 
@@ -163,7 +163,7 @@
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.7)">
           <div class="page-header text-center fade-in-up">
-            <span class="h2" id="subtitle" title="python列表的切片">
+            <span class="h2" id="subtitle" title="AlexNet">
               
             </span>
 
@@ -173,8 +173,8 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2021-07-29 19:08" pubdate>
-        2021年7月29日 晚上
+      <time datetime="2021-07-31 22:30" pubdate>
+        2021年7月31日 晚上
       </time>
     </span>
   
@@ -185,7 +185,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      250 字
+      473 字
     </span>
   
 
@@ -195,7 +195,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      3
+      5
        分钟
     </span>
   
@@ -233,55 +233,32 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">python列表的切片</h1>
+            <h1 style="display: none">AlexNet</h1>
             
             <div class="markdown-body">
-              <p>普通索引<code>a[i]</code>返回序列对象的一个元素，切片<code>a[::1]</code>则返回一些元素。</p>
-<h2 id="基本索引"><a href="#基本索引" class="headerlink" title="基本索引"></a>基本索引</h2><div class="table-container">
-<table>
-<thead>
-<tr>
-<th style="text-align:center">a中元素</th>
-<th style="text-align:center">2</th>
-<th style="text-align:center">4</th>
-<th style="text-align:center">6</th>
-<th style="text-align:center">8</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">非负索引</td>
-<td style="text-align:center">0</td>
-<td style="text-align:center">1</td>
-<td style="text-align:center">2</td>
-<td style="text-align:center">3</td>
-</tr>
-<tr>
-<td style="text-align:center">负数索引</td>
-<td style="text-align:center">-4</td>
-<td style="text-align:center">-3</td>
-<td style="text-align:center">-2</td>
-<td style="text-align:center">-1</td>
-</tr>
-</tbody>
-</table>
-</div>
-<blockquote>
-<p>非负索引从0开始，负数索引从-1开始<br>基本索引不可越界</p>
-</blockquote>
-<h2 id="简单切片"><a href="#简单切片" class="headerlink" title="简单切片"></a>简单切片</h2><p><code>a[start:stop]</code>返回基本索引范围在[start,stop)内的元素</p>
+              <h2 id="背景简介"><a href="#背景简介" class="headerlink" title="背景简介"></a>背景简介</h2><p>Hinton学生Alex之作，2012年的ISLVRC冠军，深度学习方法甩开传统图像算法的开端，GPU训练的开端。</p>
+<h2 id="网络结构"><a href="#网络结构" class="headerlink" title="网络结构"></a>网络结构</h2><div align=center><img title="" src="/img/net/AlexNet_model.pth.png" srcset="/img/loading.gif" lazyload width="100%" height="100%" align=center></div>
+
 <ol>
-<li>start/stop越界：此时有多少算多少，不报错</li>
-<li>start &gt; stop：返回空即可</li>
-<li>start/stop缺省：start默认无穷小，stop默认无穷大</li>
+<li><p><strong>原始输入</strong>：尺寸为[224, 224, 3]的三通道RGB彩色图像</p>
+</li>
+<li><p><strong>特征提取层</strong>：上图中的第一行，(conv, relu, max_pool)经典三元结构x2 + (conv, relu)经典二元结构x3 + max_pool</p>
+</li>
+<li><p><strong>分类层</strong>：将特征提取层的结果flatten之后，接上2个FC层和1个softmax层，其中这两个FC层之前都用了dropout机制。</p>
+</li>
 </ol>
-<h2 id="扩展切片"><a href="#扩展切片" class="headerlink" title="扩展切片"></a>扩展切片</h2><h4 id="step为正数，从前往后选取"><a href="#step为正数，从前往后选取" class="headerlink" title="step为正数，从前往后选取"></a>step为正数，从前往后选取</h4><p><code>a[start:stop:step]</code>在[start,stop)区间内，依次选取索引为start, start + step, start + 2step…..直到索引值不在[start, stop)区间中</p>
+<h2 id="网络特点"><a href="#网络特点" class="headerlink" title="网络特点"></a>网络特点</h2><ul>
+<li>首用RELU代替以往的sigmoid和tanh(后面补充上各种激活函数的详情文章链接)</li>
+<li>首用LRN局部相应归一化（有时间这里展开讲一下，目前看不是很重要。。）</li>
+<li>首用DROPOUT机制进行正则，具体的实现原理如下：<figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs livecodeserver">d = np.<span class="hljs-built_in">random</span>.rand( <span class="hljs-keyword">a</span>.shape[<span class="hljs-number">1</span>], <span class="hljs-keyword">a</span>.shape[<span class="hljs-number">1</span>] ) &lt; keep_prob<br><span class="hljs-keyword">a</span> = <span class="hljs-keyword">a</span> * d / keep_prob<br></code></pre></td></tr></table></figure>
 <ol>
-<li>越界：同样有多少算多少，不报错</li>
-<li>start &gt; stop：返回空</li>
-<li>缺省：同上</li>
+<li>对于一个需要进行dropout的网络层，在获得这一层的激活值a之后，输入到下一层网络之前，用一个随机生成的dropout mask矩阵和a进行逐元素乘法。当然，两者形状一致。</li>
+<li>dropout mask矩阵一般是用rand函数产生的一个和a同尺寸的矩阵，每个元素的值为0-1之间的随机数。若某个元素小于keep_prob则得到1，大于则得到0。这解释了keep_prob的名称的由来，有比例为keep_prob的元素未被置0。</li>
+<li>最后在将a输入到下一层之前，还要恢复a的数学期望，即代码中除以keep_prob的操作。这样就只需要在train过程考虑dropout，而在test时直接关闭dropout即可(对应pytorch中模型eval和train模式的设定)</li>
 </ol>
-<h4 id="step为负数，从后向前选取"><a href="#step为负数，从后向前选取" class="headerlink" title="step为负数，从后向前选取"></a>step为负数，从后向前选取</h4><p>此时，start是stop，stop是start，而且还是左开右闭，比如<br><figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">a</span>[<span class="hljs-number">2</span>:<span class="hljs-number">0</span>:-<span class="hljs-number">1</span>] -&gt;<span class="hljs-meta"> [6, 4]</span><br><br><span class="hljs-attribute">a</span>[:<span class="hljs-number">1</span>:-<span class="hljs-number">2</span>] -&gt;<span class="hljs-meta"> [8]</span><br></code></pre></td></tr></table></figure></p>
+</li>
+</ul>
+<h2 id="其他内容"><a href="#其他内容" class="headerlink" title="其他内容"></a>其他内容</h2><p>网络结构图中为了减少参数量，加快训练过程，所有网络层的尺寸都设为了原作的一半。这不是重点。</p>
 
             </div>
             <hr>
@@ -293,7 +270,9 @@
                     
                       <a class="hover-with-bg" href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/">工作技能</a>
                     
-                      <a class="hover-with-bg" href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/python%E7%AC%94%E8%AE%B0/">python笔记</a>
+                      <a class="hover-with-bg" href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">神经网络</a>
+                    
+                      <a class="hover-with-bg" href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/%E7%BB%8F%E5%85%B8%E7%BD%91%E7%BB%9C/">经典网络</a>
                     
                   </div>
                 
@@ -301,11 +280,17 @@
                   <div class="post-meta">
                     <i class="iconfont icon-tags"></i>
                     
-                      <a class="hover-with-bg" href="/tags/python/">python</a>
+                      <a class="hover-with-bg" href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a>
                     
-                      <a class="hover-with-bg" href="/tags/%E5%88%87%E7%89%87/">切片</a>
+                      <a class="hover-with-bg" href="/tags/CNN/">CNN</a>
                     
-                      <a class="hover-with-bg" href="/tags/%E8%8A%B1%E5%BC%8F%E7%B4%A2%E5%BC%95/">花式索引</a>
+                      <a class="hover-with-bg" href="/tags/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">卷积神经网络</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">神经网络</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E7%BB%8F%E5%85%B8%E7%BD%91%E7%BB%9C/">经典网络</a>
+                    
+                      <a class="hover-with-bg" href="/tags/AlexNet/">AlexNet</a>
                     
                   </div>
                 
@@ -322,9 +307,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2021/07/31/AlexNet/">
+                      <a href="/2021/08/01/%E9%A2%84%E6%B5%8B%E7%BB%93%E6%9E%9C%E8%AF%84%E4%BB%B7%E7%9A%84%E9%87%8F%E5%8C%96%E6%8C%87%E6%A0%87/">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">AlexNet</span>
+                        <span class="hidden-mobile">预测结果评价的量化指标</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -332,8 +317,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2021/07/29/python%E5%87%BD%E6%95%B0%E5%8F%82%E6%95%B0%E7%9A%84%E6%89%93%E5%8C%85%E4%B8%8E%E6%8B%86%E8%A7%A3/">
-                        <span class="hidden-mobile">python函数参数的打包与拆解</span>
+                      <a href="/2021/07/29/python%E5%88%97%E8%A1%A8%E7%9A%84%E5%88%87%E7%89%87/">
+                        <span class="hidden-mobile">python列表的切片</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

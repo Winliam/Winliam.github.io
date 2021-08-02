@@ -18,7 +18,7 @@
   <meta name="author" content="William Guo">
   <meta name="keywords" content="">
   
-  <title>python列表的切片 by 电竞大师小明</title>
+  <title>预测结果评价的量化指标 by 电竞大师小明</title>
 
   <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
 
@@ -163,7 +163,7 @@
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.7)">
           <div class="page-header text-center fade-in-up">
-            <span class="h2" id="subtitle" title="python列表的切片">
+            <span class="h2" id="subtitle" title="预测结果评价的量化指标">
               
             </span>
 
@@ -173,8 +173,8 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2021-07-29 19:08" pubdate>
-        2021年7月29日 晚上
+      <time datetime="2021-08-01 10:59" pubdate>
+        2021年8月1日 上午
       </time>
     </span>
   
@@ -185,7 +185,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      250 字
+      1.1k 字
     </span>
   
 
@@ -195,7 +195,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      3
+      12
        分钟
     </span>
   
@@ -233,56 +233,63 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">python列表的切片</h1>
+            <h1 style="display: none">预测结果评价的量化指标</h1>
             
             <div class="markdown-body">
-              <p>普通索引<code>a[i]</code>返回序列对象的一个元素，切片<code>a[::1]</code>则返回一些元素。</p>
-<h2 id="基本索引"><a href="#基本索引" class="headerlink" title="基本索引"></a>基本索引</h2><div class="table-container">
-<table>
-<thead>
-<tr>
-<th style="text-align:center">a中元素</th>
-<th style="text-align:center">2</th>
-<th style="text-align:center">4</th>
-<th style="text-align:center">6</th>
-<th style="text-align:center">8</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">非负索引</td>
-<td style="text-align:center">0</td>
-<td style="text-align:center">1</td>
-<td style="text-align:center">2</td>
-<td style="text-align:center">3</td>
-</tr>
-<tr>
-<td style="text-align:center">负数索引</td>
-<td style="text-align:center">-4</td>
-<td style="text-align:center">-3</td>
-<td style="text-align:center">-2</td>
-<td style="text-align:center">-1</td>
-</tr>
-</tbody>
-</table>
-</div>
-<blockquote>
-<p>非负索引从0开始，负数索引从-1开始<br>基本索引不可越界</p>
-</blockquote>
-<h2 id="简单切片"><a href="#简单切片" class="headerlink" title="简单切片"></a>简单切片</h2><p><code>a[start:stop]</code>返回基本索引范围在[start,stop)内的元素</p>
-<ol>
-<li>start/stop越界：此时有多少算多少，不报错</li>
-<li>start &gt; stop：返回空即可</li>
-<li>start/stop缺省：start默认无穷小，stop默认无穷大</li>
+              <h3 id="Positive-Negative"><a href="#Positive-Negative" class="headerlink" title="Positive/Negative"></a>Positive/Negative</h3><p>样本空间的原始分类;</p>
+<h3 id="True-False"><a href="#True-False" class="headerlink" title="True/False"></a>True/False</h3><p>预测结果与样本原始属性的偏差情况，即P-&gt;P/N-&gt;N为T，P-&gt;N/N-&gt;P为F;因此，T和F需要再细分为：</p>
+<ul>
+<li>TP：P-&gt;P(正类被预测为正类，真正类)</li>
+<li>TN：N-&gt;N(负类被预测为负类，真负类)</li>
+<li>FP：N-&gt;P(负类被预测为正类，假正类)</li>
+<li>FN：P-&gt;N(正类被预测为负类，假负类）</li>
+</ul>
+<h3 id="变量命名-personal"><a href="#变量命名-personal" class="headerlink" title="变量命名(personal)"></a>变量命名(personal)</h3><p>若以P为样本中正类数量，N为负类数量，M为样本总数，p为预测结果中的正类数量，n为负类数量，T为正确预测数量，F为错误预测数量，综上有：</p>
+<ul>
+<li>M = P+N = p+n = T+F（不解释）</li>
+<li>T = TP+TN（不解释）</li>
+<li>F = FP+FN（不解释） </li>
+<li>P = TP+FN（样本中的正类数量=真正类数量+假负类数量）</li>
+<li>N = TN+FP（样本中的负类数量=真负类数量+假正类数量）</li>
+<li>p = TP+FP（预测中的正类数量=真正类数量+假正类数量）</li>
+<li>n = TN+FN（预测中的负类数量=真负类数量+假负类数量）</li>
+</ul>
+<h3 id="基本指标"><a href="#基本指标" class="headerlink" title="基本指标"></a>基本指标</h3><ul>
+<li><strong>accuracy</strong><br>T/M，模型做正确预测的能力</li>
+<li><strong>recall/hit rate/TruePositiveRate/sensitivity</strong><br>TP/P，原始样本中的正类有多少被正确预测出来</li>
+<li><strong>specificity/TrueNegativeRate</strong><br>TN/N，原始样本中的负类有多少被正确预测出来</li>
+<li><strong>fall-out/FalsePositiveRate</strong><br>FP/N，原始样本中的负类有多少被错误的预测成了正类</li>
+<li><strong>precision</strong><br>TP/p，找到的正类中有多少是真正的正类</li>
+<li><strong>F1 score</strong><br>precision和recall的调和平均数</li>
+</ul>
+<h3 id="ROC曲线"><a href="#ROC曲线" class="headerlink" title="ROC曲线"></a><strong>ROC曲线</strong></h3><ul>
+<li>横轴为FPR，样本中负类多少被错误预测成了正类</li>
+<li>纵轴为TPR，样本中正类多少被正确预测成了正类（也就是recalll）</li>
+<li>0-1之间选择不同的分类阈值，从而得到同一分类器的不同subversion，因此ROC曲线上一个点(x,y)的含义为：对于某个特定的分类阈值，有y%的正类被成功预测成了正类，但代价是x%的负类也被预测成了正类。</li>
+<li>我们肯定希望x越小越好，y越大越好（所有的飞机都被找到，大雁还不被当成飞机）</li>
+<li><strong>AUC值</strong>，ROC曲线对x轴的积分，对于同样的x值，y值越大，面积越大，越符合我们的期望，也就是分类效果越好。</li>
+</ul>
+<h3 id="P-R曲线"><a href="#P-R曲线" class="headerlink" title="P-R曲线"></a><strong>P-R曲线</strong></h3><ul>
+<li>横轴为TPR/recall（真正类占全体样本正类的比例）</li>
+<li>纵轴为precision（真正类占全体预测正类的比例）</li>
+<li>0-1之间选择不同的分类阈值，从而得到同一分类器的不同subversion，因此P-R曲线上一个点(x,y)的含义为：对于某个特定的分类阈值，有x%的正类被成功预测成了正类，并且这些真正类占正预测的比例为y%。</li>
+<li>我们希望x和y都越大越好，因为这意味着所有的飞机都被找到的同时，大雁还不被当成飞机（这特么的跟ROC曲线含义一样啊）</li>
+</ul>
+<h3 id="ROC曲线和PR曲线对比"><a href="#ROC曲线和PR曲线对比" class="headerlink" title="ROC曲线和PR曲线对比"></a><strong>ROC曲线和PR曲线对比</strong></h3><ol>
+<li>选定一个分类阈值，那么此时的recall是相同的，那么对于达到这个recall效果:<br>ROC曲线中衡量的是FPR（FP/N），也就是样本中的这么多大雁有多少被错当成了飞机<br>PR曲线中衡量的是precision，也就是预测中的这么多飞机有多少真的是飞机（或者说有多少其实是大雁）</li>
+<li>如果负样本增加：<ul>
+<li>预测结果中，由于分类模型没有变，所以真负类数量和假正类数量必然会同时增加，因此FPR总体变化不会很大</li>
+<li>预测结果中，真正类数量不会变化，但是假正类数量必然增加，precision总体会变小</li>
+</ul>
+</li>
+<li>如果正样本增加：<ul>
+<li>真负类数量不会发生变化，假正类数量也不会发生变化，因此FPR不变</li>
+<li>假正类数量不变，真正类数量必然增加，precision总体会变大</li>
+<li>综上所述，我们说，样本的分布情况会影响PR曲线形状，但（基本）不会影响ROC曲线形状；也因此，正负样本分布极不均匀时，优先选择PR曲线评估分类模型的性能（ROC曲线特喵的不受样本分布影响啊）</li>
+</ul>
+</li>
 </ol>
-<h2 id="扩展切片"><a href="#扩展切片" class="headerlink" title="扩展切片"></a>扩展切片</h2><h4 id="step为正数，从前往后选取"><a href="#step为正数，从前往后选取" class="headerlink" title="step为正数，从前往后选取"></a>step为正数，从前往后选取</h4><p><code>a[start:stop:step]</code>在[start,stop)区间内，依次选取索引为start, start + step, start + 2step…..直到索引值不在[start, stop)区间中</p>
-<ol>
-<li>越界：同样有多少算多少，不报错</li>
-<li>start &gt; stop：返回空</li>
-<li>缺省：同上</li>
-</ol>
-<h4 id="step为负数，从后向前选取"><a href="#step为负数，从后向前选取" class="headerlink" title="step为负数，从后向前选取"></a>step为负数，从后向前选取</h4><p>此时，start是stop，stop是start，而且还是左开右闭，比如<br><figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">a</span>[<span class="hljs-number">2</span>:<span class="hljs-number">0</span>:-<span class="hljs-number">1</span>] -&gt;<span class="hljs-meta"> [6, 4]</span><br><br><span class="hljs-attribute">a</span>[:<span class="hljs-number">1</span>:-<span class="hljs-number">2</span>] -&gt;<span class="hljs-meta"> [8]</span><br></code></pre></td></tr></table></figure></p>
-
+<h3 id="mAP-待补充"><a href="#mAP-待补充" class="headerlink" title="mAP(待补充)"></a>mAP(待补充)</h3>
             </div>
             <hr>
             <div>
@@ -293,7 +300,7 @@
                     
                       <a class="hover-with-bg" href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/">工作技能</a>
                     
-                      <a class="hover-with-bg" href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/python%E7%AC%94%E8%AE%B0/">python笔记</a>
+                      <a class="hover-with-bg" href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">神经网络</a>
                     
                   </div>
                 
@@ -301,11 +308,19 @@
                   <div class="post-meta">
                     <i class="iconfont icon-tags"></i>
                     
-                      <a class="hover-with-bg" href="/tags/python/">python</a>
+                      <a class="hover-with-bg" href="/tags/ROC%E6%9B%B2%E7%BA%BF/">ROC曲线</a>
                     
-                      <a class="hover-with-bg" href="/tags/%E5%88%87%E7%89%87/">切片</a>
+                      <a class="hover-with-bg" href="/tags/PR%E6%9B%B2%E7%BA%BF/">PR曲线</a>
                     
-                      <a class="hover-with-bg" href="/tags/%E8%8A%B1%E5%BC%8F%E7%B4%A2%E5%BC%95/">花式索引</a>
+                      <a class="hover-with-bg" href="/tags/mAP/">mAP</a>
+                    
+                      <a class="hover-with-bg" href="/tags/mmAP/">mmAP</a>
+                    
+                      <a class="hover-with-bg" href="/tags/recall/">recall</a>
+                    
+                      <a class="hover-with-bg" href="/tags/precision/">precision</a>
+                    
+                      <a class="hover-with-bg" href="/tags/AUC/">AUC</a>
                     
                   </div>
                 
@@ -322,9 +337,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2021/07/31/AlexNet/">
+                      <a href="/2021/08/01/VGGnet/">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">AlexNet</span>
+                        <span class="hidden-mobile">VGGnet</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -332,8 +347,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2021/07/29/python%E5%87%BD%E6%95%B0%E5%8F%82%E6%95%B0%E7%9A%84%E6%89%93%E5%8C%85%E4%B8%8E%E6%8B%86%E8%A7%A3/">
-                        <span class="hidden-mobile">python函数参数的打包与拆解</span>
+                      <a href="/2021/07/31/AlexNet/">
+                        <span class="hidden-mobile">AlexNet</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

@@ -182,6 +182,220 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
+        <a href="/2021/08/01/VGGnet/" target="_self">
+          VGGnet
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2021/08/01/VGGnet/" target="_self">
+          
+          
+            
+          
+          背景简介牛津VGG团队2014年提出，ImageNet分类任务第二名，定位任务第一名。结构简单，配置丰富，被广泛用作backbone。
+网络结构原作有5种配置，分别为11层，13层，16层-1，16层-3，19层。统计层数时不统计池化层和softmax，只统计有weight的网络层。
+
+
+网络特点
+所有的卷积核尺寸一致，均采用3x3。
+引入感受野（receptive field）的概念，利用小卷积
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2021-08-01 23:00" pubdate>
+              2021-08-01
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/">工作技能</a>
+            
+              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">神经网络</a>
+            
+              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/%E7%BB%8F%E5%85%B8%E7%BD%91%E7%BB%9C/">经典网络</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a>
+            
+              <a href="/tags/CNN/">CNN</a>
+            
+              <a href="/tags/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">卷积神经网络</a>
+            
+              <a href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">神经网络</a>
+            
+              <a href="/tags/%E7%BB%8F%E5%85%B8%E7%BD%91%E7%BB%9C/">经典网络</a>
+            
+              <a href="/tags/VGGnet/">VGGnet</a>
+            
+              <a href="/tags/%E6%84%9F%E5%8F%97%E9%87%8E/">感受野</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2021/08/01/%E9%A2%84%E6%B5%8B%E7%BB%93%E6%9E%9C%E8%AF%84%E4%BB%B7%E7%9A%84%E9%87%8F%E5%8C%96%E6%8C%87%E6%A0%87/" target="_self">
+          预测结果评价的量化指标
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2021/08/01/%E9%A2%84%E6%B5%8B%E7%BB%93%E6%9E%9C%E8%AF%84%E4%BB%B7%E7%9A%84%E9%87%8F%E5%8C%96%E6%8C%87%E6%A0%87/" target="_self">
+          
+          
+            
+          
+          Positive/Negative样本空间的原始分类;
+True/False预测结果与样本原始属性的偏差情况，即P-&gt;P/N-&gt;N为T，P-&gt;N/N-&gt;P为F;因此，T和F需要再细分为：
+
+TP：P-&gt;P(正类被预测为正类，真正类)
+TN：N-&gt;N(负类被预测为负类，真负类)
+FP：N-&gt;P(负类被预测为正类，假正类)
+FN：P-&gt;N(正类被预测为负
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2021-08-01 10:59" pubdate>
+              2021-08-01
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/">工作技能</a>
+            
+              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">神经网络</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/ROC%E6%9B%B2%E7%BA%BF/">ROC曲线</a>
+            
+              <a href="/tags/PR%E6%9B%B2%E7%BA%BF/">PR曲线</a>
+            
+              <a href="/tags/mAP/">mAP</a>
+            
+              <a href="/tags/mmAP/">mmAP</a>
+            
+              <a href="/tags/recall/">recall</a>
+            
+              <a href="/tags/precision/">precision</a>
+            
+              <a href="/tags/AUC/">AUC</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2021/07/31/AlexNet/" target="_self">
+          AlexNet
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2021/07/31/AlexNet/" target="_self">
+          
+          
+            
+          
+          背景简介Hinton学生Alex之作，2012年的ISLVRC冠军，深度学习方法甩开传统图像算法的开端，GPU训练的开端。
+网络结构
+
+
+原始输入：尺寸为[224, 224, 3]的三通道RGB彩色图像
+
+特征提取层：上图中的第一行，(conv, relu, max_pool)经典三元结构x2 + (conv, relu)经典二元结构x3 + max_pool
+
+分类层：将特征提取层的结果flat
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2021-07-31 22:30" pubdate>
+              2021-07-31
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/">工作技能</a>
+            
+              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">神经网络</a>
+            
+              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/%E7%BB%8F%E5%85%B8%E7%BD%91%E7%BB%9C/">经典网络</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a>
+            
+              <a href="/tags/CNN/">CNN</a>
+            
+              <a href="/tags/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">卷积神经网络</a>
+            
+              <a href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">神经网络</a>
+            
+              <a href="/tags/%E7%BB%8F%E5%85%B8%E7%BD%91%E7%BB%9C/">经典网络</a>
+            
+              <a href="/tags/AlexNet/">AlexNet</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
         <a href="/2021/07/29/python%E5%88%97%E8%A1%A8%E7%9A%84%E5%88%87%E7%89%87/" target="_self">
           python列表的切片
         </a>
@@ -627,193 +841,13 @@ nvidia-smi一看，又是一个新报错Failed to initialize NVML: Driver/librar
     </article>
   </div>
 
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2021/07/09/CSAPP%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E6%80%BB%E7%BB%93/" target="_self">
-          CSAPP并发编程总结
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2021/07/09/CSAPP%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E6%80%BB%E7%BB%93/" target="_self">
-          
-          
-            
-          
-          并发编程基本概念
-并发：多个逻辑控制流的生命周期有重叠，即称为并发现象(concurrency)
-并行：发生在多核/多计算机上的并发现象（在一个时刻上存在多个逻辑控制流），称为并行现象（parallel），是并发现象的真子集；
-
-并发程序的三种构造方式：
-进程：每个逻辑控制流实现为一个进程
-特点：独立的虚拟地址空间
-优点：独立则不易混淆
-缺点：
-独立则难以共享数据
-进程context切换和IPC开
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2021-07-09 14:24" pubdate>
-              2021-07-09
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/">工作技能</a>
-            
-              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/">并发编程</a>
-            
-              <a href="/tags/%E7%BA%BF%E7%A8%8B/">线程</a>
-            
-              <a href="/tags/%E4%BF%A1%E5%8F%B7%E9%87%8F/">信号量</a>
-            
-              <a href="/tags/%E9%94%81/">锁</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2021/07/08/%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/" target="_self">
-          个人博客搭建
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2021/07/08/%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/" target="_self">
-          
-          
-            
-          
-          前言对于强迫症患者，非要自定义域名的话，先提前注册好域名，推荐阿里云，审核快。不然下面的流程会阻塞。。。
-安装node.js
-去官网 https://nodejs.org 查看最新版本号
-根据最新版本号添加源，然后安装
-curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bashsudo apt-get install -y nodej
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2021-07-08 21:04" pubdate>
-              2021-07-08
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/%E7%94%9F%E6%B4%BB%E8%AE%B0%E5%BD%95/">生活记录</a>
-            
-              <a href="/categories/%E7%94%9F%E6%B4%BB%E8%AE%B0%E5%BD%95/%E7%94%B5%E8%84%91%E8%AE%BE%E7%BD%AE/">电脑设置</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/hexo/">hexo</a>
-            
-              <a href="/tags/fluid/">fluid</a>
-            
-              <a href="/tags/%E7%9C%8B%E6%9D%BF%E5%A8%98/">看板娘</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2021/07/08/%E5%A6%82%E4%BD%95%E7%94%A8vim%E5%86%99markdown/" target="_self">
-          如何用vim写markdown
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2021/07/08/%E5%A6%82%E4%BD%95%E7%94%A8vim%E5%86%99markdown/" target="_self">
-          
-          
-            
-          
-          安装neovim
-sudo apt-get install neovimneovim:checkhealth
-
-安装vim插件管理器vim-plug
-sh -c ‘curl -fLo “${XDG_DATA_HOME:-$HOME/.local/share}”/nvim/site/autoload/plug.vim —create-dirshttps://raw.githubusercontent
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2021-07-08 18:25" pubdate>
-              2021-07-08
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/%E7%94%9F%E6%B4%BB%E8%AE%B0%E5%BD%95/">生活记录</a>
-            
-              <a href="/categories/%E7%94%9F%E6%B4%BB%E8%AE%B0%E5%BD%95/%E7%94%B5%E8%84%91%E8%AE%BE%E7%BD%AE/">电脑设置</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/vim/">vim</a>
-            
-              <a href="/tags/markdown/">markdown</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
 
 
+  <nav aria-label="navigation">
+    <span class="pagination" id="pagination">
+      <span class="page-number current">1</span><a class="page-number" href="/page/2/#board">2</a><a class="extend next" rel="next" href="/page/2/#board"><i class="iconfont icon-arrowright"></i></a>
+    </span>
+  </nav>
 
 
 
