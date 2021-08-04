@@ -4,6 +4,47 @@
   
   
   <entry>
+    <title>GoogleNet</title>
+    <link href="/2021/08/03/GoogleNet/"/>
+    <url>/2021/08/03/GoogleNet/</url>
+    
+    <content type="html"><![CDATA[<h2 id="背景简介"><a href="#背景简介" class="headerlink" title="背景简介"></a>背景简介</h2><p>2014年Google团队提出，当年的ImageNet分类任务第一名（第二名是VGG）。其中的Inception结构和辅助分类器的概念很有启发性和创造性。</p><h2 id="网络结构"><a href="#网络结构" class="headerlink" title="网络结构"></a>网络结构</h2><h3 id="整体结构"><a href="#整体结构" class="headerlink" title="整体结构"></a>整体结构</h3><p>构建起整个网络的building blocks有5种：</p><ol><li>常规的卷积层，默认以RELU为激活函数，SAME padding</li><li>常规的池化层，包括最大池化和平均池化</li><li>Iception单元，共计3层9个，具体结构后面解释</li><li>辅助分类器2个，具体结构后面解释</li><li>最终输出的softmax FC层</li></ol><div align=center><img title="" src="/img/net/googlenet.png" width="90%" height="90%" align=center></div><p><br>如上图所示，常规卷积层、池化层、softmax FC层的结构参数已标出。各个Iception单元的参数可参照下表得出。辅助分类器的结构是固定的，在后面会讲。</p><div align=center><img title="" src="/img/net/googlenet_table.png" width="100%" height="100%" align=center></div><h3 id="Inception单元"><a href="#Inception单元" class="headerlink" title="Inception单元"></a>Inception单元</h3><p>理解GoogleNet的网络结构首先要理解Inception结构，整个GoogleNet主要由若干个Inception单元的组合。</p><div align=center><img title="" src="/img/net/inception.png" width="80%" height="80%" align=center></div><p>从上图可以看出，对于一个inception单元而言，input通过4个并联的卷积运算分支产生4路输出。这4个分支的卷积核各不相同，意味着从input提取出不同尺度的特征，这使得训练出来的模型能够同时兼顾一副图像中不同尺度的特征。并且，4路输出的tensor的宽和高是相同的，因此可以将其沿着深度方向堆叠起来，形成整个inception单元的输出。看下图更直观的说明了这个过程：</p><div align=center><img title="" src="/img/net/inception_eg.png" width="80%" height="80%" align=center></div><p>具体来看这4路分支：</p><ul><li>1x1卷积，调整深度，宽和高相对于input不变。</li><li>1x1卷积 + 3x3卷积，其中会造成尺寸缩减的3x3卷积采用SAME padding，同样保持了尺寸。</li><li>1x1卷积 + 5x5卷积，其中会造成尺寸缩减的5x5卷积采用SAME padding，同样保持了尺寸。</li><li>3x3池化 + 1x1卷积，其中池化层做了SAME padding。<strong><em>——先后顺序为什么这么突出？mark</em></strong></li></ul><blockquote><p>另外值得注意的是，在对于一个inception单元而言，4个支路的卷积核数量一般是配置参数，而卷积核的尺寸是固定的。这意味着一个Inception单元的参数应该为上述6个卷积核的个数+本单元的输入的深度。</p></blockquote><h3 id="辅助分类器"><a href="#辅助分类器" class="headerlink" title="辅助分类器"></a>辅助分类器</h3><p>另外一个特殊之处是，GoogleNet在进行模型训练时（预测时没有）在中间层也进行了两次结果输出。</p><h4 id="辅助分类器的结构"><a href="#辅助分类器的结构" class="headerlink" title="辅助分类器的结构"></a>辅助分类器的结构</h4><p>这两个辅助分类器的结构是相同的：</p><div align=center><img title="" src="/img/net/inception_aux.png" width="20%" height="20%" align=center></div><ul><li>首先是一个5x5,s=3的平均池化</li><li>然后接一个1x1卷积层，卷积核数量128</li><li>然后展平、dropout、接第一个FC（激活函数为RELU）</li><li>然后在dropout，接第二个FC(激活函数为softmax)</li></ul><p>第一层FC有1024个神经元，第二层为输出层，神经元数量取决于class_num。另外值得注意的是，两个辅助分类器的输入tensor的形状是相同的，只有深度不同，都是[batch, d, 4, 4]。经过相同的池化层处理后，形状继续保持一致。再经过相同的1x1卷积层处理后，深度也变为一致的。因此可以看出这里的1x1卷积层是为了rectify辅助分类器的输入，使其适配性更强。</p><h4 id="对应的损失函数"><a href="#对应的损失函数" class="headerlink" title="对应的损失函数"></a>对应的损失函数</h4><figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">loss0 = loss<span class="hljs-constructor">_function(<span class="hljs-params">logits</span>, <span class="hljs-params">labels</span>.<span class="hljs-params">to</span>(<span class="hljs-params">device</span>)</span>)<br>loss1 = loss<span class="hljs-constructor">_function(<span class="hljs-params">aux_logits1</span>, <span class="hljs-params">labels</span>.<span class="hljs-params">to</span>(<span class="hljs-params">device</span>)</span>)<br>loss2 = loss<span class="hljs-constructor">_function(<span class="hljs-params">aux_logits2</span>, <span class="hljs-params">labels</span>.<span class="hljs-params">to</span>(<span class="hljs-params">device</span>)</span><br>loss = loss0 + loss1<span class="hljs-operator"> * </span><span class="hljs-number">0.3</span> + loss2<span class="hljs-operator"> * </span><span class="hljs-number">0.3</span><br></code></pre></td></tr></table></figure><p>三个分类器的输出分别计算loss，然后加权之后的和作为整个模型的loss。</p><h2 id="其他内容"><a href="#其他内容" class="headerlink" title="其他内容"></a>其他内容</h2><ul><li>inception结构中的卷积层默认包含一个RELU。</li><li>池化层跟1x1卷积刚好相反，它不改变tensor的深度，只改变tensor的宽和高，因此两者可以组成tensor尺寸manipulation的一对基。</li><li>tensor的堆叠在pytorch中用<code>torch.cat()</code>实现。</li></ul>]]></content>
+    
+    
+    <categories>
+      
+      <category>工作技能</category>
+      
+      <category>神经网络</category>
+      
+      <category>经典网络</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>深度学习</tag>
+      
+      <tag>CNN</tag>
+      
+      <tag>卷积神经网络</tag>
+      
+      <tag>神经网络</tag>
+      
+      <tag>经典网络</tag>
+      
+      <tag>GoogleNet</tag>
+      
+      <tag>Inception结构</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>VGGnet</title>
     <link href="/2021/08/01/VGGnet/"/>
     <url>/2021/08/01/VGGnet/</url>
@@ -243,7 +284,7 @@
     <link href="/2021/07/22/pytorch%E7%AC%94%E8%AE%B0/"/>
     <url>/2021/07/22/pytorch%E7%AC%94%E8%AE%B0/</url>
     
-    <content type="html"><![CDATA[<h2 id="max-sum-等操作中指定dim的含义"><a href="#max-sum-等操作中指定dim的含义" class="headerlink" title="max() sum()等操作中指定dim的含义"></a><code>max() sum()</code>等操作中指定dim的含义</h2><figure class="highlight inform7"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs inform7">a = <span class="hljs-comment">[ <span class="hljs-comment">[ <span class="hljs-comment">[1, 2]</span>, <span class="hljs-comment">[3, 4]</span> ]</span>, <span class="hljs-comment">[ <span class="hljs-comment">[5, 6]</span>, <span class="hljs-comment">[7, 8]</span> ]</span> ]</span><br></code></pre></td></tr></table></figure><ol><li>对于这个[2, 2, 2]的三维矩阵，三维意味着[]有三层，三个2表示每一层[]内有两个元素</li><li>对dim=0求max意味着<ol><li>将<script type="math/tex">a_{000}</script>与<script type="math/tex">a_{100}</script>比较得出最大值作为<script type="math/tex">a_{00}</script></li><li>将<script type="math/tex">a_{010}</script>与<script type="math/tex">a_{110}</script>比较得出最大值作为<script type="math/tex">a_{10}</script>…</li></ol></li><li>对dim=1求max意味着<ol><li>将<script type="math/tex">a_{000}</script>与<script type="math/tex">a_{010}</script>比较得出最大值作为<script type="math/tex">a_{00}</script></li><li>将<script type="math/tex">a_{100}</script>与<script type="math/tex">a_{110}</script>比较得出最大值作为<script type="math/tex">a_{10}</script>…</li></ol></li><li>而$a_{010}$对应于，第一层[]中的第一个元素的，第二个元素的，第一个元素</li></ol><h2 id="plt-imshow-与plt-show-的区别"><a href="#plt-imshow-与plt-show-的区别" class="headerlink" title="plt.imshow()与plt.show()的区别"></a><code>plt.imshow()</code>与<code>plt.show()</code>的区别</h2><p><code>plt.imshow()</code>只是将图片与plt发生关联，但不显示，还可以继续对这张图片进行其他draw操作，最后再用<code>plt.show()</code>显示出来。</p><h2 id="dataset-dataset-loader-dataset-loader-iter的区别"><a href="#dataset-dataset-loader-dataset-loader-iter的区别" class="headerlink" title="dataset dataset_loader dataset_loader_iter的区别"></a><code>dataset</code> <code>dataset_loader</code> <code>dataset_loader_iter</code>的区别</h2><ul><li><code>train_set</code>不是Iterator，也不是Iterabel;</li><li><code>train_loader</code>不是Iterator，但是Iterable;</li><li>Iterable意味着可用于for循环被迭代, Iterator则是算法，不断用next产生需要的数据，Iterator必然Iterable</li></ul>]]></content>
+    <content type="html"><![CDATA[<h2 id="max-sum-等操作中指定dim的含义"><a href="#max-sum-等操作中指定dim的含义" class="headerlink" title="max() sum()等操作中指定dim的含义"></a><code>max() sum()</code>等操作中指定dim的含义</h2><figure class="highlight inform7"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs inform7">a = <span class="hljs-comment">[ <span class="hljs-comment">[ <span class="hljs-comment">[1, 2]</span>, <span class="hljs-comment">[3, 4]</span> ]</span>, <span class="hljs-comment">[ <span class="hljs-comment">[5, 6]</span>, <span class="hljs-comment">[7, 8]</span> ]</span> ]</span><br></code></pre></td></tr></table></figure><ol><li>对于这个[2, 2, 2]的三维矩阵，三维意味着[]有三层，三个2表示每一层[]内有两个元素</li><li>对dim=0求max意味着<ol><li>将<script type="math/tex">a_{000}</script>与<script type="math/tex">a_{100}</script>比较得出最大值作为<script type="math/tex">a_{00}</script></li><li>将<script type="math/tex">a_{010}</script>与<script type="math/tex">a_{110}</script>比较得出最大值作为<script type="math/tex">a_{10}</script>…</li></ol></li><li>对dim=1求max意味着<ol><li>将<script type="math/tex">a_{000}</script>与<script type="math/tex">a_{010}</script>比较得出最大值作为<script type="math/tex">a_{00}</script></li><li>将<script type="math/tex">a_{100}</script>与<script type="math/tex">a_{110}</script>比较得出最大值作为<script type="math/tex">a_{10}</script>…</li></ol></li><li>而$a_{010}$对应于，第一层[]中的第一个元素的，第二个元素的，第一个元素</li></ol><h2 id="plt-imshow-与plt-show-的区别"><a href="#plt-imshow-与plt-show-的区别" class="headerlink" title="plt.imshow()与plt.show()的区别"></a><code>plt.imshow()</code>与<code>plt.show()</code>的区别</h2><p><code>plt.imshow()</code>只是将图片与plt发生关联，但不显示，还可以继续对这张图片进行其他draw操作，最后再用<code>plt.show()</code>显示出来。</p><h2 id="dataset-dataset-loader-dataset-loader-iter的区别"><a href="#dataset-dataset-loader-dataset-loader-iter的区别" class="headerlink" title="dataset dataset_loader dataset_loader_iter的区别"></a><code>dataset</code> <code>dataset_loader</code> <code>dataset_loader_iter</code>的区别</h2><ul><li><code>train_set</code>不是Iterator，也不是Iterabel;</li><li><code>train_loader</code>不是Iterator，但是Iterable;</li><li>Iterable意味着可用于for循环被迭代, Iterator则是算法，不断用next产生需要的数据，Iterator必然Iterable</li></ul><h2 id="python-string的split方法"><a href="#python-string的split方法" class="headerlink" title="python string的split方法"></a>python string的split方法</h2><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs stylus"><span class="hljs-selector-tag">a</span> = <span class="hljs-string">&quot;, my, name, is, ming&quot;</span><br><span class="hljs-selector-tag">b</span> = <span class="hljs-selector-tag">a</span><span class="hljs-selector-class">.split</span>(<span class="hljs-string">&#x27;,&#x27;</span>)<br><br>&gt;&gt;&gt; <span class="hljs-selector-tag">b</span> = <span class="hljs-selector-attr">[<span class="hljs-string">&#x27;&#x27;</span>,<span class="hljs-string">&#x27; my&#x27;</span>,<span class="hljs-string">&#x27; name&#x27;</span>,<span class="hljs-string">&#x27; is&#x27;</span>,<span class="hljs-string">&#x27; ming&#x27;</span> ]</span><br></code></pre></td></tr></table></figure><p>即，将原string按照字符串分割，不包含分隔符，返回一个列表。</p>]]></content>
     
     
     <categories>
