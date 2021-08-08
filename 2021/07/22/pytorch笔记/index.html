@@ -185,7 +185,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      323 字
+      769 字
     </span>
   
 
@@ -195,7 +195,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      4
+      10
        分钟
     </span>
   
@@ -236,7 +236,7 @@
             <h1 style="display: none">pytorch笔记</h1>
             
             <div class="markdown-body">
-              <h2 id="max-sum-等操作中指定dim的含义"><a href="#max-sum-等操作中指定dim的含义" class="headerlink" title="max() sum()等操作中指定dim的含义"></a><code>max() sum()</code>等操作中指定dim的含义</h2><figure class="highlight inform7"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs inform7">a = <span class="hljs-comment">[ <span class="hljs-comment">[ <span class="hljs-comment">[1, 2]</span>, <span class="hljs-comment">[3, 4]</span> ]</span>, <span class="hljs-comment">[ <span class="hljs-comment">[5, 6]</span>, <span class="hljs-comment">[7, 8]</span> ]</span> ]</span><br></code></pre></td></tr></table></figure>
+              <h3 id="max-sum-等操作中指定dim的含义"><a href="#max-sum-等操作中指定dim的含义" class="headerlink" title="max() sum()等操作中指定dim的含义"></a><code>max() sum()</code>等操作中指定dim的含义</h3><figure class="highlight inform7"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs inform7">a = <span class="hljs-comment">[ <span class="hljs-comment">[ <span class="hljs-comment">[1, 2]</span>, <span class="hljs-comment">[3, 4]</span> ]</span>, <span class="hljs-comment">[ <span class="hljs-comment">[5, 6]</span>, <span class="hljs-comment">[7, 8]</span> ]</span> ]</span><br></code></pre></td></tr></table></figure>
 <ol>
 <li>对于这个[2, 2, 2]的三维矩阵，三维意味着[]有三层，三个2表示每一层[]内有两个元素</li>
 <li>对dim=0求max意味着<ol>
@@ -251,14 +251,25 @@
 </li>
 <li>而$a_{010}$对应于，第一层[]中的第一个元素的，第二个元素的，第一个元素</li>
 </ol>
-<h2 id="plt-imshow-与plt-show-的区别"><a href="#plt-imshow-与plt-show-的区别" class="headerlink" title="plt.imshow()与plt.show()的区别"></a><code>plt.imshow()</code>与<code>plt.show()</code>的区别</h2><p><code>plt.imshow()</code>只是将图片与plt发生关联，但不显示，还可以继续对这张图片进行其他draw操作，最后再用<code>plt.show()</code>显示出来。</p>
-<h2 id="dataset-dataset-loader-dataset-loader-iter的区别"><a href="#dataset-dataset-loader-dataset-loader-iter的区别" class="headerlink" title="dataset dataset_loader dataset_loader_iter的区别"></a><code>dataset</code> <code>dataset_loader</code> <code>dataset_loader_iter</code>的区别</h2><ul>
+<h3 id="torch-flatten-中指定dim的含义"><a href="#torch-flatten-中指定dim的含义" class="headerlink" title="torch.flatten()中指定dim的含义"></a><code>torch.flatten()</code>中指定dim的含义</h3><figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs less"># 默认情况，消除<span class="hljs-selector-tag">x</span>第<span class="hljs-selector-tag">1</span>层<span class="hljs-selector-attr">[]</span>内的所有<span class="hljs-selector-attr">[]</span><br><span class="hljs-selector-tag">torch</span><span class="hljs-selector-class">.flatten</span>(x)<br><br># 指定<span class="hljs-selector-tag">start_dim</span>,从<span class="hljs-selector-tag">x</span>的第<span class="hljs-selector-tag">s</span>+<span class="hljs-selector-tag">1</span>层<span class="hljs-selector-attr">[]</span>开始，消除其中的所有<span class="hljs-selector-attr">[]</span><br><span class="hljs-selector-tag">torch</span><span class="hljs-selector-class">.flatten</span>(x, <span class="hljs-number">1</span>)<br><br># 指定<span class="hljs-selector-tag">start_dim</span>和<span class="hljs-selector-tag">end_dim</span>，将第<span class="hljs-selector-tag">e</span>+<span class="hljs-selector-tag">1</span>层<span class="hljs-selector-attr">[]</span>包围的元素作为一个基础元素，然后从第<span class="hljs-selector-tag">s</span>+<span class="hljs-selector-tag">1</span>层开始消除所有基础元素外的<span class="hljs-selector-attr">[]</span><br><span class="hljs-selector-tag">torch</span><span class="hljs-selector-class">.flatten</span>(x, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>)<br><br># 综上，其实就是<span class="hljs-selector-tag">start_dim</span>默认为<span class="hljs-selector-tag">0</span>，<span class="hljs-selector-tag">end_dim</span>默认为<span class="hljs-selector-tag">-1</span><br></code></pre></td></tr></table></figure>
+<h3 id="torch-cat-x-y-d-中指定dim的含义"><a href="#torch-cat-x-y-d-中指定dim的含义" class="headerlink" title="torch.cat((x,y),d)中指定dim的含义"></a><code>torch.cat((x,y),d)</code>中指定dim的含义</h3><ol>
+<li>第一种解释，d=0就是按行堆叠x和y，堆叠后有了更多的行。然后是按列，按深度，以此类推。容易理解，适用于3维以下。</li>
+<li>第二种解释，就是扩展x第d+1层[]中的内容，拿什么来扩展呢，拿y对应位置的元素，比较难理解，但适用性更广。</li>
+</ol>
+<h3 id="nn-MaxPool2d-3-stride-2-ceil-mode-True-中ceil-mode的含义"><a href="#nn-MaxPool2d-3-stride-2-ceil-mode-True-中ceil-mode的含义" class="headerlink" title="nn.MaxPool2d(3, stride=2, ceil_mode=True)中ceil_mode的含义"></a><code>nn.MaxPool2d(3, stride=2, ceil_mode=True)</code>中ceil_mode的含义</h3><p>其实就是尺寸计算公式中是向上取整还是向下取整，默认向下取整，开了ceil_mode之后就向上取整。</p>
+<h3 id="nn-AvgPool2d-kernel-size-5-stride-3-与nn-AdaptiveAvgPool2d-1-1-的区别"><a href="#nn-AvgPool2d-kernel-size-5-stride-3-与nn-AdaptiveAvgPool2d-1-1-的区别" class="headerlink" title="nn.AvgPool2d(kernel_size=5, stride=3)与nn.AdaptiveAvgPool2d((1, 1))的区别"></a><code>nn.AvgPool2d(kernel_size=5, stride=3)</code>与<code>nn.AdaptiveAvgPool2d((1, 1))</code>的区别</h3><p>前者用指定的kernel_size和stride定义池化操作，后者则通过指定输出tensor的尺寸来定义池化操作，stride和kernel_size会自动算出来。</p>
+<blockquote>
+<p>In average-pooling or max-pooling, you essentially set the stride and kernel-size by your own, setting them as hyper-parameters. You will have to re-configure them if you happen to change your input size.<br>In Adaptive Pooling on the other hand, we specify the output size instead. And the stride and kernel-size are automatically selected to adapt to the needs. The following equations are used to calculate the value in the source code.<br><figure class="highlight nix"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs nix"><span class="hljs-attr">Stride</span> = (input_size//output_size)  <br>Kernel <span class="hljs-attr">size</span> = input_size - (output_size-<span class="hljs-number">1</span>)*stride  <br><span class="hljs-attr">Padding</span> = <span class="hljs-number">0</span><br></code></pre></td></tr></table></figure></p>
+</blockquote>
+<h3 id="plt-imshow-与plt-show-的区别"><a href="#plt-imshow-与plt-show-的区别" class="headerlink" title="plt.imshow()与plt.show()的区别"></a><code>plt.imshow()</code>与<code>plt.show()</code>的区别</h3><p><code>plt.imshow()</code>只是将图片与plt发生关联，但不显示，还可以继续对这张图片进行其他draw操作，最后再用<code>plt.show()</code>显示出来。</p>
+<h3 id="dataset-dataset-loader-dataset-loader-iter的区别"><a href="#dataset-dataset-loader-dataset-loader-iter的区别" class="headerlink" title="dataset dataset_loader dataset_loader_iter的区别"></a><code>dataset</code> <code>dataset_loader</code> <code>dataset_loader_iter</code>的区别</h3><ul>
 <li><code>train_set</code>不是Iterator，也不是Iterabel;</li>
 <li><code>train_loader</code>不是Iterator，但是Iterable;</li>
 <li>Iterable意味着可用于for循环被迭代, Iterator则是算法，不断用next产生需要的数据，Iterator必然Iterable</li>
 </ul>
-<h2 id="python-string的split方法"><a href="#python-string的split方法" class="headerlink" title="python string的split方法"></a>python string的split方法</h2><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs stylus"><span class="hljs-selector-tag">a</span> = <span class="hljs-string">&quot;, my, name, is, ming&quot;</span><br><span class="hljs-selector-tag">b</span> = <span class="hljs-selector-tag">a</span><span class="hljs-selector-class">.split</span>(<span class="hljs-string">&#x27;,&#x27;</span>)<br><br>&gt;&gt;&gt; <span class="hljs-selector-tag">b</span> = <span class="hljs-selector-attr">[<span class="hljs-string">&#x27;&#x27;</span>,<span class="hljs-string">&#x27; my&#x27;</span>,<span class="hljs-string">&#x27; name&#x27;</span>,<span class="hljs-string">&#x27; is&#x27;</span>,<span class="hljs-string">&#x27; ming&#x27;</span> ]</span><br></code></pre></td></tr></table></figure>
+<h3 id="python-string的split方法"><a href="#python-string的split方法" class="headerlink" title="python string的split方法"></a>python string的split方法</h3><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs stylus"><span class="hljs-selector-tag">a</span> = <span class="hljs-string">&quot;, my, name, is, ming&quot;</span><br><span class="hljs-selector-tag">b</span> = <span class="hljs-selector-tag">a</span><span class="hljs-selector-class">.split</span>(<span class="hljs-string">&#x27;,&#x27;</span>)<br><br>&gt;&gt;&gt; <span class="hljs-selector-tag">b</span> = <span class="hljs-selector-attr">[<span class="hljs-string">&#x27;&#x27;</span>,<span class="hljs-string">&#x27; my&#x27;</span>,<span class="hljs-string">&#x27; name&#x27;</span>,<span class="hljs-string">&#x27; is&#x27;</span>,<span class="hljs-string">&#x27; ming&#x27;</span> ]</span><br></code></pre></td></tr></table></figure>
 <p>即，将原string按照字符串分割，不包含分隔符，返回一个列表。</p>
+<h3 id="net-modules-与net-children-的区别"><a href="#net-modules-与net-children-的区别" class="headerlink" title="net.modules()与net.children()的区别"></a><code>net.modules()</code>与<code>net.children()</code>的区别</h3><p>前者递归式地返回net的所有后代，包括其自身的列表。后者返回其直接后代的列表。</p>
 
             </div>
             <hr>
@@ -283,6 +294,12 @@
                       <a class="hover-with-bg" href="/tags/pytorch/">pytorch</a>
                     
                       <a class="hover-with-bg" href="/tags/plt/">plt</a>
+                    
+                      <a class="hover-with-bg" href="/tags/AaptivePool/">AaptivePool</a>
+                    
+                      <a class="hover-with-bg" href="/tags/split/">split</a>
+                    
+                      <a class="hover-with-bg" href="/tags/flatten/">flatten</a>
                     
                   </div>
                 

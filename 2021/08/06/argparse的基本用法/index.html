@@ -18,7 +18,7 @@
   <meta name="author" content="William Guo">
   <meta name="keywords" content="">
   
-  <title>个人博客搭建 by 电竞大师小明</title>
+  <title>argparse的基本用法 by 电竞大师小明</title>
 
   <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
 
@@ -163,7 +163,7 @@
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.7)">
           <div class="page-header text-center fade-in-up">
-            <span class="h2" id="subtitle" title="个人博客搭建">
+            <span class="h2" id="subtitle" title="argparse的基本用法">
               
             </span>
 
@@ -173,8 +173,8 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2021-07-08 21:04" pubdate>
-        2021年7月8日 晚上
+      <time datetime="2021-08-06 16:35" pubdate>
+        2021年8月6日 下午
       </time>
     </span>
   
@@ -185,7 +185,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      1k 字
+      399 字
     </span>
   
 
@@ -195,7 +195,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      12
+      5
        分钟
     </span>
   
@@ -233,93 +233,12 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">个人博客搭建</h1>
+            <h1 style="display: none">argparse的基本用法</h1>
             
             <div class="markdown-body">
-              <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>对于强迫症患者，非要自定义域名的话，先提前注册好域名，推荐阿里云，审核快。不然下面的流程会阻塞。。。</p>
-<h2 id="安装node-js"><a href="#安装node-js" class="headerlink" title="安装node.js"></a>安装node.js</h2><ol>
-<li>去官网 <a target="_blank" rel="noopener" href="https://nodejs.org">https://nodejs.org</a> 查看最新版本号</li>
-<li>根据最新版本号添加源，然后安装<blockquote>
-<p>curl -sL <a target="_blank" rel="noopener" href="https://deb.nodesource.com/setup_10.x">https://deb.nodesource.com/setup_10.x</a> | sudo -E bash<br>sudo apt-get install -y nodejs<br></p>
-</blockquote>
-</li>
-<li>查看版本，确认安装成功<blockquote>
-<p>node -v<br>npm -v</p>
-</blockquote>
-</li>
-</ol>
-<h2 id="安装git"><a href="#安装git" class="headerlink" title="安装git"></a>安装git</h2><p>上交公钥，然后设置用户名+邮箱</p>
-<blockquote>
-<p>git config —global user.name “William_2580”<br>git config —global user.email “1611134972@qq.com”</p>
-</blockquote>
-<h2 id="安装hexo"><a href="#安装hexo" class="headerlink" title="安装hexo"></a>安装hexo</h2><blockquote>
-<p>npm install -g hexo-cli</p>
-</blockquote>
-<h2 id="本地测试"><a href="#本地测试" class="headerlink" title="本地测试"></a>本地测试</h2><blockquote>
-<p>mkdir hexoblog<br>hexo init hexoblog<br>hexo server<br>然后浏览器访问<a target="_blank" rel="noopener" href="http://localhost:4000">http://localhost:4000</a>, 即可看到部署在本地的个人网站</p>
-</blockquote>
-<h2 id="云端部署"><a href="#云端部署" class="headerlink" title="云端部署"></a>云端部署</h2><ol>
-<li>github创建repo，名称必须为：Winliam.github.io</li>
-<li>安装hexo部署工具：<blockquote>
-<p>npm install hexo-deployer-git —save</p>
-</blockquote>
-</li>
-<li>修改hexoblog下的_config.yml中的deploy段：<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs stylus">type: git<br>repo: git@github<span class="hljs-selector-class">.com</span>:Winliam/Winliam<span class="hljs-selector-class">.github</span><span class="hljs-selector-class">.io</span><span class="hljs-selector-class">.git</span><br>branch: main<br></code></pre></td></tr></table></figure></li>
-<li>部署：<blockquote>
-<p>hexo d //public文件夹下的内容被推送到刚才创建的repo中</p>
-</blockquote>
-</li>
-<li>然后进入repo的setting-&gt;pages页面选择正确的分支后，即可通过Winliam.github.io访问blog了</li>
-</ol>
-<h2 id="自定义域名"><a href="#自定义域名" class="headerlink" title="自定义域名"></a>自定义域名</h2><ol>
-<li>阿里云域名注册购买</li>
-<li>买到后阿里云中继续设置域名解析，完成后等待10min等DNS生效(使得www.guohongming.xyz和guohongming.xyz都可以被访问到)</li>
-<li>在本地public文件夹添加CNAME文件(内容为guohongming.xyz)后重新部署一次</li>
-<li>在云端repo的setting-&gt;pages页面将guohongming.xyz添加到Custom domain并保存，不用管warning</li>
-</ol>
-<h2 id="主题美化"><a href="#主题美化" class="headerlink" title="主题美化"></a>主题美化</h2><ol>
-<li>在blog文件夹下<blockquote>
-<p>npm install —save hexo-theme-fluid</p>
-</blockquote>
-</li>
-<li>将GitHub上的<a target="_blank" rel="noopener" href="https://github.com/fluid-dev/hexo-theme-fluid/blob/master/_config.yml">_config.yml</a>文件内容复制到本地的_config.fluid.yml中 </li>
-<li><p>修改本地_config.yml的内容，以应用主题</p>
-<figure class="highlight avrasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs avrasm"><span class="hljs-symbol">theme:</span> fluid  <span class="hljs-meta"># 指定主题</span><br><span class="hljs-symbol">language:</span> <span class="hljs-built_in">zh</span>-CN  <span class="hljs-meta"># 指定语言，会影响主题显示的语言，按需修改</span><br></code></pre></td></tr></table></figure>
-</li>
-</ol>
-<p>此时新建文章后便会自动生成fluid的文章，包括自动生成目录等</p>
-<h2 id="评论插件"><a href="#评论插件" class="headerlink" title="评论插件"></a>评论插件</h2><ol>
-<li>选型，综合测评，twikoo最好</li>
-<li>注册腾讯云<a target="_blank" rel="noopener" href="https://blog.zhheo.com/p/2e6bbbd0.html">参考这里</a>，建立云开发环境，建立云函数，添加域名，下载秘钥</li>
-<li>将云开发环境的ID写入到fluid的配置yml中</li>
-<li>根据twikoo版本修改，fluid配置yml中的CND地址</li>
-<li>此时部署后已经可以看到插件，此时点击齿轮再将秘钥内容粘贴进去即可设置管理员密码</li>
-<li>注册server酱，注册企业微信，按照server酱官网教程获得SENDKEY，将SENDKEY粘贴到评论插件的管理面板中，有新评论即可通过企业微信通知</li>
-</ol>
-<h2 id="看板娘"><a href="#看板娘" class="headerlink" title="看板娘"></a>看板娘</h2><ol>
-<li>修改npm源，加快下载速度<blockquote>
-<p>npm config set registry <a target="_blank" rel="noopener" href="http://registry.npm.taobao.org">http://registry.npm.taobao.org</a></p>
-</blockquote>
-</li>
-<li>安装框架<blockquote>
-<p>npm install —save hexo-helper-live2d</p>
-</blockquote>
-</li>
-<li>安装模型<blockquote>
-<p>npm install —save live2d-widget-model-xxxxx<br>原装的模型安装方便，但是功能少，高级模型安装麻烦，而且拖慢网页加载速度</p>
-</blockquote>
-</li>
-<li>修改配置文件（必须是网站的yml）<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-comment"># Live2D</span><br><span class="hljs-comment"># https://github.com/EYHN/hexo-helper-live2d</span><br><span class="hljs-attr">live2d:</span><br>  <span class="hljs-attr">enable:</span> <span class="hljs-literal">true</span><br><span class="hljs-comment"># enable: false</span><br>  <span class="hljs-attr">scriptFrom:</span> <span class="hljs-string">local</span> <span class="hljs-comment"># 默认</span><br>  <span class="hljs-attr">pluginRootPath:</span> <span class="hljs-string">live2dw/</span> <span class="hljs-comment"># 插件在站点上的根目录(相对路径)</span><br>  <span class="hljs-attr">pluginJsPath:</span> <span class="hljs-string">lib/</span> <span class="hljs-comment"># 脚本文件相对与插件根目录路径</span><br>  <span class="hljs-attr">pluginModelPath:</span> <span class="hljs-string">assets/</span> <span class="hljs-comment"># 模型文件相对与插件根目录路径</span><br><span class="hljs-comment"># scriptFrom: jsdelivr # jsdelivr CDN</span><br><span class="hljs-comment"># scriptFrom: unpkg # unpkg CDN</span><br><span class="hljs-comment"># scriptFrom: https://cdn.jsdelivr.net/npm/live2d-widget@3.x/lib/L2Dwidget.min.js # 你的自定义 url</span><br>  <span class="hljs-attr">tagMode:</span> <span class="hljs-literal">false</span> <span class="hljs-comment"># 标签模式, 是否仅替换 live2d tag标签而非插入到所有页面中</span><br>  <span class="hljs-attr">debug:</span> <span class="hljs-literal">false</span> <span class="hljs-comment"># 调试, 是否在控制台输出日志</span><br>  <span class="hljs-attr">model:</span><br>    <span class="hljs-attr">use:</span> <span class="hljs-string">live2d-widget-model-shizuku</span> <span class="hljs-comment"># npm-module package name</span><br><span class="hljs-comment">#   use: wanko # 博客根目录/live2d_models/ 下的目录名</span><br><span class="hljs-comment">#   use: ./wives/wanko # 相对于博客根目录的路径</span><br><span class="hljs-comment">#   use: https://cdn.jsdelivr.net/npm/live2d-widget-model-wanko@1.0.5/assets/wanko.model.json # 你的自定义 url</span><br>  <span class="hljs-attr">display:</span><br>    <span class="hljs-attr">position:</span> <span class="hljs-string">left</span><br>    <span class="hljs-attr">width:</span> <span class="hljs-number">270</span><br>    <span class="hljs-attr">height:</span> <span class="hljs-number">540</span><br>  <span class="hljs-attr">mobile:</span><br>    <span class="hljs-attr">show:</span> <span class="hljs-literal">true</span><br>    <span class="hljs-attr">scale:</span> <span class="hljs-number">0.5</span><br></code></pre></td></tr></table></figure>
-</li>
-</ol>
-<h2 id="流量统计插件"><a href="#流量统计插件" class="headerlink" title="流量统计插件"></a>流量统计插件</h2><ol>
-<li>注册LeanCloud，需要实名验证</li>
-<li>创建app</li>
-<li>将app的ID, KEY, API地址粘贴到配置文件的相应位置即可<blockquote>
-<p>计数的对象是文章的发布日期和文章的标题的唯一性组合，修改后将导致重新计数<br>本地的计数无意义</p>
-</blockquote>
-</li>
-</ol>
+              <h3 id="用途及原理"><a href="#用途及原理" class="headerlink" title="用途及原理"></a>用途及原理</h3><p>为python脚本运行时所添加额外命令行参数提供解释。大致原理是为一个parser对象添加一些属性，然后这个parser对象在接受一系列参数（默认是命令行参数）之后，就拥有了一系列属性，然后程序就可以用这些属性来做事了。就是说，信息从命令行传递到了脚本内。</p>
+<h3 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h3><figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs awk"><span class="hljs-comment"># 创建对象</span><br>import argparse<br>parser = argparse.ArgumentParser()<br><br><span class="hljs-comment"># 添加属性</span><br>parser.add_argument(<span class="hljs-string">&#x27;integers&#x27;</span>, <span class="hljs-regexp">//</span>位置型属性，与添加顺序有关<br>		    metavar=<span class="hljs-string">&#x27;N&#x27;</span>,  <span class="hljs-regexp">//</span>帮助文档中的示例显示内容<br>		    type=int,  <span class="hljs-regexp">//</span>这个属性的类型<br>		    nargs=<span class="hljs-string">&#x27;+&#x27;</span>, <span class="hljs-regexp">//</span>这个属性的值为自适应长度的列表<br>                    help=<span class="hljs-string">&#x27;an integer for the accumulator&#x27;</span>) <span class="hljs-regexp">//</span>与这个属性相关的帮助信息<br>parser.add_argument(<span class="hljs-string">&#x27;--sum&#x27;</span>,  <span class="hljs-regexp">//</span>flag型属性，位置无关<br>                    dest=<span class="hljs-string">&#x27;accumulate&#x27;</span>, <span class="hljs-regexp">//</span>属性的正式名称，有了这个之后sum这个名称就不能用了，没有的话sum是正式名称<br>		    action=<span class="hljs-string">&#x27;store_const&#x27;</span>, <span class="hljs-regexp">//</span>与下面的const配合使用，定义--sum在命令行中出现时，sum属性的赋值行为，这里是accumulate = sum<br>                    const=sum, <br>		    default=max, <span class="hljs-regexp">//</span>定义当--sum未出现时sum属性的赋值行为，这里是accumulate = max。<br>                    help=<span class="hljs-string">&#x27;sum the integers (default: find the max)&#x27;</span>)<br><br><span class="hljs-comment"># 接受参数</span><br>args = parser.parse_args()<br><br><span class="hljs-comment"># 使用参数</span><br>print(args.accumulate(args.integers)) <span class="hljs-regexp">//</span>解析后等价于print(sum([<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>]))<br></code></pre></td></tr></table></figure>
+<h3 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h3><p>[1] <a target="_blank" rel="noopener" href="https://towardsdatascience.com/a-simple-guide-to-command-line-arguments-with-argparse-6824c30ab1c3">https://towardsdatascience.com/a-simple-guide-to-command-line-arguments-with-argparse-6824c30ab1c3</a><br>[2] <a target="_blank" rel="noopener" href="https://www.huaweicloud.com/articles/208c06ca1f4aba8dfd9219c6e2c72b23.html">https://www.huaweicloud.com/articles/208c06ca1f4aba8dfd9219c6e2c72b23.html</a><br>[3] <a target="_blank" rel="noopener" href="https://blog.csdn.net/liuweiyuxiang/article/details/82918911">https://blog.csdn.net/liuweiyuxiang/article/details/82918911</a><br>[4] <a target="_blank" rel="noopener" href="https://docs.python.org/zh-cn/3/library/argparse.html">https://docs.python.org/zh-cn/3/library/argparse.html</a></p>
 
             </div>
             <hr>
@@ -329,9 +248,9 @@
                   <div class="post-meta mr-3">
                     <i class="iconfont icon-category"></i>
                     
-                      <a class="hover-with-bg" href="/categories/%E7%94%9F%E6%B4%BB%E8%AE%B0%E5%BD%95/">生活记录</a>
+                      <a class="hover-with-bg" href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/">工作技能</a>
                     
-                      <a class="hover-with-bg" href="/categories/%E7%94%9F%E6%B4%BB%E8%AE%B0%E5%BD%95/%E7%94%B5%E8%84%91%E8%AE%BE%E7%BD%AE/">电脑设置</a>
+                      <a class="hover-with-bg" href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/python%E7%AC%94%E8%AE%B0/">python笔记</a>
                     
                   </div>
                 
@@ -339,11 +258,9 @@
                   <div class="post-meta">
                     <i class="iconfont icon-tags"></i>
                     
-                      <a class="hover-with-bg" href="/tags/hexo/">hexo</a>
+                      <a class="hover-with-bg" href="/tags/python/">python</a>
                     
-                      <a class="hover-with-bg" href="/tags/fluid/">fluid</a>
-                    
-                      <a class="hover-with-bg" href="/tags/%E7%9C%8B%E6%9D%BF%E5%A8%98/">看板娘</a>
+                      <a class="hover-with-bg" href="/tags/argparse/">argparse</a>
                     
                   </div>
                 
@@ -355,6 +272,23 @@
                   
                 </p>
               
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/08/03/GoogleNet/">
+                        <span class="hidden-mobile">GoogLeNet</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
               
             </div>
 

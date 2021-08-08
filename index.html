@@ -182,8 +182,63 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
+        <a href="/2021/08/06/argparse%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%94%A8%E6%B3%95/" target="_self">
+          argparse的基本用法
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2021/08/06/argparse%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%94%A8%E6%B3%95/" target="_self">
+          
+          
+            
+          
+          用途及原理为python脚本运行时所添加额外命令行参数提供解释。大致原理是为一个parser对象添加一些属性，然后这个parser对象在接受一系列参数（默认是命令行参数）之后，就拥有了一系列属性，然后程序就可以用这些属性来做事了。就是说，信息从命令行传递到了脚本内。
+示例12345678910111213141516171819202122# 创建对象import argparseparser =
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2021-08-06 16:35" pubdate>
+              2021-08-06
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/">工作技能</a>
+            
+              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/python%E7%AC%94%E8%AE%B0/">python笔记</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/python/">python</a>
+            
+              <a href="/tags/argparse/">argparse</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
         <a href="/2021/08/03/GoogleNet/" target="_self">
-          GoogleNet
+          GoogLeNet
         </a>
       </h1>
 
@@ -198,8 +253,8 @@
 
 常规的卷积层，默认以RELU为激活函数，SAME padding
 常规的池化层，包括最大池化和平均池化
-Iception单元，共计3层9个，具体结构后面解释
-辅助
+Inception单元，共计3层9个，具体结构后面解释
+辅
         </a>
       </p>
 
@@ -238,9 +293,9 @@ Iception单元，共计3层9个，具体结构后面解释
             
               <a href="/tags/%E7%BB%8F%E5%85%B8%E7%BD%91%E7%BB%9C/">经典网络</a>
             
-              <a href="/tags/GoogleNet/">GoogleNet</a>
-            
               <a href="/tags/Inception%E7%BB%93%E6%9E%84/">Inception结构</a>
+            
+              <a href="/tags/GoogLeNet/">GoogLeNet</a>
             
           </div>
         
@@ -337,13 +392,12 @@ Iception单元，共计3层9个，具体结构后面解释
           
             
           
-          Positive/Negative样本空间的原始分类;
-True/False预测结果与样本原始属性的偏差情况，即P-&gt;P/N-&gt;N为T，P-&gt;N/N-&gt;P为F;因此，T和F需要再细分为：
-
+          基本概念二分类情形下的P/N/T/F概念
+Positive/Negative：样本空间的原始分类;
+True/False，预测结果与样本原始属性的偏差情况，即P-&gt;P/N-&gt;N为T，P-&gt;N/N-&gt;P为F;因此，T和F需要再细分为：
 TP：P-&gt;P(正类被预测为正类，真正类)
 TN：N-&gt;N(负类被预测为负类，真负类)
-FP：N-&gt;P(负类被预测为正类，假正类)
-FN：P-&gt;N(正类被预测为负
+FP：N-&gt;P(负类被预测为正类，假
         </a>
       </p>
 
@@ -780,69 +834,11 @@ nvidia-smi一看，又是一个新报错Failed to initialize NVML: Driver/librar
             
               <a href="/tags/plt/">plt</a>
             
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2021/07/15/CNN%E7%9A%84%E6%95%B0%E5%AD%A6%E5%8E%9F%E7%90%86/" target="_self">
-          CNN的数学原理
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2021/07/15/CNN%E7%9A%84%E6%95%B0%E5%AD%A6%E5%8E%9F%E7%90%86/" target="_self">
-          
-          
+              <a href="/tags/AaptivePool/">AaptivePool</a>
             
-          
-          二维卷积的数学原理不管信号处理中“卷积”和“相关”的定义如何，至少在CNN中卷积的含义是明确的。就是
-
-将卷积核(一个尺寸较小的方阵)与矩阵$\boldsymbol{A}$左上角对齐
-两个矩阵逐元素相乘后求和，作为结果矩阵$\boldsymbol{B}$的左上角第一个元素
-向右/下移动卷积核的位置，重复2，直到卷积核到达矩阵$\boldsymbol{A}$的右下角
-
-
-
-由此带来了padding和
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2021-07-15 17:35" pubdate>
-              2021-07-15
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
+              <a href="/tags/split/">split</a>
             
-              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/">工作技能</a>
-            
-              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">神经网络</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a>
-            
-              <a href="/tags/CNN/">CNN</a>
-            
-              <a href="/tags/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">卷积神经网络</a>
+              <a href="/tags/flatten/">flatten</a>
             
           </div>
         
