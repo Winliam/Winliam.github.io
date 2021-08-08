@@ -185,7 +185,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      993 字
+      1.2k 字
     </span>
   
 
@@ -195,7 +195,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      10
+      13
        分钟
     </span>
   
@@ -282,6 +282,11 @@
 <p>第一层FC有1024个神经元，第二层为输出层，神经元数量取决于class_num。另外值得注意的是，两个辅助分类器的输入tensor的形状是相同的，只有深度不同，都是[batch, d, 4, 4]。经过相同的池化层处理后，形状继续保持一致。再经过相同的1x1卷积层处理后，深度也变为一致的。因此可以看出这里的1x1卷积层是为了rectify辅助分类器的输入，使其适配性更强。</p>
 <h4 id="对应的损失函数"><a href="#对应的损失函数" class="headerlink" title="对应的损失函数"></a>对应的损失函数</h4><figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">loss0 = loss<span class="hljs-constructor">_function(<span class="hljs-params">logits</span>, <span class="hljs-params">labels</span>.<span class="hljs-params">to</span>(<span class="hljs-params">device</span>)</span>)<br>loss1 = loss<span class="hljs-constructor">_function(<span class="hljs-params">aux_logits1</span>, <span class="hljs-params">labels</span>.<span class="hljs-params">to</span>(<span class="hljs-params">device</span>)</span>)<br>loss2 = loss<span class="hljs-constructor">_function(<span class="hljs-params">aux_logits2</span>, <span class="hljs-params">labels</span>.<span class="hljs-params">to</span>(<span class="hljs-params">device</span>)</span><br>loss = loss0 + loss1<span class="hljs-operator"> * </span><span class="hljs-number">0.3</span> + loss2<span class="hljs-operator"> * </span><span class="hljs-number">0.3</span><br></code></pre></td></tr></table></figure>
 <p>三个分类器的输出分别计算loss，然后加权之后的和作为整个模型的loss。</p>
+<h4 id="实现时的trick"><a href="#实现时的trick" class="headerlink" title="实现时的trick"></a>实现时的trick</h4><p>由于最终的结果只看主分类器的，那么就带了两个问题：</p>
+<ol>
+<li>训练过程的验证时不需要进行辅助分类器的计算，此时通过在模型的forward方法中借助<code>self.training</code>设定即可。该属性在<code>net.train()</code>时为true，<code>net.eval()</code>时为false；</li>
+<li>实际部署时，不仅不需要辅助分类器的计算，连辅助分类器的结构都不需要。此时，首先通过设定一个额外的flag，在model class中不构建辅助分类器。然后还要解决保存训练时保存的权重文件比此时的网络结构的参数多的问题。这个通过在<code>model.load_state_dict(torch.load(PATH),strict=False)</code>增加strict参数来实现。</li>
+</ol>
 <h2 id="其他内容"><a href="#其他内容" class="headerlink" title="其他内容"></a>其他内容</h2><ul>
 <li>Inception结构中的卷积层默认包含一个RELU。</li>
 <li>池化层跟1x1卷积刚好相反，它不改变tensor的深度，只改变tensor的宽和高，因此两者可以组成tensor尺寸manipulation的一对基。</li>
@@ -321,6 +326,8 @@
                       <a class="hover-with-bg" href="/tags/Inception%E7%BB%93%E6%9E%84/">Inception结构</a>
                     
                       <a class="hover-with-bg" href="/tags/GoogLeNet/">GoogLeNet</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E8%BE%85%E5%8A%A9%E5%88%86%E7%B1%BB%E5%99%A8/">辅助分类器</a>
                     
                   </div>
                 
