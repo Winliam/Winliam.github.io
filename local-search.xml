@@ -4,11 +4,97 @@
   
   
   <entry>
+    <title>MobileNet v2</title>
+    <link href="/2021/08/08/2-MobileNet/"/>
+    <url>/2021/08/08/2-MobileNet/</url>
+    
+    <content type="html"><![CDATA[<h2 id="背景简介"><a href="#背景简介" class="headerlink" title="背景简介"></a>背景简介</h2><p>2018年Google团队在v1的基础上提出的改进版。核心思想仍然是DW卷积，但是这次借鉴了ResNet的残差结构，提高了性能。</p><h2 id="前置知识"><a href="#前置知识" class="headerlink" title="前置知识"></a>前置知识</h2><h3 id="Inverted-Residual"><a href="#Inverted-Residual" class="headerlink" title="Inverted Residual"></a>Inverted Residual</h3><div align=center><img title="" src="/img/net/ir.png" width="90%" height="90%" align=center></div><p>主要是在Residual的基础上做了一些修改</p><h2 id="网络结构"><a href="#网络结构" class="headerlink" title="网络结构"></a>网络结构</h2><h2 id="其他内容"><a href="#其他内容" class="headerlink" title="其他内容"></a>其他内容</h2>]]></content>
+    
+    
+    <categories>
+      
+      <category>工作技能</category>
+      
+      <category>神经网络</category>
+      
+      <category>经典网络</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>深度学习</tag>
+      
+      <tag>CNN</tag>
+      
+      <tag>卷积神经网络</tag>
+      
+      <tag>神经网络</tag>
+      
+      <tag>经典网络</tag>
+      
+      <tag>Residual结构</tag>
+      
+      <tag>MobileNet</tag>
+      
+      <tag>Inverted Residual结构</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>MobileNet v1</title>
+    <link href="/2021/08/08/MobileNet/"/>
+    <url>/2021/08/08/MobileNet/</url>
+    
+    <content type="html"><![CDATA[<h2 id="背景简介"><a href="#背景简介" class="headerlink" title="背景简介"></a>背景简介</h2><p>由Google团队于2017年提出，专注于移动端和嵌入式设备。采用Depthwise卷积，大幅减少参数量，虽然效果有一些折扣，但是可以接受。</p><h2 id="前置知识"><a href="#前置知识" class="headerlink" title="前置知识"></a>前置知识</h2><h3 id="DW卷积"><a href="#DW卷积" class="headerlink" title="DW卷积"></a><strong>DW卷积</strong></h3><p>先来回忆以下常规的卷积是怎样的，如下图所示。</p><div align=center><img title="" src="/img/net/mobilenet1.png" width="70%" height="70%" align=center></div><p>而DW卷积呢，其实就是最符合直觉的那种卷积。就是每个卷积核的深度不是和上一层输出相同，而是等于1。这意味着：</p><ul><li>卷积之后不再做跨深度的求和</li><li>每一个DW卷积层的#参数必然等于输入tensor的深度，因为要保证输入tensor的每一个通道都有一个1层的卷积核去和它运算</li><li>经过DW卷积之后得到的输出，深度不变</li></ul><div align=center><img title="" src="/img/net/mobilenet2.png" width="70%" height="70%" align=center></div><h3 id="PW卷积"><a href="#PW卷积" class="headerlink" title="PW卷积"></a><strong>PW卷积</strong></h3><p>DW卷积一看就是个瘸腿儿的机制，搞来搞去没法manipulate tensor的深度啊，所以必须伴随这PW卷积使用。PW卷积就是常规1x1的卷积，它的特点是不改变tensor的尺寸，只改变tensor的深度。这么一来跟DW卷积就完美配合了——先对tensor进行DW卷积改变尺寸，然后进行PW卷积对DW的输出进行跨通道加权求和，每个PW卷积核得到一个2维的tensor，这样，通过设置不同的卷积核个数即可控制最终输出的通道数。</p><div align=center><img title="" src="/img/net/mobilenet3.png" width="70%" height="70%" align=center></div><h2 id="网络结构"><a href="#网络结构" class="headerlink" title="网络结构"></a>网络结构</h2><div align=center><img title="" src="/img/net/mbv1.png" width="60%" height="60%" align=center></div><p>主要就是DW层和PW层的堆叠。另外，额外设有两个可调的超参数$\alpha$和$\beta$，前者是每一层的PW卷积核数量基于上表中数量的系数，后者是基于224x224的输入图像分辨率的系数。</p><h2 id="其他内容"><a href="#其他内容" class="headerlink" title="其他内容"></a>其他内容</h2><ol><li>实际使用发现，经常有很多DW卷积核的元素值为0，造成浪费，原因后面再补充吧。mark</li></ol>]]></content>
+    
+    
+    <categories>
+      
+      <category>工作技能</category>
+      
+      <category>神经网络</category>
+      
+      <category>经典网络</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>深度学习</tag>
+      
+      <tag>CNN</tag>
+      
+      <tag>卷积神经网络</tag>
+      
+      <tag>神经网络</tag>
+      
+      <tag>经典网络</tag>
+      
+      <tag>MobileNet</tag>
+      
+      <tag>DW卷积</tag>
+      
+      <tag>PW卷积</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>ResNet</title>
     <link href="/2021/08/08/ResNet/"/>
     <url>/2021/08/08/ResNet/</url>
     
-    <content type="html"><![CDATA[<h2 id="背景简介"><a href="#背景简介" class="headerlink" title="背景简介"></a>背景简介</h2><p>来自2015年的微软实验室，He Kaiming/Ren Shaoqing/Zhang Xiangyu等，啥啥啥都第一名…不用dropout了，引入BN，提出residual，上千层的网络结构。</p><h2 id="网络结构"><a href="#网络结构" class="headerlink" title="网络结构"></a>网络结构</h2><h3 id="整体结构"><a href="#整体结构" class="headerlink" title="整体结构"></a>整体结构</h3><p>网络由一种叫做residual的building block串行组建而成，整体结构见下表：</p><div align=center><img title="" src="/img/net/resnet.png" width="100%" height="100%" align=center></div><h3 id="常规的Residual单元"><a href="#常规的Residual单元" class="headerlink" title="常规的Residual单元"></a>常规的Residual单元</h3><p>如下图所示，常规的Residual有两种规格，前者用于层数较少的网络，后者用于层数较多的网络。</p><div align=center><img title="" src="/img/net/residual1.png" width="80%" height="80%" align=center></div><p>Residual特点如下：</p><ol><li>为了实现shortcut结构，必须保证单元的输入与输出尺寸完全一致，包括维度。这样才能做tensor的逐元素相加。</li><li>最后一个relu是在逐元素相加之后进行的。</li><li>和Iception单元一样，每个卷积层的FSP都是确定的，其中F看位置取1或3，S=1，P=SAME PADDING。因此一个Residual单元的配置参数只有每个卷积层的#。</li></ol><h3 id="特殊的Residual单元"><a href="#特殊的Residual单元" class="headerlink" title="特殊的Residual单元"></a>特殊的Residual单元</h3><p>在分界线处的Residual单元还要额外承担tensor尺寸调整的任务，因此其结构相对于常规结构要增加一些变化。</p><div align=center><img title="" src="/img/net/residual2.png" width="60%" height="60%" align=center></div><div align=center><img title="" src="/img/net/residual3.png" width="60%" height="60%" align=center></div><p>首先是在shortcut上增加一个1F2S0P?#的卷积层对单元输入进行尺寸调整。另外是主线上的第一个卷积层的S变为2，进行尺寸调整。</p><blockquote><p>上图是按照pytorch中的实现，是在第2个卷积层做的下采样，实测效果更好，所以这么用了。</p></blockquote><h2 id="其他内容"><a href="#其他内容" class="headerlink" title="其他内容"></a>其他内容</h2><ol><li><strong>Residual结构为什么有效？</strong><br>xxxx</li></ol>]]></content>
+    <content type="html"><![CDATA[<h2 id="背景简介"><a href="#背景简介" class="headerlink" title="背景简介"></a>背景简介</h2><p>来自2015年的微软实验室，He Kaiming/Ren Shaoqing/Zhang Xiangyu等，啥啥啥都第一名…不用dropout了，引入BN，提出residual以应对退化问题，支持上千层的网络结构。</p><h2 id="网络结构"><a href="#网络结构" class="headerlink" title="网络结构"></a>网络结构</h2><h3 id="整体结构"><a href="#整体结构" class="headerlink" title="整体结构"></a>整体结构</h3><p>网络由一种叫做residual的building block串行组建而成，整体结构见下表：</p><div align=center><img title="" src="/img/net/resnet.png" width="100%" height="100%" align=center></div><h3 id="常规的Residual单元"><a href="#常规的Residual单元" class="headerlink" title="常规的Residual单元"></a>常规的Residual单元</h3><p>如下图所示，常规的Residual有两种规格，前者用于层数较少的网络，后者用于层数较多的网络。</p><div align=center><img title="" src="/img/net/residual1.png" width="80%" height="80%" align=center></div><p>Residual特点如下：</p><ol><li>为了实现shortcut结构，必须保证单元的输入与输出尺寸完全一致，包括维度。这样才能做tensor的逐元素相加。</li><li>最后一个relu是在逐元素相加之后进行的。</li><li>和Inception单元一样，每个卷积层的FSP都是确定的，其中F看位置取1或3，S=1，P=SAME PADDING。因此一个Residual单元的配置参数只有每个卷积层的#。</li></ol><h3 id="特殊的Residual单元"><a href="#特殊的Residual单元" class="headerlink" title="特殊的Residual单元"></a>特殊的Residual单元</h3><p>在分界线处的Residual单元还要额外承担tensor尺寸调整的任务，因此其结构相对于常规结构要增加一些变化。</p><div align=center><img title="" src="/img/net/residual2.png" width="60%" height="60%" align=center></div><div align=center><img title="" src="/img/net/residual3.png" width="60%" height="60%" align=center></div><p>首先是在shortcut上增加一个1F2S0P?#的卷积层对单元输入进行尺寸调整。另外是主线上的第一个卷积层的S变为2，进行尺寸调整。</p><blockquote><p>上图是按照pytorch中的实现，是在第2个卷积层做的下采样，实测效果更好，所以这么用了。</p></blockquote><h2 id="其他内容"><a href="#其他内容" class="headerlink" title="其他内容"></a>其他内容</h2><ol><li><strong>Residual结构为什么有效？</strong><br>xxxx</li></ol>]]></content>
     
     
     <categories>
