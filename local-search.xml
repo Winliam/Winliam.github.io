@@ -4,11 +4,40 @@
   
   
   <entry>
+    <title>流形(manifold)是个啥?</title>
+    <link href="/2021/08/10/manifold%E6%98%AF%E4%B8%AA%E5%95%A5/"/>
+    <url>/2021/08/10/manifold%E6%98%AF%E4%B8%AA%E5%95%A5/</url>
+    
+    <content type="html"><![CDATA[<p>今天看MobileNet v2，其中为了得到<strong><em>“在处理低维度的特征tensor时，Relu激活函数相比于Linear激活函数在激活前后会造成更多的特征丢失”</em></strong>这一推论，使用了流形（manifold）的概念。所以来看看流形到底是个啥：</p><p>数学语言的定义是：<strong><em>流形是局部具有欧几里得空间性质的空间，在数学中用于描述几何形体。物理上，经典力学的相空间和构造广义相对论的时空模型的四维伪黎曼流形都是流形的实例</em></strong>。牵扯出更多新概念，比较复杂。所以这里只看machine learning中的流形概念。如下图所示，</p><div align=center><img title="" src="/img/article/manifold.jpeg" width="60%" height="60%" align=center></div><p><br>图中的每一个点，严格来讲都是一个三维的点。但是又可以明显看出这些点在三维空间中的分布是非常有规律的，基本上都集中在一个三维曲面上。基于这种现象，我们将流形理解为，高维空间中一个可变换成低维空间的子空间，例如上图，这个曲面作为一个三维曲面其实可以变换为一个二维平面。</p><p>对于机器学习和深度学习领域的数据，一般数据因为固有的特性（比如在不同光照条件下的同一张人脸的灰度图像），导致无法“填满”整个高维空间。例如如果数据只能出现在三维空间中的一个球面上。那这个球面以外的空间永远不会有数据点。而一个表面我们完全可以只用两个参数来表示(经度、维度)。</p><p>这样在聚类求样本间的相似距离时，就有了两种方式。一种是在流形的高维空间中求，即图中直线。另一种是在流形展开后的低维空间中求，即图中的曲线。具体用途，后面谈到再说吧。mark</p><p>参考链接：<br>[1] <a href="https://www.zhihu.com/question/24015486/answer/194284643">https://www.zhihu.com/question/24015486/answer/194284643</a></p>]]></content>
+    
+    
+    <categories>
+      
+      <category>工作技能</category>
+      
+      <category>神经网络</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>流形</tag>
+      
+      <tag>manifold</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>MobileNet v2</title>
     <link href="/2021/08/08/2-MobileNet/"/>
     <url>/2021/08/08/2-MobileNet/</url>
     
-    <content type="html"><![CDATA[<h2 id="背景简介"><a href="#背景简介" class="headerlink" title="背景简介"></a>背景简介</h2><p>2018年Google团队在v1的基础上提出的改进版。核心思想仍然是DW卷积，但是这次借鉴了ResNet的残差结构，提高了性能。</p><h2 id="前置知识"><a href="#前置知识" class="headerlink" title="前置知识"></a>前置知识</h2><h3 id="Inverted-Residual"><a href="#Inverted-Residual" class="headerlink" title="Inverted Residual"></a>Inverted Residual</h3><div align=center><img title="" src="/img/net/ir.png" width="90%" height="90%" align=center></div><p>主要是在Residual的基础上做了一些修改</p><h2 id="网络结构"><a href="#网络结构" class="headerlink" title="网络结构"></a>网络结构</h2><h2 id="其他内容"><a href="#其他内容" class="headerlink" title="其他内容"></a>其他内容</h2>]]></content>
+    <content type="html"><![CDATA[<h2 id="背景简介"><a href="#背景简介" class="headerlink" title="背景简介"></a>背景简介</h2><p>2018年Google团队在v1的基础上提出的改进版。核心思想仍然是DW卷积，但是这次借鉴了ResNet的残差结构，提高了性能。</p><h2 id="前置知识"><a href="#前置知识" class="headerlink" title="前置知识"></a>前置知识</h2><h3 id="Inverted-Residual"><a href="#Inverted-Residual" class="headerlink" title="Inverted Residual"></a>Inverted Residual</h3><p>所谓倒残差结构，其实就是在ResNet残差结构的基础上做了一些修改。首先看以下简图：</p><div align=center><img title="" src="/img/net/ir.png" width="70%" height="70%" align=center></div><p><br>对于残差结构而言，三个卷积层每一层卷积核的个数一般依次为[64, 64, 256]这样，先对具有256个通道的输入进行降维，然后3x3卷积 with SAME PADDING, 尺寸和通道都不变，最后再用1x1卷积进行升维。就三个卷积层的4个计算对象而言，通道数依次为[256, 64, 64, 256]，两头大中间小。</p><p>对于倒残差结构则刚好相反，它先升维，再用DW卷积保持深度，然后再降维输出，呈现两头小中间大的形状，因此称之为倒残差。</p><p>具体来看倒残差结构的结构和参数，如下表所示：<br><br><div align=center><img title="" src="/img/net/ir2.png" width="60%" height="60%" align=center></div><br></p><ol><li>第一层为PW卷积+BN+RELU6，其中卷积层参数为1F-1S-SP-tk#，k为单元输入的通道数；</li><li>第二层为DW卷积+BN+RELU6，参数为3F-sS-SP, 当s=1或2；</li><li>第三层为PW卷积+BN+Linear，卷积层参数为1F-1S-SP-k’#，k’为单元输出的通道数；</li></ol><p>综上，一个倒残差单元的参数有k，t，s，k’四个。4个计算对象的深度分别为[k, tk, tk, k’]。</p><h3 id="Relu6激活函数"><a href="#Relu6激活函数" class="headerlink" title="Relu6激活函数"></a>Relu6激活函数</h3><p>倒残差结构相对于残差结构的另外一个不同点，其实就是在x=6处饱和的Relu函数。</p><h3 id="Linear激活函数"><a href="#Linear激活函数" class="headerlink" title="Linear激活函数"></a>Linear激活函数</h3><p>倒残差单元输出之前进行的不是Relu激活，而是线性激活。因为，据称，在对通道数较少的tensor进行激活时，Relu会丢失更多信息。而每个倒残差单元又是两头小，因此最后的激活函数使用了简单的线性函数。另外，由于线性激活函数的表达式就是$y = x$，所以线性激活=不做激活。</p><h2 id="网络结构"><a href="#网络结构" class="headerlink" title="网络结构"></a>网络结构</h2><p>整个网络来看，先用倒残差单元串联组成单元层，单元层和普通卷积层、平均池化层、FC层再串联组成网络。</p><div align=center><img title="" src="/img/net/mbv2.png" width="50%" height="50%" align=center></div><p>看懂上表首先要明确一个单元层的4个参数t,c,n,s的含义：</p><ul><li>t, 对应倒残差单元的参数t</li><li>c, 对应本单元层中的第一个倒残差单元的k’参数，以及后续的倒残差单元的k和k’参数。就是说对于一个单元层，计算对象的深度依次为[input, input<em>t, input</em>t, c]、[c, c<em>t, c</em>t, c]、[c, c<em>t, c</em>t, c]……</li><li>n, 将几个倒残差单元串联起来形成本单元层</li><li>s，对应本单元层中第一个倒残差单元的s参数，其余单元的s参数都为1</li></ul><p>另外，还要注意以下3个细节：</p><ol><li>每个单元层的第一个倒残差单元与ResNet中的处理方式不一样，这里是放弃shortcut而不是在shortcut上插入一个1x1卷积来进行深度的一致化。</li><li>当每个单元层的中间单元，不满足输入输出的tensor形状、深度一致的条件时，也不进行shortcut。</li><li>对于t=1的单元层，取消其倒残差单元的第一个PW卷积，因为通道数量并不需要变化。</li></ol><h2 id="其他内容"><a href="#其他内容" class="headerlink" title="其他内容"></a>其他内容</h2><ol><li>倒残差结构的三个特点为什么work？mark</li><li>DW卷积在pytorch中的实现是通过控制<code>nn.conv2D()</code>构造函数中的<code>groups</code>参数来实现。<code>groups = 1</code>时就普通的卷积，<code>groups = input_chs</code>时就是DW卷积。</li></ol>]]></content>
     
     
     <categories>
