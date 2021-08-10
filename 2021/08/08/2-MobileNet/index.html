@@ -185,7 +185,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      923 字
+      935 字
     </span>
   
 
@@ -257,7 +257,7 @@
 <p>看懂上表首先要明确一个单元层的4个参数t,c,n,s的含义：</p>
 <ul>
 <li>t, 对应倒残差单元的参数t</li>
-<li>c, 对应本单元层中的第一个倒残差单元的k’参数，以及后续的倒残差单元的k和k’参数。就是说对于一个单元层，计算对象的深度依次为[input, input<em>t, input</em>t, c]、[c, c<em>t, c</em>t, c]、[c, c<em>t, c</em>t, c]……</li>
+<li>c, 对应本单元层中的第一个倒残差单元的k’参数，以及后续的倒残差单元的k和k’参数。就是说对于一个单元层，计算对象的深度依次为[input, input x t, input x t, c]、[c, c x t, c x t, c]、[c, c x t, c x t, c]……</li>
 <li>n, 将几个倒残差单元串联起来形成本单元层</li>
 <li>s，对应本单元层中第一个倒残差单元的s参数，其余单元的s参数都为1</li>
 </ul>
