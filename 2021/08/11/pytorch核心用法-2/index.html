@@ -18,7 +18,7 @@
   <meta name="author" content="William Guo">
   <meta name="keywords" content="">
   
-  <title>nvidia-smi突然跪了！ by 电竞大师小明</title>
+  <title>pytorch基础用法-训练 by 电竞大师小明</title>
 
   <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
 
@@ -163,7 +163,7 @@
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.7)">
           <div class="page-header text-center fade-in-up">
-            <span class="h2" id="subtitle" title="nvidia-smi突然跪了！">
+            <span class="h2" id="subtitle" title="pytorch基础用法-训练">
               
             </span>
 
@@ -173,8 +173,8 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2021-07-26 17:51" pubdate>
-        2021年7月26日 下午
+      <time datetime="2021-08-11 17:52" pubdate>
+        2021年8月11日 下午
       </time>
     </span>
   
@@ -185,7 +185,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      321 字
+      638 字
     </span>
   
 
@@ -195,7 +195,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      4
+      9
        分钟
     </span>
   
@@ -233,26 +233,13 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">nvidia-smi突然跪了！</h1>
+            <h1 style="display: none">pytorch基础用法-训练</h1>
             
             <div class="markdown-body">
-              <h2 id="解决过程"><a href="#解决过程" class="headerlink" title="解决过程"></a>解决过程</h2><p>看着代码唱着歌，CUDA就突然啥啥啥初始化失败了。</p>
-<p>nvidia-smi一看，又是一个新报错Failed to initialize NVML: Driver/library version mismatch，闹心。</p>
-<p>整半天，大概意思是作为内核模块的nvidia驱动程序版本和libnvidia-compute-460这个库的版本不一致。</p>
-<p>两者一般都应该是安装驱动的时候指定的版本（for me is 460.84），但是后者竟然通过ubuntu的后台更新程序自动更新了（460.91），所以造成了这个问题。</p>
-<p>最后，更新了驱动程序，关闭了自动更新，reboot，告一段落。</p>
-<h2 id="用到的命令："><a href="#用到的命令：" class="headerlink" title="用到的命令："></a>用到的命令：</h2><blockquote>
-<p>lsmod | grep nvidia*<br>显示和nvidia有关的内核模块有哪些</p>
-<p>modinfo nvidiaxxx | grep version<br>显示这些内核模块的版本</p>
-<p>dpkg —list | grep nvidia<br>显示libnvidia-compute这个库的版本</p>
-<p>dmesg | tail -4<br>nvidia-smi的报错详情，可以看到版本差异<br>dmesg | grep nvidia<br>nvidia-smi的执行过程详情</p>
-<p>cat /var/log/apt/history.log | grep -a -C 10 nvidia<br>libnvidia-compute的更新记录，可以看到是unattended-upgrade造成的更新</p>
-<p>cat /etc/apt/apt.conf.d/20auto-upgrades<br>自动更新的配置文件，修改即可关闭自动更新<a target="_blank" rel="noopener" href="https://unix.stackexchange.com/questions/342663/how-is-unattended-upgrades-started-and-how-can-i-modify-its-schedule">detail</a></p>
-<p>sudo apt install nvidia-driver-460<br>更新驱动程序</p>
-</blockquote>
-<h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><ol>
-<li><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/62250491/nvml-driver-library-mismatch-after-libnvidia-compute-update">https://stackoverflow.com/questions/62250491/nvml-driver-library-mismatch-after-libnvidia-compute-update</a></li>
-</ol>
+              <h2 id="数据准备"><a href="#数据准备" class="headerlink" title="数据准备"></a>数据准备</h2><h3 id="引入数据集"><a href="#引入数据集" class="headerlink" title="引入数据集"></a>引入数据集</h3><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><code class="hljs routeros"><span class="hljs-comment"># 图片在送入网络之前要进行一定的变化才能适应网络入口的要求，比如尺寸一致化，张量化，归一化等</span><br>data_transform = &#123;<br>        <span class="hljs-string">&quot;train&quot;</span>: transforms.Compose([transforms.RandomResizedCrop(224),<br>                                     transforms.RandomHorizontalFlip(),<br>                                     transforms.ToTensor(),<br>                                     transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))]),<br>        <span class="hljs-string">&quot;val&quot;</span>: transforms.Compose([transforms.Resize((224, 224)), <br>                                   transforms.ToTensor(),<br>                                   transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])&#125;<br><br><span class="hljs-comment"># 用pytorch官方的数据集，本地没有就去下载，需要指明是用数据集中的train部分，还是val部分</span><br>train_set = torchvision.datasets.CIFAR10(<span class="hljs-attribute">root</span>=<span class="hljs-string">&#x27;./data&#x27;</span>, <span class="hljs-attribute">train</span>=<span class="hljs-literal">True</span>, <span class="hljs-attribute">download</span>=<span class="hljs-literal">True</span>, <span class="hljs-attribute">transform</span>=transform)<br>val_set = torchvision.datasets.CIFAR10(<span class="hljs-attribute">root</span>=<span class="hljs-string">&#x27;./data&#x27;</span>, <span class="hljs-attribute">train</span>=<span class="hljs-literal">False</span>, <span class="hljs-attribute">download</span>=<span class="hljs-literal">False</span>, <span class="hljs-attribute">transform</span>=transform)<br><br><span class="hljs-comment"># 用自定义的数据集，前提是本地先下载好，并且建立好目录结构:</span><br><span class="hljs-comment"># image_path</span><br><span class="hljs-comment"># 	- train</span><br><span class="hljs-comment"># 		- class1</span><br><span class="hljs-comment">#			- 1.png</span><br><span class="hljs-comment">#			- 2.png</span><br><span class="hljs-comment"># 		- class2</span><br><span class="hljs-comment">#			- 1.png</span><br><span class="hljs-comment">#			- 2.png</span><br><span class="hljs-comment"># 	- val</span><br><span class="hljs-comment"># 		- class1</span><br><span class="hljs-comment">#			- 1.png</span><br><span class="hljs-comment">#			- 2.png</span><br><span class="hljs-comment"># 		- class2</span><br><span class="hljs-comment">#			- 1.png</span><br><span class="hljs-comment">#			- 2.png</span><br>train_dataset = datasets.ImageFolder(<span class="hljs-attribute">root</span>=os.path.join(image_path, <span class="hljs-string">&quot;train&quot;</span>), <span class="hljs-attribute">transform</span>=data_transform[<span class="hljs-string">&quot;train&quot;</span>])<br>validate_dataset = datasets.ImageFolder(<span class="hljs-attribute">root</span>=os.path.join(image_path, <span class="hljs-string">&quot;val&quot;</span>), <span class="hljs-attribute">transform</span>=data_transform[<span class="hljs-string">&quot;val&quot;</span>])<br><br><span class="hljs-comment"># 最后得到的是一个torch定义的class，按[]索引得到的是一个tuple，tuple元素是(tensor,id)，每个tensor对应一个张量化后的图片。</span><br></code></pre></td></tr></table></figure>
+<h3 id="加载数据"><a href="#加载数据" class="headerlink" title="加载数据"></a>加载数据</h3><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs routeros"><span class="hljs-comment"># 用num_workers个线程，将train_set打乱顺序，分成36个一份的batch</span><br>train_loader = torch.utils.data.DataLoader(train_set, <span class="hljs-attribute">batch_size</span>=36, <span class="hljs-attribute">shuffle</span>=<span class="hljs-literal">True</span>, <span class="hljs-attribute">num_workers</span>=0)<br><br><span class="hljs-comment"># 最后得到也是一个torch定义的class，被enumerate返回一个[tensor,tensor]</span><br><span class="hljs-comment"># 第一个tensor代表inputs，维度为[batch_size, c, h, w]</span><br><span class="hljs-comment"># 第二个为labels，维度为[batch_size]</span><br><span class="hljs-comment"># 也可以用iter将其加工成一个可迭代对象来访问其内容</span><br>train_data_iter = iter(train_loader)<br>img, label = train_data_iter.next()<br></code></pre></td></tr></table></figure>
+<h2 id="工具定义"><a href="#工具定义" class="headerlink" title="工具定义"></a>工具定义</h2><figure class="highlight nix"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs nix">from model <span class="hljs-built_in">import</span> LeNet<br><span class="hljs-built_in">import</span> torch.optim as optim<br><br><span class="hljs-comment"># 模型定义</span><br><span class="hljs-attr">net</span> = LeNet()<br>net.to(device)<br><br><span class="hljs-comment"># 损失函数定义</span><br><span class="hljs-attr">loss_function</span> = nn.CrossEntropyLoss()<br><br><span class="hljs-comment"># 优化器定义</span><br><span class="hljs-attr">optimizer</span> = optim.Adam(net.parameters(), <span class="hljs-attr">lr=0.0002)</span><br></code></pre></td></tr></table></figure>
+<h2 id="核心循环"><a href="#核心循环" class="headerlink" title="核心循环"></a>核心循环</h2><figure class="highlight nix"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><code class="hljs nix">for epoch <span class="hljs-keyword">in</span> range(epochs):<br><span class="hljs-comment"># 训练循环</span><br>        <span class="hljs-comment"># 设置train模式，以打开BN，Dropout等训练专用的运算</span><br>        net.train()<br>        for data <span class="hljs-keyword">in</span> train_loader:<br>            images, <span class="hljs-attr">labels</span> = data<br>            <span class="hljs-comment"># 重置梯度变换量，防止过大？mark</span><br>            optimizer.zero_grad()<br>            <span class="hljs-comment"># 正向计算</span><br>            <span class="hljs-attr">outputs</span> = net(images.to(device))<br>            <span class="hljs-comment"># 计算损失</span><br>            <span class="hljs-attr">loss</span> = loss_function(outputs, labels.to(device))<br>            <span class="hljs-comment"># 反向传播</span><br>            loss.backward()<br>            <span class="hljs-comment"># 梯度更新</span><br>            optimizer.step()<br><span class="hljs-comment"># 验证循环</span><br>        <span class="hljs-comment"># 设置eval模式，以关闭BN，Dropout等训练专用的运算</span><br>        net.eval()<br>        <span class="hljs-comment"># 验证过程不需要自动存储梯度？mark</span><br>        <span class="hljs-keyword">with</span> torch.no_grad():<br>            for val_data <span class="hljs-keyword">in</span> val_loader:<br>                val_images, <span class="hljs-attr">val_labels</span> = val_data<br>                <span class="hljs-attr">outputs</span> = net(val_images.to(device))<br>                <span class="hljs-comment"># 求softmax向量的最大值的索引作为预测结果。</span><br>                <span class="hljs-attr">predict_y</span> = torch.max(outputs, <span class="hljs-attr">dim=1)[1]</span><br><span class="hljs-comment"># 模型保存</span><br>        <span class="hljs-keyword">if</span> val_accurate &gt; best_acc:<br>            <span class="hljs-attr">best_acc</span> = val_accurate<br>            <span class="hljs-comment"># 只保存权重，官方推荐这一种</span><br>            torch.save(net.state_dict(), save_weight_path)<br>            <span class="hljs-comment"># 同时保存和网络</span><br>            torch.save(net, save_model_path)<br></code></pre></td></tr></table></figure>
 
             </div>
             <hr>
@@ -262,9 +249,9 @@
                   <div class="post-meta mr-3">
                     <i class="iconfont icon-category"></i>
                     
-                      <a class="hover-with-bg" href="/categories/%E7%94%9F%E6%B4%BB%E8%AE%B0%E5%BD%95/">生活记录</a>
+                      <a class="hover-with-bg" href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/">工作技能</a>
                     
-                      <a class="hover-with-bg" href="/categories/%E7%94%9F%E6%B4%BB%E8%AE%B0%E5%BD%95/%E7%94%B5%E8%84%91%E8%AE%BE%E7%BD%AE/">电脑设置</a>
+                      <a class="hover-with-bg" href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">神经网络</a>
                     
                   </div>
                 
@@ -272,9 +259,7 @@
                   <div class="post-meta">
                     <i class="iconfont icon-tags"></i>
                     
-                      <a class="hover-with-bg" href="/tags/Nvidia/">Nvidia</a>
-                    
-                      <a class="hover-with-bg" href="/tags/%E9%A9%B1%E5%8A%A8%E5%A4%B1%E6%95%88/">驱动失效</a>
+                      <a class="hover-with-bg" href="/tags/pytorch/">pytorch</a>
                     
                   </div>
                 
@@ -291,9 +276,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2021/07/29/python%E5%87%BD%E6%95%B0%E5%8F%82%E6%95%B0%E7%9A%84%E6%89%93%E5%8C%85%E4%B8%8E%E6%8B%86%E8%A7%A3/">
+                      <a href="/2021/08/11/pytorch%E6%A0%B8%E5%BF%83%E7%94%A8%E6%B3%95-3/">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">python函数参数的打包与拆解</span>
+                        <span class="hidden-mobile">pytorch基础用法-预测</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -301,8 +286,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2021/07/22/pytorch%E7%AC%94%E8%AE%B0/">
-                        <span class="hidden-mobile">pytorch笔记</span>
+                      <a href="/2021/08/11/pytorch%E5%9F%BA%E7%A1%80%E7%94%A8%E6%B3%95/">
+                        <span class="hidden-mobile">pytorch基础用法-模型</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

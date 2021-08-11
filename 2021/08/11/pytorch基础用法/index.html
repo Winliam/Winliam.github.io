@@ -18,7 +18,7 @@
   <meta name="author" content="William Guo">
   <meta name="keywords" content="">
   
-  <title>pytorch模型搭建 by 电竞大师小明</title>
+  <title>pytorch基础用法-模型 by 电竞大师小明</title>
 
   <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
 
@@ -163,7 +163,7 @@
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.7)">
           <div class="page-header text-center fade-in-up">
-            <span class="h2" id="subtitle" title="pytorch模型搭建">
+            <span class="h2" id="subtitle" title="pytorch基础用法-模型">
               
             </span>
 
@@ -173,8 +173,8 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2021-07-22 17:13" pubdate>
-        2021年7月22日 下午
+      <time datetime="2021-08-11 16:52" pubdate>
+        2021年8月11日 下午
       </time>
     </span>
   
@@ -185,7 +185,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      414 字
+      406 字
     </span>
   
 
@@ -195,7 +195,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      6
+      5
        分钟
     </span>
   
@@ -233,30 +233,18 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">pytorch模型搭建</h1>
+            <h1 style="display: none">pytorch基础用法-模型</h1>
             
             <div class="markdown-body">
-              <h3 id="搭建模型"><a href="#搭建模型" class="headerlink" title="搭建模型"></a>搭建模型</h3><figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">import</span> torch.nn as nn<br><span class="hljs-attribute">import</span> torch.nn.functional as F<br><br><span class="hljs-attribute">class</span> LeNet(nn.Module):<br><span class="hljs-comment"># 设定有哪些网络层，每层的尺寸</span><br>    <span class="hljs-attribute">def</span> __init__(self):<br>        <span class="hljs-attribute">super</span>(LeNet, self).__init__()<br>        <span class="hljs-attribute">self</span>.conv<span class="hljs-number">1</span> = nn.Conv<span class="hljs-number">2</span>d(<span class="hljs-number">3</span>, <span class="hljs-number">16</span>, <span class="hljs-number">5</span>)<br>        <span class="hljs-attribute">self</span>.pool<span class="hljs-number">1</span> = nn.MaxPool<span class="hljs-number">2</span>d(<span class="hljs-number">2</span>, <span class="hljs-number">2</span>)<br>        <span class="hljs-attribute">self</span>.conv<span class="hljs-number">2</span> = nn.Conv<span class="hljs-number">2</span>d(<span class="hljs-number">16</span>, <span class="hljs-number">32</span>, <span class="hljs-number">5</span>)<br>        <span class="hljs-attribute">self</span>.pool<span class="hljs-number">2</span> = nn.MaxPool<span class="hljs-number">2</span>d(<span class="hljs-number">2</span>, <span class="hljs-number">2</span>)<br>        <span class="hljs-attribute">self</span>.fc<span class="hljs-number">1</span> = nn.Linear(<span class="hljs-number">32</span>*<span class="hljs-number">5</span>*<span class="hljs-number">5</span>, <span class="hljs-number">120</span>)<br>        <span class="hljs-attribute">self</span>.fc<span class="hljs-number">2</span> = nn.Linear(<span class="hljs-number">120</span>, <span class="hljs-number">84</span>)<br>        <span class="hljs-attribute">self</span>.fc<span class="hljs-number">3</span> = nn.Linear(<span class="hljs-number">84</span>, <span class="hljs-number">10</span>)<br><br><span class="hljs-comment"># 设定层与层之间的怎样连接</span><br>    <span class="hljs-attribute">def</span> forward(self, x):<br>        <span class="hljs-attribute">x</span> = F.relu(self.conv<span class="hljs-number">1</span>(x))    # input(<span class="hljs-number">3</span>, <span class="hljs-number">32</span>, <span class="hljs-number">32</span>) output(<span class="hljs-number">16</span>, <span class="hljs-number">28</span>, <span class="hljs-number">28</span>)<br>        <span class="hljs-attribute">x</span> = self.pool<span class="hljs-number">1</span>(x)            # output(<span class="hljs-number">16</span>, <span class="hljs-number">14</span>, <span class="hljs-number">14</span>)<br>        <span class="hljs-attribute">x</span> = F.relu(self.conv<span class="hljs-number">2</span>(x))    # output(<span class="hljs-number">32</span>, <span class="hljs-number">10</span>, <span class="hljs-number">10</span>)<br>        <span class="hljs-attribute">x</span> = self.pool<span class="hljs-number">2</span>(x)            # output(<span class="hljs-number">32</span>, <span class="hljs-number">5</span>, <span class="hljs-number">5</span>)<br>        <span class="hljs-attribute">x</span> = x.view(-<span class="hljs-number">1</span>, <span class="hljs-number">32</span>*<span class="hljs-number">5</span>*<span class="hljs-number">5</span>)       # output(<span class="hljs-number">32</span>*<span class="hljs-number">5</span>*<span class="hljs-number">5</span>)<br>        <span class="hljs-attribute">x</span> = F.relu(self.fc<span class="hljs-number">1</span>(x))      # output(<span class="hljs-number">120</span>)<br>        <span class="hljs-attribute">x</span> = F.relu(self.fc<span class="hljs-number">2</span>(x))      # output(<span class="hljs-number">84</span>)<br>        <span class="hljs-attribute">x</span> = self.fc<span class="hljs-number">3</span>(x)              # output(<span class="hljs-number">10</span>)<br>        <span class="hljs-attribute">return</span> x<br></code></pre></td></tr></table></figure>
-<h3 id="引入数据"><a href="#引入数据" class="headerlink" title="引入数据"></a>引入数据</h3><h4 id="数据集引入"><a href="#数据集引入" class="headerlink" title="数据集引入"></a>数据集引入</h4><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs routeros">train_set = torchvision.datasets.CIFAR10(<span class="hljs-attribute">root</span>=<span class="hljs-string">&#x27;./data&#x27;</span>, <span class="hljs-attribute">train</span>=<span class="hljs-literal">True</span>, <span class="hljs-attribute">download</span>=<span class="hljs-literal">True</span>, <span class="hljs-attribute">transform</span>=transform)<br></code></pre></td></tr></table></figure>
-<ul>
-<li>param[1] [in] : 待引入的数据集的路径</li>
-<li>param[2] [in] : 引入的是数据集的训练集还是测试集</li>
-<li>param[3] [in] : 是否需要先下载</li>
-<li>param[4] [in] : 引入前需要对数据继续哪些变换</li>
-<li>return : 一个troch定义的class，可看做一个vector；vector元素是tuple，tuple元素是tensor，每个tensor对应一个张量化后的图片</li>
-</ul>
-<h4 id="数据加载"><a href="#数据加载" class="headerlink" title="数据加载"></a>数据加载</h4><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs routeros">train_loader = torch.utils.data.DataLoader(train_set, <span class="hljs-attribute">batch_size</span>=36, <span class="hljs-attribute">shuffle</span>=<span class="hljs-literal">True</span>, <span class="hljs-attribute">num_workers</span>=0)<br><br>train_data_iter = iter(train_loader)<br>img, label = train_data_iter.next()<br><br><span class="hljs-keyword">for</span> <span class="hljs-keyword">step</span>, data <span class="hljs-keyword">in</span> enumerate(train_loader, <span class="hljs-attribute">start</span>=0)<br>    img, label = data<br>    pass <span class="hljs-built_in">..</span>.<br></code></pre></td></tr></table></figure>
-<ul>
-<li>param[1] [in] : 待导入的数据集</li>
-<li>param[2] [in] : batchsize</li>
-<li>param[3] [in] : 是否打乱原序列</li>
-<li>param[4] [in] : 启用几个线程做导入任务</li>
-<li>return : 用于<ol>
-<li>被enumerate返回(int, [tensor,tensor]),第一个tensor代表inputs，维度为[batch_size, c, h, w], 第二个为labels，维度为[batch_size]</li>
-<li>被iter返回一个iterator对象，iter.next()返回[tensor, tensor]含义同上</li>
+              <p>搭建一个CNN模型用作图像分类的过程，整体而言还是比较清晰的，主要分为模型、训练、预测三项工作。</p>
+<p>第一项工作，模型搭建，套路也很清晰。新建一个继承于<code>nn.Module</code>的类，然后</p>
+<ol>
+<li>将网络层一一作为类的成员添加进来。这些网络层可以是<code>Conv2d</code>, <code>MaxPool2d</code>, <code>Linear</code>等<code>torch.nn</code>提供的基本模块，也可以是由这些基本模块组合成的自定义building blocks，如ResNet中的Residual单元，GoogLeNet中的Inception单元等。</li>
+<li>定义网络层之间的连接关系，也就是<code>forward</code>函数的行为。</li>
 </ol>
-</li>
-</ul>
+<p>另外，一种常见的做法是在定义网络层成员的时候，直接使用<code>nn.sequential</code>函数将多个网络层连接模块（比如一个classifier和一个features），然后在<code>forward</code>中连接这些模块即可。<br></p>
+<p>BN, Dropout, Relu都可以作为一个网络层存在和连接。</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">import</span> torch.nn as nn<br><span class="hljs-attribute">import</span> torch.nn.functional as F<br><br><span class="hljs-attribute">class</span> LeNet(nn.Module):<br>    <span class="hljs-comment"># 设定有哪些网络层，每层的尺寸</span><br>    <span class="hljs-attribute">def</span> __init__(self):<br>        <span class="hljs-attribute">super</span>(LeNet, self).__init__()<br>        <span class="hljs-attribute">self</span>.conv<span class="hljs-number">1</span> = nn.Conv<span class="hljs-number">2</span>d(<span class="hljs-number">3</span>, <span class="hljs-number">16</span>, <span class="hljs-number">5</span>)<br>        <span class="hljs-attribute">self</span>.pool<span class="hljs-number">1</span> = nn.MaxPool<span class="hljs-number">2</span>d(<span class="hljs-number">2</span>, <span class="hljs-number">2</span>)<br>        <span class="hljs-attribute">self</span>.conv<span class="hljs-number">2</span> = nn.Conv<span class="hljs-number">2</span>d(<span class="hljs-number">16</span>, <span class="hljs-number">32</span>, <span class="hljs-number">5</span>)<br>        <span class="hljs-attribute">self</span>.pool<span class="hljs-number">2</span> = nn.MaxPool<span class="hljs-number">2</span>d(<span class="hljs-number">2</span>, <span class="hljs-number">2</span>)<br>        <span class="hljs-attribute">self</span>.fc<span class="hljs-number">1</span> = nn.Linear(<span class="hljs-number">32</span>*<span class="hljs-number">5</span>*<span class="hljs-number">5</span>, <span class="hljs-number">120</span>)<br>        <span class="hljs-attribute">self</span>.fc<span class="hljs-number">2</span> = nn.Linear(<span class="hljs-number">120</span>, <span class="hljs-number">84</span>)<br>        <span class="hljs-attribute">self</span>.fc<span class="hljs-number">3</span> = nn.Linear(<span class="hljs-number">84</span>, <span class="hljs-number">10</span>)<br><br>    <span class="hljs-comment"># 设定层与层之间的怎样连接</span><br>    <span class="hljs-attribute">def</span> forward(self, x):<br>        <span class="hljs-attribute">x</span> = F.relu(self.conv<span class="hljs-number">1</span>(x))    # input(<span class="hljs-number">3</span>, <span class="hljs-number">32</span>, <span class="hljs-number">32</span>) output(<span class="hljs-number">16</span>, <span class="hljs-number">28</span>, <span class="hljs-number">28</span>)<br>        <span class="hljs-attribute">x</span> = self.pool<span class="hljs-number">1</span>(x)            # output(<span class="hljs-number">16</span>, <span class="hljs-number">14</span>, <span class="hljs-number">14</span>)<br>        <span class="hljs-attribute">x</span> = F.relu(self.conv<span class="hljs-number">2</span>(x))    # output(<span class="hljs-number">32</span>, <span class="hljs-number">10</span>, <span class="hljs-number">10</span>)<br>        <span class="hljs-attribute">x</span> = self.pool<span class="hljs-number">2</span>(x)            # output(<span class="hljs-number">32</span>, <span class="hljs-number">5</span>, <span class="hljs-number">5</span>)<br>        <span class="hljs-attribute">x</span> = x.view(-<span class="hljs-number">1</span>, <span class="hljs-number">32</span>*<span class="hljs-number">5</span>*<span class="hljs-number">5</span>)       # output(<span class="hljs-number">32</span>*<span class="hljs-number">5</span>*<span class="hljs-number">5</span>)<br>        <span class="hljs-attribute">x</span> = F.relu(self.fc<span class="hljs-number">1</span>(x))      # output(<span class="hljs-number">120</span>)<br>        <span class="hljs-attribute">x</span> = F.relu(self.fc<span class="hljs-number">2</span>(x))      # output(<span class="hljs-number">84</span>)<br>        <span class="hljs-attribute">x</span> = self.fc<span class="hljs-number">3</span>(x)              # output(<span class="hljs-number">10</span>)<br>        <span class="hljs-attribute">return</span> x<br></code></pre></td></tr></table></figure>
 
             </div>
             <hr>
@@ -295,9 +283,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2021/07/26/nvidia-smi%E7%AA%81%E7%84%B6%E8%B7%AA%E4%BA%86%EF%BC%81/">
+                      <a href="/2021/08/11/pytorch%E6%A0%B8%E5%BF%83%E7%94%A8%E6%B3%95-2/">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">nvidia-smi突然跪了！</span>
+                        <span class="hidden-mobile">pytorch基础用法-训练</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -305,8 +293,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2021/07/22/pytorch%E7%AC%94%E8%AE%B0/">
-                        <span class="hidden-mobile">pytorch笔记</span>
+                      <a href="/2021/08/10/manifold%E6%98%AF%E4%B8%AA%E5%95%A5/">
+                        <span class="hidden-mobile">流形(manifold)是个啥?</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
