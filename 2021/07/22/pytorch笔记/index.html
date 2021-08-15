@@ -178,7 +178,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      852 字
+      1.1k 字
     </span>
   
 
@@ -188,7 +188,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      11
+      14
        分钟
     </span>
   
@@ -230,7 +230,7 @@
             
               <p class="note note-info">
                 
-                  本文最后更新于：8 小时前
+                  本文最后更新于：2 天前
                 
               </p>
             
@@ -271,6 +271,16 @@
 <p>当传入的Iterable对象长度不一致时取最短的。<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs stylus"><span class="hljs-selector-tag">a</span> = <span class="hljs-selector-attr">[[1,2]</span>,<span class="hljs-selector-attr">[3,4]</span>,<span class="hljs-selector-attr">[5,6]</span>]<br><span class="hljs-selector-tag">b</span> = zip(*a)<br>c = tuple(b)<br><br>&gt;&gt;&gt; <span class="hljs-selector-tag">a</span> = ((<span class="hljs-number">1</span>, <span class="hljs-number">3</span>, <span class="hljs-number">5</span>), (<span class="hljs-number">2</span>, <span class="hljs-number">4</span>, <span class="hljs-number">6</span>))<br></code></pre></td></tr></table></figure></p>
 <h3 id="python-string的split方法"><a href="#python-string的split方法" class="headerlink" title="python string的split方法"></a>python string的split方法</h3><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs stylus"><span class="hljs-selector-tag">a</span> = <span class="hljs-string">&quot;, my, name, is, ming&quot;</span><br><span class="hljs-selector-tag">b</span> = <span class="hljs-selector-tag">a</span><span class="hljs-selector-class">.split</span>(<span class="hljs-string">&#x27;,&#x27;</span>)<br><br>&gt;&gt;&gt; <span class="hljs-selector-tag">b</span> = <span class="hljs-selector-attr">[<span class="hljs-string">&#x27;&#x27;</span>,<span class="hljs-string">&#x27; my&#x27;</span>,<span class="hljs-string">&#x27; name&#x27;</span>,<span class="hljs-string">&#x27; is&#x27;</span>,<span class="hljs-string">&#x27; ming&#x27;</span> ]</span><br></code></pre></td></tr></table></figure>
 <p>即，将原string按照字符串分割，不包含分隔符，返回一个列表。</p>
+<h3 id="pyhton-函数装饰器"><a href="#pyhton-函数装饰器" class="headerlink" title="pyhton 函数装饰器"></a>pyhton 函数装饰器</h3><p>对被修饰的函数增加一层封装，被修饰的函数仍然正常被调用，被执行，但是增加了一些“私货”，比如打log。这么做的好处是在不修改原函数代码以及调用原函数的代码的前提下改变其行为。<br><figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs pgsql"><span class="hljs-keyword">import</span> logging<br><br>def use_logging(func):<br>	def <span class="hljs-keyword">wrapper</span>(*args, **kwargs):<br>		logging.warn(&quot;%s is running&quot; % func.__name__)<br>		<span class="hljs-keyword">return</span> func(*args)<br>	<span class="hljs-keyword">return</span> <span class="hljs-keyword">wrapper</span><br><br>@use_logging<br>def foo():<br>	print(&quot;i am foo&quot;)<br><br>@use_logging<br>def bar():<br>	print(&quot;i am bar&quot;)<br><br>foo()<br>bar()<br><br>&gt;&gt;&gt; i am foo<br>&gt;&gt;&gt; i am bar<br>&gt;&gt;&gt; <span class="hljs-built_in">WARNING</span>:root:foo <span class="hljs-keyword">is</span> running<br>&gt;&gt;&gt; <span class="hljs-built_in">WARNING</span>:root:bar <span class="hljs-keyword">is</span> running<br></code></pre></td></tr></table></figure></p>
+<h3 id="python-赋值-amp-浅拷贝-amp-深拷贝的区别"><a href="#python-赋值-amp-浅拷贝-amp-深拷贝的区别" class="headerlink" title="python 赋值&amp;浅拷贝&amp;深拷贝的区别"></a>python 赋值&amp;浅拷贝&amp;深拷贝的区别</h3><ol>
+<li>对于不可变对象，三者同质，都只增加原对象的引用计数</li>
+<li>对于可变对象<ul>
+<li>赋值，仍然是引用计数</li>
+<li>浅拷贝，新瓶装旧酒，瓶是新的，酒还是原对象元素的计数引用</li>
+<li>深拷贝，实质意义上的拷贝，啥都重新搞一份</li>
+</ul>
+</li>
+</ol>
 
             </div>
             <hr>
@@ -303,6 +313,8 @@
                       <a class="hover-with-bg" href="/tags/split/">split</a>
                     
                       <a class="hover-with-bg" href="/tags/flatten/">flatten</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E5%87%BD%E6%95%B0%E8%A3%85%E9%A5%B0%E5%99%A8/">函数装饰器</a>
                     
                   </div>
                 

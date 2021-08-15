@@ -182,6 +182,135 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
+        <a href="/2021/08/06/argparse%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%94%A8%E6%B3%95/" target="_self">
+          argparse的基本用法
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2021/08/06/argparse%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%94%A8%E6%B3%95/" target="_self">
+          
+          
+            
+          
+          用途及原理为python脚本运行时所添加额外命令行参数提供解释。大致原理是为一个parser对象添加一些属性，然后这个parser对象在接受一系列参数（默认是命令行参数）之后，就拥有了一系列属性，然后程序就可以用这些属性来做事了。就是说，信息从命令行传递到了脚本内。
+示例12345678910111213141516171819202122# 创建对象import argparseparser =
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2021-08-06 16:35" pubdate>
+              2021-08-06
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/">工作技能</a>
+            
+              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/python%E7%AC%94%E8%AE%B0/">python笔记</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/python/">python</a>
+            
+              <a href="/tags/argparse/">argparse</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2021/08/03/GoogleNet/" target="_self">
+          GoogLeNet
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2021/08/03/GoogleNet/" target="_self">
+          
+          
+            
+          
+          背景简介2014年Google团队提出，当年的ImageNet分类任务第一名（第二名是VGG）。其中的Inception结构和辅助分类器的概念很有启发性和创造性。
+网络结构整体结构构建起整个网络的building blocks有5种：
+
+常规的卷积层，默认以RELU为激活函数，SAME padding
+常规的池化层，包括最大池化和平均池化
+Inception单元，共计3层9个，具体结构后面解释
+辅
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2021-08-03 10:31" pubdate>
+              2021-08-03
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/">工作技能</a>
+            
+              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">神经网络</a>
+            
+              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/%E7%BB%8F%E5%85%B8%E7%BD%91%E7%BB%9C/">经典网络</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a>
+            
+              <a href="/tags/CNN/">CNN</a>
+            
+              <a href="/tags/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">卷积神经网络</a>
+            
+              <a href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">神经网络</a>
+            
+              <a href="/tags/%E7%BB%8F%E5%85%B8%E7%BD%91%E7%BB%9C/">经典网络</a>
+            
+              <a href="/tags/Inception%E7%BB%93%E6%9E%84/">Inception结构</a>
+            
+              <a href="/tags/GoogLeNet/">GoogLeNet</a>
+            
+              <a href="/tags/%E8%BE%85%E5%8A%A9%E5%88%86%E7%B1%BB%E5%99%A8/">辅助分类器</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
         <a href="/2021/08/01/VGGnet/" target="_self">
           VGGnet
         </a>
@@ -661,6 +790,8 @@ nvidia-smi一看，又是一个新报错Failed to initialize NVML: Driver/librar
             
               <a href="/tags/flatten/">flatten</a>
             
+              <a href="/tags/%E5%87%BD%E6%95%B0%E8%A3%85%E9%A5%B0%E5%99%A8/">函数装饰器</a>
+            
           </div>
         
       </div>
@@ -724,137 +855,6 @@ nvidia-smi一看，又是一个新报错Failed to initialize NVML: Driver/librar
               <a href="/tags/CNN/">CNN</a>
             
               <a href="/tags/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">卷积神经网络</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2021/07/12/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84%E6%95%B0%E5%AD%A6%E5%8E%9F%E7%90%86/" target="_self">
-          DNN的数学原理
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2021/07/12/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84%E6%95%B0%E5%AD%A6%E5%8E%9F%E7%90%86/" target="_self">
-          
-          
-            
-          
-          神经网络模型的结构神经网络的基础单元是神经元，多个神经元纵向堆叠形成神经网络层，神经网络层横向堆叠形成神经网络。
-
-
-
-
-神经元的数学原理对于一个神经元，进行的数学计算为：
-
-接受一个向量$\boldsymbol{a}^{[j-1]}$，通过与$\boldsymbol{w}^{[j]}_i$进行向量内积运算产生一个中间值$z_i^{[j]}$（标量），然后用激活函数$g_i^{[j]}()$将$z
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2021-07-12 17:37" pubdate>
-              2021-07-12
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/">工作技能</a>
-            
-              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">神经网络</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a>
-            
-              <a href="/tags/DNN/">DNN</a>
-            
-              <a href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">神经网络</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2021/07/09/CSAPP%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E6%80%BB%E7%BB%93/" target="_self">
-          CSAPP并发编程总结
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2021/07/09/CSAPP%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E6%80%BB%E7%BB%93/" target="_self">
-          
-          
-            
-          
-          并发编程基本概念
-并发：多个逻辑控制流的生命周期有重叠，即称为并发现象(concurrency)
-并行：发生在多核/多计算机上的并发现象（在一个时刻上存在多个逻辑控制流），称为并行现象（parallel），是并发现象的真子集；
-
-并发程序的三种构造方式：
-进程：每个逻辑控制流实现为一个进程
-特点：独立的虚拟地址空间
-优点：独立则不易混淆
-缺点：
-独立则难以共享数据
-进程context切换和IPC开
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2021-07-09 14:24" pubdate>
-              2021-07-09
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/">工作技能</a>
-            
-              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/">并发编程</a>
-            
-              <a href="/tags/%E7%BA%BF%E7%A8%8B/">线程</a>
-            
-              <a href="/tags/%E4%BF%A1%E5%8F%B7%E9%87%8F/">信号量</a>
-            
-              <a href="/tags/%E9%94%81/">锁</a>
             
           </div>
         
