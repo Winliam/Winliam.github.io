@@ -178,7 +178,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      866 字
+      918 字
     </span>
   
 
@@ -188,7 +188,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      10
+      11
        分钟
     </span>
   
@@ -230,7 +230,7 @@
             
               <p class="note note-info">
                 
-                  本文最后更新于：3 天前
+                  本文最后更新于：10 天前
                 
               </p>
             
@@ -259,7 +259,7 @@
 <ol>
 <li>根据train_set.txt或者val_set.txt的内容建立<code>self.xml_list</code>，一个存放所有xml文件路径的list，并检查这些xml文件是否确实存在</li>
 <li>根据描述类别信息的json文件建立<code>self.class_dict</code></li>
-<li>根据传入参数设定预处理函数<code>self.transforms</code>的行为，包括RandomFlip等augmentation以及to<em>tensor，normalize等过程，在`<em>_getitem</em></em>`方法中也就是具体内容前执行。</li>
+<li>根据传入参数设定预处理函数<code>self.transforms</code>的行为，包括RandomFlip等augmentation操作以及to_tensor，normalize等操作，在<code>getitem</code>方法中也就是具体内容前执行。</li>
 </ol>
 <h4 id="getitem-方法"><a href="#getitem-方法" class="headerlink" title="__getitem__方法"></a><code>__getitem__</code>方法</h4><p><code>__getitem__</code>方法目的是定义用[idx]索引本类示例时返回什么。在这里，是返回一个tuple，内容为<code>(image_tensor, img_attr_dict)</code>。整个函数的行为就是为了得到这两个元素。</p>
 <ol>
@@ -272,7 +272,7 @@
 </blockquote>
 </li>
 <li>根据dict中的其他信息找到boxes，label等标注信息，并转为tensor，最后组装成<code>img_attr_dict</code>。<blockquote>
-<p>多目标情形时，box作为key，对应一个list of tensor，每个tensor对应一个box，label等同理。</p>
+<p>多目标情形时，box作为key，对应一个list of tensor，每个tensor对应一个box，label等同理。一个典型的包含两个box的dict如下：<br>{boxes:tensor(2x4),<br>labels:tensor(2x1),<br>image_id:tensor(1x1),<br>area:tensor(2x1),<br>iscrowd:tensor(2x1),<br>}</p>
 </blockquote>
 </li>
 </ol>
@@ -282,7 +282,7 @@
 <blockquote>
 <p>[(image_tensor_0, img_attr_dict_0)<br> ···<br> (image_tensor_b, img_attr_dict_b)]</p>
 </blockquote>
-<p>这不是我们想要的。（为啥？mark）我们想要的是</p>
+<p>这不是我们想要的。我们想要的是各个图像的像素值集中在一起，图像的标注信息集中在一起：</p>
 <blockquote>
 <p>[(image_tensor_0,<br>  …<br>  image_tensor_b),</p>
 <p> (img_attr_dict_0,<br>  …,<br>  img_attr_dict_b)]</p>

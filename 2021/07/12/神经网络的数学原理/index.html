@@ -178,7 +178,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      3k 字
+      3.7k 字
     </span>
   
 
@@ -188,7 +188,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      42
+      53
        分钟
     </span>
   
@@ -230,12 +230,13 @@
             
               <p class="note note-info">
                 
-                  本文最后更新于：1 个月前
+                  本文最后更新于：几秒前
                 
               </p>
             
             <div class="markdown-body">
-              <h2 id="神经网络模型的结构"><a href="#神经网络模型的结构" class="headerlink" title="神经网络模型的结构"></a>神经网络模型的结构</h2><p><strong>神经网络</strong>的基础单元是<strong>神经元</strong>，多个<strong>神经元</strong>纵向堆叠形成神经<strong>网络层</strong>，神经<strong>网络层</strong>横向堆叠形成<strong>神经网络</strong>。</p>
+              <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>数学是现实世界的精确抽象，再花里胡哨的东西，内在终究还是一堆加减乘除。因此，从数学的角度写一下到底啥是深度学习，学过线代就能懂。</p>
+<h2 id="神经网络模型的结构"><a href="#神经网络模型的结构" class="headerlink" title="神经网络模型的结构"></a>神经网络模型的结构</h2><p><strong>神经网络</strong>的基础单元是<strong>神经元</strong>，多个<strong>神经元</strong>纵向堆叠形成神经<strong>网络层</strong>，神经<strong>网络层</strong>横向堆叠形成<strong>神经网络</strong>。</p>
 <div align=center><img title="" src="/img/article/神经网络的数学原理/神经网络.png" srcset="/img/loading.gif" lazyload width="50%" height="50%" align=center></div>
 <br>
 <div align=center><img title="" src="/img/article/神经网络的数学原理/神经元.png" srcset="/img/loading.gif" lazyload width="60%" height="60%" align=center></div>
@@ -359,7 +360,32 @@
 </blockquote>
 <p>另外归一化还存在一个小问题，就是他的前提是向量化和Mini-Batch，就是说跨样本求均值和方差的基础是有多个样本。但是在完成模型训练之后进行预测时，肯定都是每次喂到模型中一个样本，那么此时如何求均值和方差呢？毕竟最好怎么训练出来的怎么用嘛。</p>
 <p>一般的做法是，在这个训练过程中用移动平均数实时追踪均值和方差，或者用整个训练集的均值和方差也行，问题不大，而且主流的DL框架一般都封装好了。</p>
-
+<h2 id="正则化的数学原理"><a href="#正则化的数学原理" class="headerlink" title="正则化的数学原理"></a>正则化的数学原理</h2><p>正则化是一种缓解高方差，过拟合问题的措施。具体做法是在原有的损失函数之后额外增加一个关于权重矩阵的损失项，这样一来权重越大损失就越大，随着训练的进行权重会越来越趋近于0，变相地降低了模型的参数量，缓解了过拟合。</p>
+<p>常用的两种正则化方式如下，</p>
+<script type="math/tex; mode=display">
+L = L_{original} + L_1 = L_{original} + \lambda \sum_{i = 0}^{l} \lvert\lvert \boldsymbol{W}^{[i]} \rvert\rvert _1</script><script type="math/tex; mode=display">
+L = L_{original} + L_2 = L_{original} + \frac{\lambda}{2} \sum_{i = 0}^{l}  \lvert\lvert \boldsymbol{W}^{[i]} \rvert\rvert ^2_2</script><h3 id="L1正则化"><a href="#L1正则化" class="headerlink" title="L1正则化"></a>L1正则化</h3><p>$\lvert\lvert \boldsymbol{W}^{[i]} \rvert\rvert _1$的含义是矩阵$\boldsymbol{W}^{[i]}$每个元素的绝对值的总和，被称为L1正则化，最后容易得到稀疏的权重矩阵，有利于后续的剪枝和模型压缩。对应地，由于$d\boldsymbol{W}^{[i]}$是$L$关于$\boldsymbol{W}^{[i]}$的偏导，此时有</p>
+<script type="math/tex; mode=display">
+d\boldsymbol{W}^{[i]} = d\boldsymbol{W}^{[i]}_{original} + \lambda</script><script type="math/tex; mode=display">
+\boldsymbol{W}^{[i]} -= \alpha (d\boldsymbol{W}^{[i]}_{original} + \lambda)</script><h3 id="L2正则化"><a href="#L2正则化" class="headerlink" title="L2正则化"></a>L2正则化</h3><p>$\lvert\lvert \boldsymbol{W}^{[i]} \rvert\rvert ^2_2$的含义是矩阵$\boldsymbol{W}^{[i]}$每个元素的平方的总和，被称为L2正则化，最后得到的权重矩阵较为平滑，被广泛用于防止过拟合。此时有</p>
+<script type="math/tex; mode=display">
+d\boldsymbol{W}^{[i]} = d\boldsymbol{W}^{[i]}_{original} + \lambda \boldsymbol{W}^{[i]}</script><script type="math/tex; mode=display">
+\boldsymbol{W}^{[i]} -= \alpha (d\boldsymbol{W}^{[i]}_{original} + \lambda \boldsymbol{W}^{[i]})</script><p>从L2正则权重更新的公式可以看出，相对于在不加正则的基础上，先将原矩阵乘以$1-\alpha\lambda$因子，然后在进行参数更新，因此L2正则又被称为权重衰减。</p>
+<h3 id="正则权重更新公式推导"><a href="#正则权重更新公式推导" class="headerlink" title="正则权重更新公式推导"></a>正则权重更新公式推导</h3><p>本来想用矩阵求导术推导出加入正则后的$d\boldsymbol{W}^{[i]}$，但是好像不太适用。所以这里就离散的理解一下好了，比如对于L2正则，求其对于某一层的权重矩阵的偏导$d\boldsymbol{W}^{[i]}$时是不依赖于链式法则的。首先，因为求的是偏导，其它层的W项自动忽略。然后将矩阵打开来看，分别对每一个标量w求偏导，此时其他w自动忽略。</p>
+<script type="math/tex; mode=display">
+d\boldsymbol{W}^{[i]}_{l2} = 
+\frac{\partial L_2}{\partial \boldsymbol{W}^{[i]}} =
+\left[
+\begin{array}{cccc} 
+ \frac{\partial L_2}{w^{[i]}_{11}} & \frac{\partial L_2}{w^{[i]}_{12}}       & \cdots & \frac{\partial L_2}{w^{[i]}_{1n}}       \\
+ \frac{\partial L_2}{w^{[i]}_{21}}       & \frac{\partial L_2}{w^{[i]}_{22}}       &{\cdot^{\cdot^{\cdot}}} & \frac{\partial L_2}{w^{[i]}_{2n}}       \\
+ \vdots & \vdots & \ddots & \vdots \\
+ \frac{\partial L_2}{w^{[i]}_{m1}}       & \frac{\partial L_2}{w^{[i]}_{m2}}       & \cdots & \frac{\partial L_2}{w^{[i]}_{mn}}       \\
+\end{array}
+\right]</script><script type="math/tex; mode=display">
+L_2 = \frac{lambda}{2} (w_{11}^2 + w_{12}^2 + w_{13}^2 + ... + w_{mn}^2)</script><script type="math/tex; mode=display">
+\frac{\partial L_2}{w^{[i]}_{11}} = \frac{\lambda}{2} \cdot 2w^{[i]}_{11}</script><script type="math/tex; mode=display">
+d\boldsymbol{W}^{[i]}_{l2} = \lambda \boldsymbol{W}^{[i]}</script>
             </div>
             <hr>
             <div>
