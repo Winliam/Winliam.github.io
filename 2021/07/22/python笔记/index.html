@@ -178,7 +178,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      386 字
+      742 字
     </span>
   
 
@@ -188,7 +188,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      5
+      10
        分钟
     </span>
   
@@ -230,7 +230,7 @@
             
               <p class="note note-info">
                 
-                  本文最后更新于：3 天前
+                  本文最后更新于：12 天前
                 
               </p>
             
@@ -249,6 +249,18 @@
 </ul>
 </li>
 </ol>
+<h3 id="python-init-py文件的作用"><a href="#python-init-py文件的作用" class="headerlink" title="python init.py文件的作用"></a>python <strong>init</strong>.py文件的作用</h3><p>一个包含了<strong>init</strong>.py目录可以被识别为一个包，而目录内的.py文件是这个包的模块。一个包也是一个模块，反之则不一定。</p>
+<p>在import一个包时，实际上是在执行这个包的<strong>init</strong>.py中的代码。看一个例子，</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs stylus">.<br>├── <span class="hljs-selector-tag">main</span><span class="hljs-selector-class">.py</span><br>└── mypackage<br>    ├── __init__<span class="hljs-selector-class">.py</span><br>    ├── subpackage_1<br>    │   ├── test11<span class="hljs-selector-class">.py</span><br>    │   └── test12<span class="hljs-selector-class">.py</span><br>    └── subpackage_2<br>        ├── __init__<span class="hljs-selector-class">.py</span><br>        ├── test21<span class="hljs-selector-class">.py</span><br>        └── test22.py<br></code></pre></td></tr></table></figure>
+<p>在main.py中<code>import mypackage</code>时，python后台程序会按照以下顺序搜索<code>mypackage</code></p>
+<ol>
+<li>当前的工作目录；</li>
+<li>PYTHONPATH（环境变量）中的每一个目录；</li>
+<li>Python 默认的安装目录。</li>
+</ol>
+<p>本例中，在当前工作目录下即可找到<code>mypackage</code>，然后会执行其下<strong>init</strong>.py中的代码。</p>
+<p>对于mypackage的<strong>init</strong>.py，值得注意的是：<br><figure class="highlight clean"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs clean"><span class="hljs-keyword">import</span> subpackage_1			# 错误，因为在main的当前目录找不到subpackage_1<br><span class="hljs-keyword">import</span> subpackage_2			# 错误<br><span class="hljs-keyword">import</span> mypackage.subpackage_1		# 正确，先找到mypackage再找到subpackage_1<br><span class="hljs-keyword">import</span> mypackage.subpackage_2		# 正确<br><span class="hljs-keyword">from</span> . <span class="hljs-keyword">import</span> subpackage_1		# 正确，在<span class="hljs-keyword">from</span>指定的目录可以找到subpackage_1<br><span class="hljs-keyword">from</span> . <span class="hljs-keyword">import</span> subpackage_2		# 正确<br><span class="hljs-keyword">from</span> mypackage <span class="hljs-keyword">import</span> subpackage_1 	# 正确，同上<br><span class="hljs-keyword">from</span> mypackage <span class="hljs-keyword">import</span> subpackage_2<br><br><span class="hljs-keyword">from</span> mypackage <span class="hljs-keyword">import</span> test11			# 错误<br><span class="hljs-keyword">from</span> mypackage.subpackage_1 <span class="hljs-keyword">import</span> test11	# 正确<br><span class="hljs-keyword">from</span> .subpackage_1 <span class="hljs-keyword">import</span> test11		# 正确，语义同上<br><span class="hljs-keyword">from</span> mypackage <span class="hljs-keyword">import</span> test21			<br><span class="hljs-keyword">from</span> mypackage.subpackage_2 <span class="hljs-keyword">import</span> test21<br><span class="hljs-keyword">from</span> .subpackage_2 <span class="hljs-keyword">import</span> test21<br></code></pre></td></tr></table></figure></p>
+<h3 id="itertools库"><a href="#itertools库" class="headerlink" title="itertools库"></a><code>itertools</code>库</h3><figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs fortran">v1 = [(i, j) for i, j <span class="hljs-keyword">in</span> itertools.<span class="hljs-built_in">product</span>(<span class="hljs-built_in">range</span>(<span class="hljs-number">2</span>), <span class="hljs-built_in">repeat</span>=<span class="hljs-number">2</span>)]<br>v2 = [(i, j) for i, j <span class="hljs-keyword">in</span> itertools.<span class="hljs-built_in">product</span>(<span class="hljs-built_in">range</span>(<span class="hljs-number">2</span>), <span class="hljs-built_in">repeat</span>=<span class="hljs-number">3</span>)]<br><br>&gt;&gt;&gt; v1 = [(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>), (<span class="hljs-number">0</span>, <span class="hljs-number">1</span>), (<span class="hljs-number">1</span>, <span class="hljs-number">0</span>), (<span class="hljs-number">1</span>, <span class="hljs-number">1</span>)]<br>&gt;&gt;&gt; v2 = [(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>), (<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>), (<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0</span>), (<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>), (<span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>), (<span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>), (<span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0</span>), (<span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>)]<br></code></pre></td></tr></table></figure>
 
             </div>
             <hr>

@@ -178,7 +178,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      371 字
+      541 字
     </span>
   
 
@@ -188,7 +188,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      4
+      6
        分钟
     </span>
   
@@ -230,7 +230,7 @@
             
               <p class="note note-info">
                 
-                  本文最后更新于：1 个月前
+                  本文最后更新于：4 天前
                 
               </p>
             
@@ -281,7 +281,8 @@
 <li>缺省：同上</li>
 </ol>
 <h4 id="step为负数，从后向前选取"><a href="#step为负数，从后向前选取" class="headerlink" title="step为负数，从后向前选取"></a>step为负数，从后向前选取</h4><p>此时，start是stop，stop是start，而且还是左开右闭，比如<br><figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">a</span>[<span class="hljs-number">2</span>:<span class="hljs-number">0</span>:-<span class="hljs-number">1</span>] -&gt;<span class="hljs-meta"> [6, 4]</span><br><br><span class="hljs-attribute">a</span>[:<span class="hljs-number">1</span>:-<span class="hljs-number">2</span>] -&gt;<span class="hljs-meta"> [8]</span><br></code></pre></td></tr></table></figure></p>
-<h2 id="多维数组切片"><a href="#多维数组切片" class="headerlink" title="多维数组切片"></a>多维数组切片</h2><p>numpy和tensor这样的数据类型相比于原生的list提供了多维数组切片方法，示例如下：<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs stylus">pad_img<span class="hljs-selector-attr">[: img.shape[0]</span>, : <span class="hljs-selector-tag">img</span><span class="hljs-selector-class">.shape</span><span class="hljs-selector-attr">[1]</span>, : <span class="hljs-selector-tag">img</span><span class="hljs-selector-class">.shape</span><span class="hljs-selector-attr">[2]</span>]<span class="hljs-selector-class">.copy_</span>(img)<br></code></pre></td></tr></table></figure><br>两个逗号隔开三个索引表达式，分别对应这个图像/tensor/numpy数组的3个维度，各个索引表达式在各自维度上的切片规则同上。这个例子的含义是把img中的像素值复制到pad_img中，左上角对齐。</p>
+<h2 id="多维数组切片"><a href="#多维数组切片" class="headerlink" title="多维数组切片"></a>多维数组切片</h2><p>numpy和tensor这样的数据类型相比于原生的list提供了多维数组切片方法，示例如下：<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs stylus">pad_img<span class="hljs-selector-attr">[: img.shape[0]</span>, : <span class="hljs-selector-tag">img</span><span class="hljs-selector-class">.shape</span><span class="hljs-selector-attr">[1]</span>, : <span class="hljs-selector-tag">img</span><span class="hljs-selector-class">.shape</span><span class="hljs-selector-attr">[2]</span>]<span class="hljs-selector-class">.copy_</span>(img)<br></code></pre></td></tr></table></figure><br>两个逗号隔开三个索引表达式，分别对应这个图像/tensor/numpy数组的3个维度，各个索引表达式在各自维度上的切片规则同上，得到各个维度上的索引列表后对3个列表的元素进行全排列，即可得到最终的三维索引(x, y, z)。这个例子的含义是把img中的像素值复制到pad_img中，左上角对齐。</p>
+<p>研究SSD的源码时又发现一个tensor的切片方式：<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs stylus">bboxes = <span class="hljs-selector-attr">[[0, 1, 2]</span>, <span class="hljs-selector-attr">[3, 4, 5]</span>, <span class="hljs-selector-attr">[6, 7, 8]</span>]<br><br><span class="hljs-selector-tag">a</span> = bboxes<span class="hljs-selector-attr">[[True, False, True]</span>, <span class="hljs-number">0</span>]<br><span class="hljs-selector-tag">b</span> = bboxes<span class="hljs-selector-attr">[[1, 0, 1]</span>, <span class="hljs-number">0</span>]<br><br>&gt;&gt;&gt; <span class="hljs-selector-tag">a</span> = <span class="hljs-selector-attr">[0, 6]</span><br>&gt;&gt;&gt; <span class="hljs-selector-tag">b</span> = <span class="hljs-selector-attr">[3, 0, 3]</span><br></code></pre></td></tr></table></figure><br>基本的规则还是跟第一个例子一样，先获取各个维度的索引列表，然后进行全排列，得到最终的二维索引(x, y)。但是第一个维度上的索引列表是一个bool类型元素的列表，当取Fasle时，不参与索引。</p>
 
             </div>
             <hr>
