@@ -1,0 +1,615 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/time.jpg">
+  <link rel="icon" href="/img/time.jpg">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="王者之路，就在脚下">
+  <meta name="author" content="William Guo">
+  <meta name="keywords" content="">
+  
+  <title>YOLO源码分析 —— 整体框架 by 电竞大师小明</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"ApWFLRBvVptYicRhN7DQqrOa-gzGzoHsz","app_key":"ihFV8rR5s2zuqoKPXqW9sydt","server_url":"https://apwflrbv.lc-cn-n1-shared.com"}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>电竞大师小明</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/article.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.7)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="YOLO源码分析 —— 整体框架">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.9k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      21
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- LeanCloud 统计文章PV -->
+      <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="leancloud-page-views"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">YOLO源码分析 —— 整体框架</h1>
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：几秒前
+                
+              </p>
+            
+            <div class="markdown-body">
+              <h2 id="0-前言"><a href="#0-前言" class="headerlink" title="0. 前言"></a>0. 前言</h2><p>One-Stage目标检测的另一代表，特点是啥呢？现在还总结不出来。。。mark</p>
+<p>现在看下来YOLO的故事是，YOLOv1先定下基础，然后后面的版本用各种各样的trick改善v1的效果。因此，要首先搞清楚v1都干了些啥，然后再依次搞清楚后续各个补丁的含义。</p>
+<p>而且由于YOLOv1的检测效果相对而言并不是很好，目前应用的至少是v3起步，所以对于v1和v2只在理论层面分析一下，源码的分析直接从v3开始。</p>
+<blockquote>
+<p>插入一个各个版本的检测效果对比图，mark</p>
+</blockquote>
+<h2 id="1-YOLOv1解析"><a href="#1-YOLOv1解析" class="headerlink" title="1. YOLOv1解析"></a>1. YOLOv1解析</h2><h3 id="1-1-模型结构"><a href="#1-1-模型结构" class="headerlink" title="1.1 模型结构"></a>1.1 模型结构</h3><blockquote>
+<p>插入YOLOv1模型结构图,mark</p>
+</blockquote>
+<p>看上面这个模型结构图可知，第一代YOLO的特点就是“简单+粗暴”，从image输入到detection输出，全过程看起来就跟一个分类网络模型没有任何区别。只不过是将分类网络最终输出的21维列向量（以PascalVOC）扩充为下面这个30维列向量（以7x7切分cell，每个cell 2个final_box为例）：</p>
+<blockquote>
+<p>插入YOLOv1输出向量的结构图</p>
+</blockquote>
+<p>这样的模型输出向量有7x7个，也就是模型结构图中最后的那个30x7x7的tensor，刚好对应原图7x7个cell。对其中的一个按深度方向的行向量而言，有</p>
+<ul>
+<li>20位作为每个类别的score（不考虑背景了？mark）</li>
+<li>$(4+1)\times2 =10$位作为两个框的信息，4对应角点坐标，1对应YOLO独有的“框的置信度”，后面会详细展开。</li>
+</ul>
+<h3 id="1-2-损失函数"><a href="#1-2-损失函数" class="headerlink" title="1.2 损失函数"></a>1.2 损失函数</h3><p>个人感觉YOLOv1的一切秘密其实都藏在它的损失函数中，先看公式：</p>
+<script type="math/tex; mode=display">
+L1 = \lambda_{coord} \sum_{i=0}^{S^2}\sum_{j=0}^{B} 1_{ij}^{obj} [(x_i-\hat{x}_i)^2+(y_i-\hat{y}_i)^2]</script><script type="math/tex; mode=display">
+L2 = \lambda_{coord} \sum_{i=0}^{S^2}\sum_{j=0}^{B} 1_{ij}^{obj} [(\sqrt{w_i}-\sqrt{\hat{w}_i})^2+(\sqrt{h_i}-\sqrt{\hat{h}_i})^2]</script><script type="math/tex; mode=display">
+L3 = \sum_{i=0}^{S^2}\sum_{j=0}^{B} 1_{ij}^{obj} (C_i-\hat{C}_i)^2</script><script type="math/tex; mode=display">
+L4 = \lambda_{noobj} \sum_{i=0}^{S^2}\sum_{j=0}^{B} 1_{ij}^{noobj} (C_i-\hat{C}_i)^2</script><script type="math/tex; mode=display">
+L5 = \sum_{i=0}^{S^2} 1_{i}^{obj} \sum_{i \in classes} (p_i(c)-\hat{p}_i(c))^2</script><script type="math/tex; mode=display">
+L = L_1 + L_2 + L_3 + L_4 + L_5</script><p>非老手的话一眼看过去是有点懵逼的，不过一项一项捋一下也不算难。</p>
+<p>首先以L1为例，可以看出这一项是用来计算预测框的中心点坐标与GT框中心点坐标之间的偏离程度，不带帽的量是GT，戴帽的是预测。式中的均方根误差，不难理解。$\lambda<em>{coord}$是权重系数，也不难理解。唯一的难点在于如何理解$\sum</em>{i=0}^{S^2}\sum<em>{j=0}^{B} 1</em>{ij}^{obj}$？</p>
+<p>第一个问题：从累加符号的上标可以看出i是在遍历这7x7个GridCell，j是在遍历一个GridCell中的B个预测框，这样用i和j去遍历所有预测框是一个很直观的事情。但是，如何确定一个预测值对应的GT值是哪个呢（换句话说，$x_i$是谁）？这是从图像分类任务进阶到目标检测任务所要面对的核心问题，FasterRCNN和SSD用的都是AssignGTbox2Anchor机制，而YOLO的答案不一样，其特点也正在于此。YOLO的具体做法是，当遍历到第$i$个GridCell的第$j$个预测框时，一一查看所有的GT框，将中心坐标在当前GridCell中的挑选出来。此时有三种情况：</p>
+<ul>
+<li>所有GT框的中心点都不在当前GridCell内，那么pass，接着计算第$i+1$个GridCell。</li>
+<li>刚好有1个GT框的中心点在当前GridCell内，那么这个GT框的参数就是我们在找的$x_i, y_i, w_i, h_i$。</li>
+<li>有不止一个GT框的中心点在当前GridCell内，</li>
+</ul>
+<p>综上，对于L1而言，每一个GridCell最多只有一个GT值有效，这也是为什么$x_i$的下标只有i。那为什么预测量<script type="math/tex">\hat{x}_i</script>的下标也只有$i$没有$j$呢？因为对于一个GridCell，跟GT框一样，预测框也只选取一个去计算损失。但不是随机选取，而是选取这个B个预测框中$\hat{C}$值最大的那个。</p>
+<p>L2同理，唯一不同的是多了根号。这是考虑IOU相等的两对GT框和预测框，一对尺寸很大，一对尺寸很小，那么此时因为IOU相同，应该认为两对的匹配程度是一样好的。但是，去计算L2损失时显然尺寸大的这一对预测框和GT框之间宽度和高度的差值更大，这是不合理的。因此YOLO的作者加了个根号用来缓解这一问题。</p>
+<p>然后L3也类似，不过要说明下“框的置信度”的真值$C_i$从何而来。它是对于这一个GridCell被选中的一对GT框和预测框的IOU值。</p>
+<p>L4跟L3完全一样，只不过计入损失的GridCell的选取规则刚好反过来，这里是没有目标才计入损失。</p>
+<p>L5有点不一样，这里计算的是类别损失，所以不再遍历B个预测框。真实值$p_i$是一个one-hot向量，预测值$\hat{p}_i$就是那个20位的score向量。</p>
+<blockquote>
+<p>个人感觉何必那么麻烦，直接先说好，对于一个30维的预测结果，只有confidence最大的那个框有效，其他框权当做没有不就完了。</p>
+</blockquote>
+<h3 id="1-3-一点体会"><a href="#1-3-一点体会" class="headerlink" title="1.3 一点体会"></a>1.3 一点体会</h3><p>这三种主流目标检测模型基本流程其实都可以总结为：</p>
+<p><strong>在输入图像上选取一个区域，将这个区域的图像数据扔到一个CNN网络中加工出来一个detection结构，然后将这个detection结构解释为预测框的信息</strong>。</p>
+<p>对于第一点，选取子图：</p>
+<ul>
+<li>FasterRCNN比较讲究，专门搞一个RPN模型去确定应该截取哪些区域，可以说是“一图一策”；</li>
+<li>YOLO粗暴一点，直接将原图切成7x7份，然后将每一个子图扔到CNN中加工，然后借用<a target="_blank" rel="noopener" href="https://guohongming.xyz/2021/07/15/CNN%E7%9A%84%E6%95%B0%E5%AD%A6%E5%8E%9F%E7%90%86/">滑动窗口的卷积实现原理</a>直接将整张图扔进去，同时得到49个子图产生的detection结构。</li>
+<li>SSD和YOLO一样，在原图上划分8732个子区域，然后利用<a target="_blank" rel="noopener" href="https://guohongming.xyz/2021/07/15/CNN%E7%9A%84%E6%95%B0%E5%AD%A6%E5%8E%9F%E7%90%86/">滑动窗口的卷积实现原理</a>得到8732个子图产生的detection结构。</li>
+</ul>
+<p>然后关键来了，那就是三种算法中一份子图产生的detection结构是怎样的？</p>
+<ul>
+<li>YOLO的上面已经画出来了，是一个30维的向量，是最简单的一个，但这也意味着这部分子图上的原始数据最终只产生了一个预测框。mark，YOLO针对一个detection结构生成20个还是1个框有待确认</li>
+<li>SSD的在<a target="_blank" rel="noopener" href="https://guohongming.xyz/2021/09/23/SSD%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90-0/">之前</a>也画出来过，是1个4维的box_reg向量和1个21维的objectness向量。这意味着原图上一个anchor圈住的原始数据最终产生了1个框，然后这个框可以被21个类别复用，所以还是相当于21个框。另外，SSD的这么多anchor之间有很严重的范围相互覆盖，这意味着对于300x300原图上的某一个小区域来讲，其实是被重复利用了很多次。而YOLO各个子图之间是没有交集的，所以原始数据利用率就差一些。</li>
+<li>FasterRCNN的最复杂，是1个84维的box_reg向量和1个21维的objectness向量，也就是产生21个位置不同的框。</li>
+</ul>
+<h2 id="2-YOLOv2解析"><a href="#2-YOLOv2解析" class="headerlink" title="2. YOLOv2解析"></a>2. YOLOv2解析</h2><h2 id="3-YOLOv3模型解析"><a href="#3-YOLOv3模型解析" class="headerlink" title="3. YOLOv3模型解析"></a>3. YOLOv3模型解析</h2>
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/">工作技能</a>
+                    
+                      <a class="hover-with-bg" href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">神经网络</a>
+                    
+                      <a class="hover-with-bg" href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B/">目标检测</a>
+                    
+                      <a class="hover-with-bg" href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B/YOLO/">YOLO</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a>
+                    
+                      <a class="hover-with-bg" href="/tags/CNN/">CNN</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">卷积神经网络</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">神经网络</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B/">目标检测</a>
+                    
+                      <a class="hover-with-bg" href="/tags/YOLO/">YOLO</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/09/23/SSD%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90-0/">
+                        <span class="hidden-mobile">SSD源码分析 —— 整体框架</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="twikoo"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/twikoo@1.4.1/dist/twikoo.all.min.js', function() {
+        var options = Object.assign(
+          {"envId":"twikoo-5gimyzvb3631ef62","region":"ap-shanghai","path":"window.location.pathname"},
+          {
+            el: '#twikoo',
+            path: 'window.location.pathname'
+          }
+        )
+        twikoo.init(options)
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <small><span>——————————我是有底线的——————————</span></small> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- LeanCloud 统计PV -->
+        <span id="leancloud-site-pv-container" style="display: none">
+            总访问量 
+            <span id="leancloud-site-pv"></span>
+             次
+          </span>
+      
+      
+        <!-- LeanCloud 统计UV -->
+        <span id="leancloud-site-uv-container" style="display: none">
+            总访客数 
+            <span id="leancloud-site-uv"></span>
+             人
+          </span>
+      
+
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+  <script defer src="/js/leancloud.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.1.4/es5/tex-svg.js" ></script>
+
+  
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/shizuku.model.json"},"display":{"position":"left","width":270,"height":540},"mobile":{"show":false,"scale":0.5},"log":false});</script></body>
+</html>
