@@ -18,7 +18,7 @@
   <meta name="author" content="William Guo">
   <meta name="keywords" content="">
   
-  <title>python笔记 by 电竞大师小明</title>
+  <title>关于交叉熵的易混淆概念 by 电竞大师小明</title>
 
   <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
 
@@ -163,7 +163,7 @@
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.7)">
           <div class="page-header text-center fade-in-up">
-            <span class="h2" id="subtitle" title="python笔记">
+            <span class="h2" id="subtitle" title="关于交叉熵的易混淆概念">
               
             </span>
 
@@ -178,7 +178,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      742 字
+      810 字
     </span>
   
 
@@ -226,41 +226,40 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">python笔记</h1>
+            <h1 style="display: none">关于交叉熵的易混淆概念</h1>
             
               <p class="note note-info">
                 
-                  本文最后更新于：1 个月前
+                  本文最后更新于：几秒前
                 
               </p>
             
             <div class="markdown-body">
-              <h3 id="python的zip函数"><a href="#python的zip函数" class="headerlink" title="python的zip函数"></a>python的zip函数</h3><p>输入若干个Iterable对象，将这些Iterable对象对应位置的元素打包为一个tuple，然后将所有tuple作为一个zip对象返回。</p>
-<p>当传入的Iterable对象长度不一致时取最短的。<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs stylus"><span class="hljs-selector-tag">a</span> = <span class="hljs-selector-attr">[[1,2]</span>,<span class="hljs-selector-attr">[3,4]</span>,<span class="hljs-selector-attr">[5,6]</span>]<br><span class="hljs-selector-tag">b</span> = zip(*a)<br>c = tuple(b)<br><br>&gt;&gt;&gt; <span class="hljs-selector-tag">a</span> = ((<span class="hljs-number">1</span>, <span class="hljs-number">3</span>, <span class="hljs-number">5</span>), (<span class="hljs-number">2</span>, <span class="hljs-number">4</span>, <span class="hljs-number">6</span>))<br></code></pre></td></tr></table></figure></p>
-<h3 id="python-string的split方法"><a href="#python-string的split方法" class="headerlink" title="python string的split方法"></a>python string的split方法</h3><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs stylus"><span class="hljs-selector-tag">a</span> = <span class="hljs-string">&quot;, my, name, is, ming&quot;</span><br><span class="hljs-selector-tag">b</span> = <span class="hljs-selector-tag">a</span><span class="hljs-selector-class">.split</span>(<span class="hljs-string">&#x27;,&#x27;</span>)<br><br>&gt;&gt;&gt; <span class="hljs-selector-tag">b</span> = <span class="hljs-selector-attr">[<span class="hljs-string">&#x27;&#x27;</span>,<span class="hljs-string">&#x27; my&#x27;</span>,<span class="hljs-string">&#x27; name&#x27;</span>,<span class="hljs-string">&#x27; is&#x27;</span>,<span class="hljs-string">&#x27; ming&#x27;</span> ]</span><br></code></pre></td></tr></table></figure>
-<p>即，将原string按照字符串分割，不包含分隔符，返回一个列表。</p>
-<h3 id="pyhton-函数装饰器"><a href="#pyhton-函数装饰器" class="headerlink" title="pyhton 函数装饰器"></a>pyhton 函数装饰器</h3><p>对被修饰的函数增加一层封装，被修饰的函数仍然正常被调用，被执行，但是增加了一些“私货”，比如打log。这么做的好处是在不修改原函数代码以及调用原函数的代码的前提下改变其行为。<br><figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs pgsql"><span class="hljs-keyword">import</span> logging<br><br>def use_logging(func):<br>	def <span class="hljs-keyword">wrapper</span>(*args, **kwargs):<br>		logging.warn(&quot;%s is running&quot; % func.__name__)<br>		<span class="hljs-keyword">return</span> func(*args)<br>	<span class="hljs-keyword">return</span> <span class="hljs-keyword">wrapper</span><br><br>@use_logging<br>def foo():<br>	print(&quot;i am foo&quot;)<br><br>@use_logging<br>def bar():<br>	print(&quot;i am bar&quot;)<br><br>foo()<br>bar()<br><br>&gt;&gt;&gt; i am foo<br>&gt;&gt;&gt; i am bar<br>&gt;&gt;&gt; <span class="hljs-built_in">WARNING</span>:root:foo <span class="hljs-keyword">is</span> running<br>&gt;&gt;&gt; <span class="hljs-built_in">WARNING</span>:root:bar <span class="hljs-keyword">is</span> running<br></code></pre></td></tr></table></figure></p>
-<h3 id="python-赋值-amp-浅拷贝-amp-深拷贝的区别"><a href="#python-赋值-amp-浅拷贝-amp-深拷贝的区别" class="headerlink" title="python 赋值&amp;浅拷贝&amp;深拷贝的区别"></a>python 赋值&amp;浅拷贝&amp;深拷贝的区别</h3><ol>
-<li>对于不可变对象，三者同质，都只增加原对象的引用计数</li>
-<li>对于可变对象<ul>
-<li>赋值，仍然是引用计数</li>
-<li>浅拷贝，新瓶装旧酒，瓶是新的，酒还是原对象元素的计数引用</li>
-<li>深拷贝，实质意义上的拷贝，啥都重新搞一份</li>
-</ul>
-</li>
-</ol>
-<h3 id="python-init-py文件的作用"><a href="#python-init-py文件的作用" class="headerlink" title="python init.py文件的作用"></a>python <strong>init</strong>.py文件的作用</h3><p>一个包含了<strong>init</strong>.py目录可以被识别为一个包，而目录内的.py文件是这个包的模块。一个包也是一个模块，反之则不一定。</p>
-<p>在import一个包时，实际上是在执行这个包的<strong>init</strong>.py中的代码。看一个例子，</p>
-<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs stylus">.<br>├── <span class="hljs-selector-tag">main</span><span class="hljs-selector-class">.py</span><br>└── mypackage<br>    ├── __init__<span class="hljs-selector-class">.py</span><br>    ├── subpackage_1<br>    │   ├── test11<span class="hljs-selector-class">.py</span><br>    │   └── test12<span class="hljs-selector-class">.py</span><br>    └── subpackage_2<br>        ├── __init__<span class="hljs-selector-class">.py</span><br>        ├── test21<span class="hljs-selector-class">.py</span><br>        └── test22.py<br></code></pre></td></tr></table></figure>
-<p>在main.py中<code>import mypackage</code>时，python后台程序会按照以下顺序搜索<code>mypackage</code></p>
-<ol>
-<li>当前的工作目录；</li>
-<li>PYTHONPATH（环境变量）中的每一个目录；</li>
-<li>Python 默认的安装目录。</li>
-</ol>
-<p>本例中，在当前工作目录下即可找到<code>mypackage</code>，然后会执行其下<strong>init</strong>.py中的代码。</p>
-<p>对于mypackage的<strong>init</strong>.py，值得注意的是：<br><figure class="highlight clean"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs clean"><span class="hljs-keyword">import</span> subpackage_1			# 错误，因为在main的当前目录找不到subpackage_1<br><span class="hljs-keyword">import</span> subpackage_2			# 错误<br><span class="hljs-keyword">import</span> mypackage.subpackage_1		# 正确，先找到mypackage再找到subpackage_1<br><span class="hljs-keyword">import</span> mypackage.subpackage_2		# 正确<br><span class="hljs-keyword">from</span> . <span class="hljs-keyword">import</span> subpackage_1		# 正确，在<span class="hljs-keyword">from</span>指定的目录可以找到subpackage_1<br><span class="hljs-keyword">from</span> . <span class="hljs-keyword">import</span> subpackage_2		# 正确<br><span class="hljs-keyword">from</span> mypackage <span class="hljs-keyword">import</span> subpackage_1 	# 正确，同上<br><span class="hljs-keyword">from</span> mypackage <span class="hljs-keyword">import</span> subpackage_2<br><br><span class="hljs-keyword">from</span> mypackage <span class="hljs-keyword">import</span> test11			# 错误<br><span class="hljs-keyword">from</span> mypackage.subpackage_1 <span class="hljs-keyword">import</span> test11	# 正确<br><span class="hljs-keyword">from</span> .subpackage_1 <span class="hljs-keyword">import</span> test11		# 正确，语义同上<br><span class="hljs-keyword">from</span> mypackage <span class="hljs-keyword">import</span> test21			<br><span class="hljs-keyword">from</span> mypackage.subpackage_2 <span class="hljs-keyword">import</span> test21<br><span class="hljs-keyword">from</span> .subpackage_2 <span class="hljs-keyword">import</span> test21<br></code></pre></td></tr></table></figure></p>
-<h3 id="itertools库"><a href="#itertools库" class="headerlink" title="itertools库"></a><code>itertools</code>库</h3><figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs fortran">v1 = [(i, j) for i, j <span class="hljs-keyword">in</span> itertools.<span class="hljs-built_in">product</span>(<span class="hljs-built_in">range</span>(<span class="hljs-number">2</span>), <span class="hljs-built_in">repeat</span>=<span class="hljs-number">2</span>)]<br>v2 = [(i, j) for i, j <span class="hljs-keyword">in</span> itertools.<span class="hljs-built_in">product</span>(<span class="hljs-built_in">range</span>(<span class="hljs-number">2</span>), <span class="hljs-built_in">repeat</span>=<span class="hljs-number">3</span>)]<br><br>&gt;&gt;&gt; v1 = [(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>), (<span class="hljs-number">0</span>, <span class="hljs-number">1</span>), (<span class="hljs-number">1</span>, <span class="hljs-number">0</span>), (<span class="hljs-number">1</span>, <span class="hljs-number">1</span>)]<br>&gt;&gt;&gt; v2 = [(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>), (<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>), (<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0</span>), (<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>), (<span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>), (<span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>), (<span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0</span>), (<span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>)]<br></code></pre></td></tr></table></figure>
+              <h2 id="0-前言"><a href="#0-前言" class="headerlink" title="0. 前言"></a>0. 前言</h2><p>交叉熵，二值交叉熵，softmax，sigmoid等概念经常一起出现，这里结合pytorch的具体实现来捋清楚这几个概念。</p>
+<h2 id="1-概念"><a href="#1-概念" class="headerlink" title="1. 概念"></a>1. 概念</h2><h3 id="1-1-交叉熵"><a href="#1-1-交叉熵" class="headerlink" title="1.1 交叉熵"></a>1.1 交叉熵</h3><p>交叉熵用于描述两个概率分布的差异，也就是说处理的都是0-1之间的数值。</p>
+<script type="math/tex; mode=display">
+H(p,q) = -\sum p(x)\log q(x)</script><p>在实际应用中，一般用于计算分类损失。并且，为了避免对0取对数，会将GT的one-hot向量作为$p$，预测结果作为$q$。</p>
+<h3 id="1-2-二值交叉熵"><a href="#1-2-二值交叉熵" class="headerlink" title="1.2 二值交叉熵"></a>1.2 二值交叉熵</h3><p>二值交叉熵就是上述交叉熵公式在$x$只有两个取值时的特例。</p>
+<script type="math/tex; mode=display">
+H(p,q) = -[p \log q + (1-p) \log (1-q)]</script><h3 id="1-3-sigmoid函数"><a href="#1-3-sigmoid函数" class="headerlink" title="1.3 sigmoid函数"></a>1.3 sigmoid函数</h3><p>一般模型直接输出的结果向量不保证其中的标量元素的数值（pytorch等官方术语称logits）在0-1之间，因此要用到sigmoid这种值域在0-1之间的激活函数将<strong>每一个logit单独</strong>作映射，然后再进行交叉熵计算。</p>
+<div align=center><img title="" src="/img/article/sigmoid.png" srcset="/img/loading.gif" lazyload width="50%" height="50%" align=center></div>
+
+<h3 id="1-4-softmax函数"><a href="#1-4-softmax函数" class="headerlink" title="1.4 softmax函数"></a>1.4 softmax函数</h3><p>跟sigmoid一样，也是一个logit归一化的工具，但是需要所有logits一起做联合映射，而不是独立映射。</p>
+<script type="math/tex; mode=display">
+\sigma (\boldsymbol{\rm x}) = \frac{\rm exp(\boldsymbol{x})} {\boldsymbol{1}^T \rm exp(\boldsymbol{x})}</script><h2 id="2-pytorch实现"><a href="#2-pytorch实现" class="headerlink" title="2. pytorch实现"></a>2. pytorch实现</h2><p>pytorch中的nn模块和nn.funtional模块中都有交叉熵损失的实现，这里只介绍nn下的3个模块。</p>
+<h3 id="2-1-nn-CrossEntropyLoss"><a href="#2-1-nn-CrossEntropyLoss" class="headerlink" title="2.1 nn.CrossEntropyLoss"></a>2.1 <code>nn.CrossEntropyLoss</code></h3><p>主要的入参有input(N, C)和target(N,)两个，N是结果向量有几个，C是类别数量。</p>
+<p>input的每一行都是一个结果向量，包含C个类别的各自的logit，这是因为这个模块内部集成了softmax函数，在进行损失计算之前会先对input做0-1的映射。</p>
+<p>target每一行是一个真实标签序号，值在[0, C-1]之间。在进行算是计算之前会将target的每一行拓展成一个one-hot向量，hot的位置就是这个真实标签序号。</p>
+<p>然后用1.1中的公式逐行计算这N个结果向量与N个one-hot向量的交叉熵，最后求和或求算数平均值（默认求均值）。</p>
+<h3 id="2-2-nn-BCEWithLogitsLoss"><a href="#2-2-nn-BCEWithLogitsLoss" class="headerlink" title="2.2 nn.BCEWithLogitsLoss"></a>2.2 <code>nn.BCEWithLogitsLoss</code></h3><p>主要的入参还是input(N, C)和target(N, C)两个，但是target的形状不同，其每一行都直接是GT的one-hot向量。</p>
+<p>也同样集成了sigmoid函数，计算损失之前会先对input做0-1的映射。</p>
+<p>然后逐行选中一个C维的结果行向量和一个C维的GT one-hot行向量，按照1.2中的公式计算得到C个标量，求均值即可得到这一行的loss。</p>
+<p>最后求各行的loss均值即可得到最终的loss。</p>
+<h3 id="2-3-nn-BCELoss"><a href="#2-3-nn-BCELoss" class="headerlink" title="2.3 nn.BCELoss"></a>2.3 <code>nn.BCELoss</code></h3><p>未集成sigmoid的二值交叉熵计算模块，有要求入参input的标量元素值在0-1之间，所以一般不使用，直接使用2.2。</p>
+<h2 id="3-附录"><a href="#3-附录" class="headerlink" title="3. 附录"></a>3. 附录</h2><div align=center><img title="" src="/img/article/cross_entropy.png" srcset="/img/loading.gif" lazyload width="80%" height="80%" align=center></div>
+
+<p><br></p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs stylus">import torch<span class="hljs-selector-class">.nn</span> as nn<br>import torch<br><br>logits = torch<span class="hljs-selector-class">.tensor</span>(<span class="hljs-selector-attr">[[2, -3, 0.8, 1.2]</span>, <span class="hljs-selector-attr">[1.5, -0.1, 0.9, -1.3]</span>])<br><br>sigmoid = torch<span class="hljs-selector-class">.sigmoid</span>(logits)<br>softmax = torch<span class="hljs-selector-class">.softmax</span>(logits, <span class="hljs-number">1</span>)<br><br>GT4bce = torch<span class="hljs-selector-class">.tensor</span>(<span class="hljs-selector-attr">[[0, 0, 1, 0]</span>, <span class="hljs-selector-attr">[0, 1, 0, 0]</span>], dtype=torch.<span class="hljs-attribute">float</span>)<br>GT4ce = torch<span class="hljs-selector-class">.tensor</span>(<span class="hljs-selector-attr">[2, 1]</span>)<br><br>ce = nn<span class="hljs-selector-class">.CrossEntropyLoss</span>(reduction=<span class="hljs-string">&#x27;sum&#x27;</span>)<br>ce_loss = ce(logits, GT4ce)<br><br>bce = nn<span class="hljs-selector-class">.BCEWithLogitsLoss</span>(reduction=<span class="hljs-string">&#x27;sum&#x27;</span>)<br>bce_loss = bce(logits, GT4bce)<br><br><span class="hljs-function"><span class="hljs-title">print</span><span class="hljs-params">(<span class="hljs-string">&quot;CE loss is &#123;&#125; \nBCE loss is &#123;&#125;&quot;</span>.format(ce_loss, bce_loss)</span></span>)<br></code></pre></td></tr></table></figure>
 
             </div>
             <hr>
@@ -272,7 +271,7 @@
                     
                       <a class="hover-with-bg" href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/">工作技能</a>
                     
-                      <a class="hover-with-bg" href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/python%E7%AC%94%E8%AE%B0/">python笔记</a>
+                      <a class="hover-with-bg" href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">神经网络</a>
                     
                   </div>
                 
@@ -280,15 +279,13 @@
                   <div class="post-meta">
                     <i class="iconfont icon-tags"></i>
                     
-                      <a class="hover-with-bg" href="/tags/python/">python</a>
+                      <a class="hover-with-bg" href="/tags/pytorch/">pytorch</a>
                     
-                      <a class="hover-with-bg" href="/tags/split/">split</a>
+                      <a class="hover-with-bg" href="/tags/%E4%BA%A4%E5%8F%89%E7%86%B5/">交叉熵</a>
                     
-                      <a class="hover-with-bg" href="/tags/%E5%87%BD%E6%95%B0%E8%A3%85%E9%A5%B0%E5%99%A8/">函数装饰器</a>
+                      <a class="hover-with-bg" href="/tags/%E4%BA%8C%E5%80%BC%E4%BA%A4%E5%8F%89%E7%86%B5/">二值交叉熵</a>
                     
-                      <a class="hover-with-bg" href="/tags/%E6%B7%B1%E6%8B%B7%E8%B4%9D/">深拷贝</a>
-                    
-                      <a class="hover-with-bg" href="/tags/%E6%B5%85%E6%8B%B7%E8%B4%9D/">浅拷贝</a>
+                      <a class="hover-with-bg" href="/tags/%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0/">损失函数</a>
                     
                   </div>
                 
@@ -305,9 +302,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2021/07/26/nvidia-smi%E7%AA%81%E7%84%B6%E8%B7%AA%E4%BA%86%EF%BC%81/">
+                      <a href="/2021/10/12/%E5%AE%9A%E4%BD%8D%E8%AF%AF%E5%B7%AE%E5%B8%B8%E7%94%A8%E7%9A%84%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0/">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">nvidia-smi突然跪了！</span>
+                        <span class="hidden-mobile">定位误差常用的损失函数</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -315,8 +312,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2021/07/22/pytorch%E7%AC%94%E8%AE%B0/">
-                        <span class="hidden-mobile">pytorch笔记</span>
+                      <a href="/2021/09/27/YOLO%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90-0/">
+                        <span class="hidden-mobile">YOLO源码分析 —— 整体框架</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

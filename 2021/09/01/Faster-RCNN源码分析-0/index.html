@@ -178,7 +178,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      4.5k 字
+      4.4k 字
     </span>
   
 
@@ -188,7 +188,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      52
+      51
        分钟
     </span>
   
@@ -230,7 +230,7 @@
             
               <p class="note note-info">
                 
-                  本文最后更新于：7 小时前
+                  本文最后更新于：2 天前
                 
               </p>
             
@@ -335,7 +335,7 @@ L_{box} = \sum_{i = x,y,w,h} smooth_{L1}(d_i-d_i^*)</script><p>以上式中</p>
 <p>前者利用anchor和与之匹配的GTbox进行decode得到，后者就是RPN Head输出的proposal_box_reg。这样便得到了边界框坐标损失。</p>
 <h4 id="4-5-2-前-后景分类损失计算"><a href="#4-5-2-前-后景分类损失计算" class="headerlink" title="4.5.2 前/后景分类损失计算"></a>4.5.2 前/后景分类损失计算</h4><p>前/后景分类损失反映的是一个proposal box的<strong>真实标签</strong>与<strong>预测标签</strong>的差异程度。我们已知<strong>预测标签</strong>就是每一个proposal的objectness值，那么一个proposal的<strong>真实标签</strong>是什么呢？至少我们的标注信息中是没有直接包含这一信息的。一种合适的做法是，比较匹配的一对GTbox和proposal box之间的IOU。</p>
 <blockquote>
-<p>所谓匹配是指，在5.1小节中我们建立了每一个anchor和Gtbox之间的匹配关系，而每一个anchor与RPN head输出的proposal_box_reg结合可以得到一个proposal box，这样这个anchor便将Gtbox和proposal box联系起来了。</p>
+<p>所谓匹配是指，在4.5.1小节中我们建立了每一个anchor和Gtbox之间的匹配关系，而每一个anchor与RPN head输出的proposal_box_reg结合可以得到一个proposal box，这样这个anchor便将Gtbox和proposal box联系起来了。</p>
 </blockquote>
 <p>具体的做法如下：</p>
 <ol>
@@ -391,7 +391,7 @@ k = \lfloor k_0 + \log_2(\frac{\sqrt{wh}}{224}) \rfloor</script><p>通过这个�
 <p><strong>这里的预测结果要多说一句，在进入ROI align之前，每张图片的proposal经过过滤剩下512或500个，这个数字对于理解后面的内容、以及以后的内容都非常非常重要。</strong></p>
 <p><strong>首先在这里定义，一个proposal产生的一系列最终结果为一组同源detection，那么每张图片会产生512组同源detection。然后，一个proposal框住的feature map数据经过ROI align、MLPHead和Predictor，最终生成21组边界框回归参数和21个置信度。这个21组边界框回归参数都和这一个proposal框进行decode，得到21个final_box。21个置信度经过softmax之后的到21个score。再加上天然存在的序列信息，亦可得到label。</strong></p>
 <blockquote>
-<p>也就是说，一个proposal框住的子图像最终会产生21个detection(一组同源detection)。这意味着一个proposal内哪怕有不同类别的多个目标也还是被同时检测出来。这个结论对于SSD也成立。（YOLOv1你脸红什么？）<br>然后再延伸一步，问，一个proposal内如果有多个</p>
+<p>也就是说，一个proposal框住的子图像最终会产生21个detection(一组同源detection)。这意味着一个proposal内哪怕有不同类别的多个目标也还是被同时检测出来。这个结论对于SSD也成立。（YOLOv1你脸红什么？）</p>
 </blockquote>
 <p>这样，每个detection的三个属性label &amp; score &amp; box_reg就都有了。一个detection的结构大致如下图所示（以3个detection，5个类别为例）：</p>
 <div align=center><img title="" src="/img/article/faster-rcnn-0-0.png" srcset="/img/loading.gif" lazyload width="90%" height="90%" align=center></div>

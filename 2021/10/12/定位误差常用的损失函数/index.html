@@ -18,7 +18,7 @@
   <meta name="author" content="William Guo">
   <meta name="keywords" content="">
   
-  <title>python笔记 by 电竞大师小明</title>
+  <title>定位误差常用的损失函数 by 电竞大师小明</title>
 
   <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
 
@@ -163,7 +163,7 @@
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.7)">
           <div class="page-header text-center fade-in-up">
-            <span class="h2" id="subtitle" title="python笔记">
+            <span class="h2" id="subtitle" title="定位误差常用的损失函数">
               
             </span>
 
@@ -178,7 +178,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      742 字
+      425 字
     </span>
   
 
@@ -188,7 +188,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      10
+      5
        分钟
     </span>
   
@@ -226,41 +226,33 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">python笔记</h1>
+            <h1 style="display: none">定位误差常用的损失函数</h1>
             
               <p class="note note-info">
                 
-                  本文最后更新于：1 个月前
+                  本文最后更新于：2 分钟前
                 
               </p>
             
             <div class="markdown-body">
-              <h3 id="python的zip函数"><a href="#python的zip函数" class="headerlink" title="python的zip函数"></a>python的zip函数</h3><p>输入若干个Iterable对象，将这些Iterable对象对应位置的元素打包为一个tuple，然后将所有tuple作为一个zip对象返回。</p>
-<p>当传入的Iterable对象长度不一致时取最短的。<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs stylus"><span class="hljs-selector-tag">a</span> = <span class="hljs-selector-attr">[[1,2]</span>,<span class="hljs-selector-attr">[3,4]</span>,<span class="hljs-selector-attr">[5,6]</span>]<br><span class="hljs-selector-tag">b</span> = zip(*a)<br>c = tuple(b)<br><br>&gt;&gt;&gt; <span class="hljs-selector-tag">a</span> = ((<span class="hljs-number">1</span>, <span class="hljs-number">3</span>, <span class="hljs-number">5</span>), (<span class="hljs-number">2</span>, <span class="hljs-number">4</span>, <span class="hljs-number">6</span>))<br></code></pre></td></tr></table></figure></p>
-<h3 id="python-string的split方法"><a href="#python-string的split方法" class="headerlink" title="python string的split方法"></a>python string的split方法</h3><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs stylus"><span class="hljs-selector-tag">a</span> = <span class="hljs-string">&quot;, my, name, is, ming&quot;</span><br><span class="hljs-selector-tag">b</span> = <span class="hljs-selector-tag">a</span><span class="hljs-selector-class">.split</span>(<span class="hljs-string">&#x27;,&#x27;</span>)<br><br>&gt;&gt;&gt; <span class="hljs-selector-tag">b</span> = <span class="hljs-selector-attr">[<span class="hljs-string">&#x27;&#x27;</span>,<span class="hljs-string">&#x27; my&#x27;</span>,<span class="hljs-string">&#x27; name&#x27;</span>,<span class="hljs-string">&#x27; is&#x27;</span>,<span class="hljs-string">&#x27; ming&#x27;</span> ]</span><br></code></pre></td></tr></table></figure>
-<p>即，将原string按照字符串分割，不包含分隔符，返回一个列表。</p>
-<h3 id="pyhton-函数装饰器"><a href="#pyhton-函数装饰器" class="headerlink" title="pyhton 函数装饰器"></a>pyhton 函数装饰器</h3><p>对被修饰的函数增加一层封装，被修饰的函数仍然正常被调用，被执行，但是增加了一些“私货”，比如打log。这么做的好处是在不修改原函数代码以及调用原函数的代码的前提下改变其行为。<br><figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs pgsql"><span class="hljs-keyword">import</span> logging<br><br>def use_logging(func):<br>	def <span class="hljs-keyword">wrapper</span>(*args, **kwargs):<br>		logging.warn(&quot;%s is running&quot; % func.__name__)<br>		<span class="hljs-keyword">return</span> func(*args)<br>	<span class="hljs-keyword">return</span> <span class="hljs-keyword">wrapper</span><br><br>@use_logging<br>def foo():<br>	print(&quot;i am foo&quot;)<br><br>@use_logging<br>def bar():<br>	print(&quot;i am bar&quot;)<br><br>foo()<br>bar()<br><br>&gt;&gt;&gt; i am foo<br>&gt;&gt;&gt; i am bar<br>&gt;&gt;&gt; <span class="hljs-built_in">WARNING</span>:root:foo <span class="hljs-keyword">is</span> running<br>&gt;&gt;&gt; <span class="hljs-built_in">WARNING</span>:root:bar <span class="hljs-keyword">is</span> running<br></code></pre></td></tr></table></figure></p>
-<h3 id="python-赋值-amp-浅拷贝-amp-深拷贝的区别"><a href="#python-赋值-amp-浅拷贝-amp-深拷贝的区别" class="headerlink" title="python 赋值&amp;浅拷贝&amp;深拷贝的区别"></a>python 赋值&amp;浅拷贝&amp;深拷贝的区别</h3><ol>
-<li>对于不可变对象，三者同质，都只增加原对象的引用计数</li>
-<li>对于可变对象<ul>
-<li>赋值，仍然是引用计数</li>
-<li>浅拷贝，新瓶装旧酒，瓶是新的，酒还是原对象元素的计数引用</li>
-<li>深拷贝，实质意义上的拷贝，啥都重新搞一份</li>
-</ul>
-</li>
-</ol>
-<h3 id="python-init-py文件的作用"><a href="#python-init-py文件的作用" class="headerlink" title="python init.py文件的作用"></a>python <strong>init</strong>.py文件的作用</h3><p>一个包含了<strong>init</strong>.py目录可以被识别为一个包，而目录内的.py文件是这个包的模块。一个包也是一个模块，反之则不一定。</p>
-<p>在import一个包时，实际上是在执行这个包的<strong>init</strong>.py中的代码。看一个例子，</p>
-<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs stylus">.<br>├── <span class="hljs-selector-tag">main</span><span class="hljs-selector-class">.py</span><br>└── mypackage<br>    ├── __init__<span class="hljs-selector-class">.py</span><br>    ├── subpackage_1<br>    │   ├── test11<span class="hljs-selector-class">.py</span><br>    │   └── test12<span class="hljs-selector-class">.py</span><br>    └── subpackage_2<br>        ├── __init__<span class="hljs-selector-class">.py</span><br>        ├── test21<span class="hljs-selector-class">.py</span><br>        └── test22.py<br></code></pre></td></tr></table></figure>
-<p>在main.py中<code>import mypackage</code>时，python后台程序会按照以下顺序搜索<code>mypackage</code></p>
-<ol>
-<li>当前的工作目录；</li>
-<li>PYTHONPATH（环境变量）中的每一个目录；</li>
-<li>Python 默认的安装目录。</li>
-</ol>
-<p>本例中，在当前工作目录下即可找到<code>mypackage</code>，然后会执行其下<strong>init</strong>.py中的代码。</p>
-<p>对于mypackage的<strong>init</strong>.py，值得注意的是：<br><figure class="highlight clean"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs clean"><span class="hljs-keyword">import</span> subpackage_1			# 错误，因为在main的当前目录找不到subpackage_1<br><span class="hljs-keyword">import</span> subpackage_2			# 错误<br><span class="hljs-keyword">import</span> mypackage.subpackage_1		# 正确，先找到mypackage再找到subpackage_1<br><span class="hljs-keyword">import</span> mypackage.subpackage_2		# 正确<br><span class="hljs-keyword">from</span> . <span class="hljs-keyword">import</span> subpackage_1		# 正确，在<span class="hljs-keyword">from</span>指定的目录可以找到subpackage_1<br><span class="hljs-keyword">from</span> . <span class="hljs-keyword">import</span> subpackage_2		# 正确<br><span class="hljs-keyword">from</span> mypackage <span class="hljs-keyword">import</span> subpackage_1 	# 正确，同上<br><span class="hljs-keyword">from</span> mypackage <span class="hljs-keyword">import</span> subpackage_2<br><br><span class="hljs-keyword">from</span> mypackage <span class="hljs-keyword">import</span> test11			# 错误<br><span class="hljs-keyword">from</span> mypackage.subpackage_1 <span class="hljs-keyword">import</span> test11	# 正确<br><span class="hljs-keyword">from</span> .subpackage_1 <span class="hljs-keyword">import</span> test11		# 正确，语义同上<br><span class="hljs-keyword">from</span> mypackage <span class="hljs-keyword">import</span> test21			<br><span class="hljs-keyword">from</span> mypackage.subpackage_2 <span class="hljs-keyword">import</span> test21<br><span class="hljs-keyword">from</span> .subpackage_2 <span class="hljs-keyword">import</span> test21<br></code></pre></td></tr></table></figure></p>
-<h3 id="itertools库"><a href="#itertools库" class="headerlink" title="itertools库"></a><code>itertools</code>库</h3><figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs fortran">v1 = [(i, j) for i, j <span class="hljs-keyword">in</span> itertools.<span class="hljs-built_in">product</span>(<span class="hljs-built_in">range</span>(<span class="hljs-number">2</span>), <span class="hljs-built_in">repeat</span>=<span class="hljs-number">2</span>)]<br>v2 = [(i, j) for i, j <span class="hljs-keyword">in</span> itertools.<span class="hljs-built_in">product</span>(<span class="hljs-built_in">range</span>(<span class="hljs-number">2</span>), <span class="hljs-built_in">repeat</span>=<span class="hljs-number">3</span>)]<br><br>&gt;&gt;&gt; v1 = [(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>), (<span class="hljs-number">0</span>, <span class="hljs-number">1</span>), (<span class="hljs-number">1</span>, <span class="hljs-number">0</span>), (<span class="hljs-number">1</span>, <span class="hljs-number">1</span>)]<br>&gt;&gt;&gt; v2 = [(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>), (<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>), (<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0</span>), (<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>), (<span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>), (<span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>), (<span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0</span>), (<span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>)]<br></code></pre></td></tr></table></figure>
+              <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在目标检测任务中，为了更好的量化定位损失，各路大神想了很多办法。从最开始的针对xywh的均方误差，到IOU损失，再到后续的GIOU损失、DIOU损失、CIOU损失，越来越复杂。其中均方误差比较简单，不再介绍。重点讲一下IOU系列。</p>
+<div align=center><img title="" src="/img/article/iou.png" srcset="/img/loading.gif" lazyload width="80%" height="80%" align=center></div>
+
+<h2 id="IOU损失"><a href="#IOU损失" class="headerlink" title="IOU损失"></a>IOU损失</h2><p>这里牵涉到两个概念，“IOU”和“IOU损失”，对于前者，已经很熟悉了，不再赘述。而对于后者，则是简单地令</p>
+<script type="math/tex; mode=display">
+IOU loss = - \ln(\frac{I}{U})</script><p>这样，IOU越接近于1，损失越接近于0。并且相比于均方误差没有尺度大小影响wh损失的现象。但美中不足的是，当I=0，即两个框不相交时无法正确计算。</p>
+<h2 id="GeneralizedIOU损失"><a href="#GeneralizedIOU损失" class="headerlink" title="GeneralizedIOU损失"></a>GeneralizedIOU损失</h2><script type="math/tex; mode=display">
+GIOU = \frac{I}{U} - \frac{D_1 + D_2}{S}</script><script type="math/tex; mode=display">
+GIOU loss = 1 - GIOU</script><p>IOU越大，损失越小。D1和D2占S的比例越大，IOU越大。</p>
+<h2 id="DistanceIOU损失"><a href="#DistanceIOU损失" class="headerlink" title="DistanceIOU损失"></a>DistanceIOU损失</h2><script type="math/tex; mode=display">
+DIOU = \frac{I}{U} - \frac{d^2}{c^2}</script><script type="math/tex; mode=display">
+DIOU loss = 1 - DIOU</script><p>IOU越大，损失越小。d越小，两个框的中心越接近，损失越小。</p>
+<h2 id="CompleteIOU损失"><a href="#CompleteIOU损失" class="headerlink" title="CompleteIOU损失"></a>CompleteIOU损失</h2><p>作者说，一个好的定位误差量化指标应该兼顾：<strong>重叠面积</strong>、<strong>中心点距离</strong>、<strong>长宽比</strong>。前两者在DIOU中都已经考虑了，因此CIOU又增加了长宽比这一因素，也就是说两个框的形状哪怕不全等，也应该尽可能相似。</p>
+<script type="math/tex; mode=display">
+CIOU = \frac{I}{U} - \frac{d^2}{c^2} - \alpha v</script><script type="math/tex; mode=display">
+v = \frac{4}{\pi ^2}({\rm arctan} \frac{w_1}{h_1} - {\rm arctan} \frac{w_2}{h_2})^2</script><script type="math/tex; mode=display">
+\alpha = \frac{v}{(1-IOU)+v}</script><script type="math/tex; mode=display">
+CIOU loss = 1 - CIOU</script><p>$\alpha v$暂时看不懂是啥原理，暂时知道是在比较两个框的相似程度就够了，而且越小越相似。</p>
 
             </div>
             <hr>
@@ -272,7 +264,7 @@
                     
                       <a class="hover-with-bg" href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/">工作技能</a>
                     
-                      <a class="hover-with-bg" href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/python%E7%AC%94%E8%AE%B0/">python笔记</a>
+                      <a class="hover-with-bg" href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">神经网络</a>
                     
                   </div>
                 
@@ -280,15 +272,15 @@
                   <div class="post-meta">
                     <i class="iconfont icon-tags"></i>
                     
-                      <a class="hover-with-bg" href="/tags/python/">python</a>
+                      <a class="hover-with-bg" href="/tags/%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0/">损失函数</a>
                     
-                      <a class="hover-with-bg" href="/tags/split/">split</a>
+                      <a class="hover-with-bg" href="/tags/IOU/">IOU</a>
                     
-                      <a class="hover-with-bg" href="/tags/%E5%87%BD%E6%95%B0%E8%A3%85%E9%A5%B0%E5%99%A8/">函数装饰器</a>
+                      <a class="hover-with-bg" href="/tags/GIOU/">GIOU</a>
                     
-                      <a class="hover-with-bg" href="/tags/%E6%B7%B1%E6%8B%B7%E8%B4%9D/">深拷贝</a>
+                      <a class="hover-with-bg" href="/tags/DIOU/">DIOU</a>
                     
-                      <a class="hover-with-bg" href="/tags/%E6%B5%85%E6%8B%B7%E8%B4%9D/">浅拷贝</a>
+                      <a class="hover-with-bg" href="/tags/CIOU/">CIOU</a>
                     
                   </div>
                 
@@ -305,18 +297,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2021/07/26/nvidia-smi%E7%AA%81%E7%84%B6%E8%B7%AA%E4%BA%86%EF%BC%81/">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">nvidia-smi突然跪了！</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2021/07/22/pytorch%E7%AC%94%E8%AE%B0/">
-                        <span class="hidden-mobile">pytorch笔记</span>
+                      <a href="/2021/10/12/%E5%85%B3%E4%BA%8E%E4%BA%A4%E5%8F%89%E7%86%B5%E7%9A%84%E6%98%93%E6%B7%B7%E6%B7%86%E6%A6%82%E5%BF%B5/">
+                        <span class="hidden-mobile">关于交叉熵的易混淆概念</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
