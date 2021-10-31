@@ -18,7 +18,7 @@
   <meta name="author" content="William Guo">
   <meta name="keywords" content="">
   
-  <title>YOLO源码分析 —— 整体框架 by 电竞大师小明</title>
+  <title>YOLO源码分析（零） —— 理论基础 by 电竞大师小明</title>
 
   <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
 
@@ -163,7 +163,7 @@
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.7)">
           <div class="page-header text-center fade-in-up">
-            <span class="h2" id="subtitle" title="YOLO源码分析 —— 整体框架">
+            <span class="h2" id="subtitle" title="YOLO源码分析（零） —— 理论基础">
               
             </span>
 
@@ -178,7 +178,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      3.6k 字
+      3.7k 字
     </span>
   
 
@@ -188,7 +188,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      40
+      41
        分钟
     </span>
   
@@ -226,16 +226,16 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">YOLO源码分析 —— 整体框架</h1>
+            <h1 style="display: none">YOLO源码分析（零） —— 理论基础</h1>
             
               <p class="note note-info">
                 
-                  本文最后更新于：2 天前
+                  本文最后更新于：18 天前
                 
               </p>
             
             <div class="markdown-body">
-              <h2 id="0-前言"><a href="#0-前言" class="headerlink" title="0. 前言"></a>0. 前言</h2><p>One-Stage目标检测的另一代表，特点是啥呢？现在还总结不出来。。。mark</p>
+              <h2 id="0-前言"><a href="#0-前言" class="headerlink" title="0. 前言"></a>0. 前言</h2><p>One-Stage目标检测的另一代表，特点是GridCell的切分以及与之配套的GT框和anchor的匹配机制。</p>
 <p>现在看下来YOLO的故事是，YOLOv1先定下基础，然后后面的版本用各种各样的trick改善v1的效果。因此，要首先搞清楚v1都干了些啥，然后再依次搞清楚后续各个补丁的含义。</p>
 <p>而且由于YOLOv1的检测效果相对而言并不是很好，目前应用的至少是v3起步，所以对于v1和v2只在理论层面分析一下，源码的分析直接从v3开始。</p>
 <h2 id="1-YOLOv1解析"><a href="#1-YOLOv1解析" class="headerlink" title="1. YOLOv1解析"></a>1. YOLOv1解析</h2><h3 id="1-1-模型结构"><a href="#1-1-模型结构" class="headerlink" title="1.1 模型结构"></a>1.1 模型结构</h3><div align=center><img title="" src="/img/article/yolov1.png" srcset="/img/loading.gif" lazyload width="80%" height="80%" align=center></div>
@@ -349,7 +349,9 @@ L_2 = \frac{1}{N} \sum^{N} -[C\ln(\hat C) + (1-C)\ln(1 - \hat C)]</script><p>可
 <blockquote>
 <p>也有很多YOLOv3的实现不是简单将GT置信度设置为0和1，而是一如既往的求IOU，<a target="_blank" rel="noopener" href="https://stats.stackexchange.com/questions/373266/yolo-v3-loss-function">据说</a>也是有效的。</p>
 </blockquote>
-<h4 id="3-2-3-分类损失"><a href="#3-2-3-分类损失" class="headerlink" title="3.2.3 分类损失"></a>3.2.3 分类损失</h4><p>v3的分类损失同样由均方差调整为了交叉熵，</p>
+<h4 id="3-2-3-分类损失"><a href="#3-2-3-分类损失" class="headerlink" title="3.2.3 分类损失"></a>3.2.3 分类损失</h4><p>v3的分类损失同样由均方差调整为了交叉熵，而且是二值交叉熵：</p>
+<script type="math/tex; mode=display">
+L_3 = \frac{1}{N_p} \sum^{N_p} \sum_i^{Class_num} -[p_i \ln \hat{p}_i + (1-p_i) \ln (1-\hat{p}_i)]</script><p>其中，$p$是GT值，是一个one-hot向量。$\hat{p}$是结果向量中的那20位类别分数经过sigmoid之后的值。</p>
 
             </div>
             <hr>

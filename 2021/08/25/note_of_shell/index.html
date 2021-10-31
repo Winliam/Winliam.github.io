@@ -1,0 +1,585 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/time.jpg">
+  <link rel="icon" href="/img/time.jpg">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="王者之路，就在脚下">
+  <meta name="author" content="William Guo">
+  <meta name="keywords" content="">
+  
+  <title>Shell笔记 by 电竞大师小明</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"ApWFLRBvVptYicRhN7DQqrOa-gzGzoHsz","app_key":"ihFV8rR5s2zuqoKPXqW9sydt","server_url":"https://apwflrbv.lc-cn-n1-shared.com"}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>电竞大师小明</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/article.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.7)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="Shell笔记">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      12
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- LeanCloud 统计文章PV -->
+      <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="leancloud-page-views"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Shell笔记</h1>
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：10 天前
+                
+              </p>
+            
+            <div class="markdown-body">
+              <h3 id="shell解释器的种类"><a href="#shell解释器的种类" class="headerlink" title="shell解释器的种类"></a>shell解释器的种类</h3><ol>
+<li>一个shell脚本可以被不同的解释器解释执行，常见的解释器有sh、bash、zsh、dash。可以使用以下命令查看本机的shell解释器配置：<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs awk"><span class="hljs-comment">#本机可用的shell解释器</span><br>cat <span class="hljs-regexp">/etc/</span>shells<br><br><span class="hljs-comment">#当前默认设置，一般在第一行</span><br>cat <span class="hljs-regexp">/etc/</span>passwd<br><br><span class="hljs-comment">#当前设置</span><br>echo <span class="hljs-variable">$SHELL</span><br></code></pre></td></tr></table></figure></li>
+<li>一个shell脚本具体被哪一个解释器解释执行，依次看：<ul>
+<li>cmd命令指定的是哪个</li>
+<li>shebang指定的是哪个</li>
+<li><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/69643212/how-is-it-determined-which-shell-runs-a-script?noredirect=1#comment123105552_69643212">都不指定的话不清楚用哪个</a><figure class="highlight d"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs d">#cmd命令指定<br>bash ./test.sh<br>zsh ./test.sh<br><br>#Shebang指定<br><span class="hljs-meta">#!/usr/bin/env bash		到PATH路径下找到bash以执行脚本</span><br><span class="hljs-meta">#!/bin/bash			用/bin目录下的bash程序执行脚本</span><br><br>#暂时不清楚用哪个shell来执行<br>./test.sh			<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ol>
+<h3 id="shell脚本的执行方式"><a href="#shell脚本的执行方式" class="headerlink" title="shell脚本的执行方式"></a>shell脚本的执行方式</h3><p>shell脚本的执行方式有source和bash两类，前者的一般用途是实现python的import机制，即在另一个shell脚本中实现一堆公用的变量和函数，然后加载到当前脚本中。而后者则是真实的执行。</p>
+<p>When you execute the script you are opening a new shell, type the commands in the new shell, copy the output back to your current shell, then close the new shell. Any changes to environment will take effect only in the new shell and will be lost once the new shell is closed.</p>
+<p>When you source the script you are typing the commands in your current shell. Any changes to the environment will take effect and stay in your current shell.</p>
+<p>Sourcing a script will run the commands in the current shell process. Changes to the environment take effect in the current shell.</p>
+<p>Executing a script will run the commands in a new shell process. Changes to the environment take effect in the new shell and is lost when the script is done and the new shell is terminated.</p>
+<p>Use source if you want the script to change the environment in your currently running shell. use execute otherwise.</p>
+<h3 id="重定向"><a href="#重定向" class="headerlink" title="重定向"></a>重定向</h3><figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">cmd</span> &gt; file <span class="hljs-number">2</span>&gt;&amp;<span class="hljs-number">1</span><br><span class="hljs-comment"># 首先将cmd的输出重定向到file中，然后将标准错误输出绑定到标准输出上。合起来的意思是将cmd产生的，本来应该分别输出到标准输出和标准错误输出的打印信息，全部输出到file文件中</span><br><br></code></pre></td></tr></table></figure>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs gradle">cmd &amp;&gt;<span class="hljs-regexp">/dev/</span><span class="hljs-keyword">null</span><br>cmd &gt;<span class="hljs-regexp">/dev/</span><span class="hljs-keyword">null</span> <span class="hljs-number">2</span>&gt;&amp;<span class="hljs-number">1</span><br># 这两句话等价，那么从第二句看，并且结合前面的内容可以知道，这里的意思是将cmd产生的stdout和stderr都重定向到<span class="hljs-regexp">/dev/</span><span class="hljs-keyword">null</span>中。这个<span class="hljs-regexp">/dev/</span><span class="hljs-keyword">null</span>可以看作一个blackhole，会把所有输进去的内容吃掉。因此，这句话一般用作忽略cmd的任何输出信息。<br></code></pre></td></tr></table></figure>
+<h3 id="静默执行"><a href="#静默执行" class="headerlink" title="静默执行"></a>静默执行</h3><p>涉及到的概念有：<strong>前/后台程序</strong>，<strong>nohup前缀</strong>，<strong>&amp;后缀</strong>，<strong>Ctrl-Z</strong>，<strong>bg/fg命令</strong>，<strong>HUP信号</strong>，<strong>TSTP信号</strong>。</p>
+<h4 id="前-后台程序"><a href="#前-后台程序" class="headerlink" title="前/后台程序"></a>前/后台程序</h4><p>前/后台程序的区别在于，启动该程序的shell是否被该程序阻塞。阻塞，意味着shell暂时不能跟用户交互了，只能等待前台程序执行结束，后台则无此影响。</p>
+<p>在原本的启动命令后加上 &amp; 后缀，即可将该程序放到后台执行。并且，若此时未经过重定向，还是会将打印信息输出到终端，所以要想完全放到后台还需要将输出重定向。<br>  <figure class="highlight arcade"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs arcade">yes love &amp;&gt;<span class="hljs-regexp">/dev/</span><span class="hljs-literal">null</span> &amp;<br></code></pre></td></tr></table></figure></p>
+<p>当一个程序已经在前台阻塞式执行时，使用Ctrl-Z命令可以向程序发送TSTP信号，将程序暂停。然后通过bg命令可以将该程序恢复到后台执行，fg则恢复到前台。</p>
+<h4 id="防挂起"><a href="#防挂起" class="headerlink" title="防挂起"></a>防挂起</h4><p>nohup前缀产生的相关效果是独立于前/后台程序的另一个话题，其直接效果是使得程序免疫HUP信号。HUP信号一般会在关闭终端或用户注销时发出，接收到HUP信号的程序会终止执行。间接效果是将程序的stdout和stderr信息重定向到一个nohup.out文件。</p>
+<p>综上，用下面这个形式的命令可以实现一个程序的<strong>安全(终端关掉也不会停)</strong>、<strong>静默(启动了就跟没启动一样)</strong>执行。<br><figure class="highlight arcade"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs arcade">nohup cmd &amp;&gt;<span class="hljs-regexp">/dev/</span><span class="hljs-literal">null</span> &amp;<br></code></pre></td></tr></table></figure></p>
+<p><a target="_blank" rel="noopener" href="https://linuxhint.com/how_to_use_nohup_linux/">参考链接</a></p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/">工作技能</a>
+                    
+                      <a class="hover-with-bg" href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/shell%E7%AC%94%E8%AE%B0/">shell笔记</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/shell/">shell</a>
+                    
+                      <a class="hover-with-bg" href="/tags/bash/">bash</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E9%87%8D%E5%AE%9A%E5%90%91/">重定向</a>
+                    
+                      <a class="hover-with-bg" href="/tags/nohup/">nohup</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E5%90%8E%E5%8F%B0/">后台</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2021/08/25/note%20of%20C%5CC++/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">C/C++笔记</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/08/25/note_of_cpp/">
+                        <span class="hidden-mobile">C/C++笔记</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="twikoo"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/twikoo@1.4.1/dist/twikoo.all.min.js', function() {
+        var options = Object.assign(
+          {"envId":"twikoo-5gimyzvb3631ef62","region":"ap-shanghai","path":"window.location.pathname"},
+          {
+            el: '#twikoo',
+            path: 'window.location.pathname'
+          }
+        )
+        twikoo.init(options)
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <small><span>——————————我是有底线的——————————</span></small> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- LeanCloud 统计PV -->
+        <span id="leancloud-site-pv-container" style="display: none">
+            总访问量 
+            <span id="leancloud-site-pv"></span>
+             次
+          </span>
+      
+      
+        <!-- LeanCloud 统计UV -->
+        <span id="leancloud-site-uv-container" style="display: none">
+            总访客数 
+            <span id="leancloud-site-uv"></span>
+             人
+          </span>
+      
+
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+  <script defer src="/js/leancloud.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.1.4/es5/tex-svg.js" ></script>
+
+  
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/shizuku.model.json"},"display":{"position":"left","width":270,"height":540},"mobile":{"show":false,"scale":0.5},"log":false});</script></body>
+</html>
