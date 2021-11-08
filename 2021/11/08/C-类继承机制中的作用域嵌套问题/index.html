@@ -178,7 +178,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      170 字
+      590 字
     </span>
   
 
@@ -188,7 +188,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      1
+      7
        分钟
     </span>
   
@@ -230,13 +230,13 @@
             
               <p class="note note-info">
                 
-                  本文最后更新于：1 小时前
+                  本文最后更新于：几秒前
                 
               </p>
             
             <div class="markdown-body">
-              <p>OOP的三个支撑概念的其中之二，继承和动态绑定，都会带来作用域模糊的问题，这里来梳理以下。</p>
-<p>给定一个类的实例/类的实例的指针/类的实例的引用<code>p</code>，现在要通过<code>p</code>来访问它的对象<code>mem</code>。<code>mem</code>可以是方法也可以是成员，不影响下面的逻辑展开。</p>
+              <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>OOP的三个支撑概念的其中之二，继承和动态绑定，都会带来作用域模糊的问题，这里来梳理以下。</p>
+<h2 id="一般规则"><a href="#一般规则" class="headerlink" title="一般规则"></a>一般规则</h2><p>给定一个类的实例/类的实例的指针/类的实例的引用<code>p</code>，现在要通过<code>p</code>来访问它的对象<code>mem</code>。<code>mem</code>可以是方法也可以是成员，不影响下面的逻辑展开。</p>
 <p>整个调用过程，可以用下面的流程图表示：</p>
 <div align=center><img title="" src="/img/article/cpp_herit.jpg" srcset="/img/loading.gif" lazyload width="80%" height="80%" align=center></div>
 
@@ -245,6 +245,9 @@
 <li>名称的搜索只会向父类递归，不会向子类递归。</li>
 <li>名称查找成功后，直接进行类型检查，不成功直接报错，而不是继续递归查找。</li>
 </ol>
+<h2 id="补充案例"><a href="#补充案例" class="headerlink" title="补充案例"></a>补充案例</h2><h3 id="案例一"><a href="#案例一" class="headerlink" title="案例一"></a>案例一</h3><p>考虑一个三重继承A-&gt;B-&gt;C，当A和C之间的动态绑定发生时，如C没有override这个被A指针调用的虚函数，但是B override了，那么最终被调用的将是B的版本。也就是说动态绑定的优先级是动态类型，然后动态类型的直接基类，然后直接基类的直接基类，依次类推。</p>
+<h3 id="案例二"><a href="#案例二" class="headerlink" title="案例二"></a>案例二</h3><p>考虑在一对虚函数中，子类的虚函数函数体中调用了另外一个成员函数。如果这个成员函数涉及到动态绑定，那么按照案例一中的优先级，寻找最合适的虚函数版本即可。如果不涉及动态绑定，那么应该按照“子类作用域嵌套在父类作用域内”的原则取选取最合适的函数版本。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;iostream&gt;</span></span><br><br><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">A</span> &#123;</span><br><span class="hljs-keyword">private</span>:<br>    <span class="hljs-keyword">int</span> a = <span class="hljs-number">1</span>;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">f1</span><span class="hljs-params">(<span class="hljs-keyword">int</span> x)</span></span>&#123;<br>        std::cout &lt;&lt; <span class="hljs-string">&quot;this is class A, f1 &quot;</span> &lt;&lt; x &lt;&lt; std::endl;<br>    &#125;<br>    <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-keyword">void</span> <span class="hljs-title">f2</span><span class="hljs-params">()</span></span>&#123;<br>        std::cout &lt;&lt; <span class="hljs-string">&quot;this is class A, f2&quot;</span> &lt;&lt; std::endl;<br>    &#125;<br>&#125;;<br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">B</span> :</span> <span class="hljs-keyword">public</span> A&#123;<br><span class="hljs-keyword">private</span>:<br>    <span class="hljs-keyword">int</span> b = <span class="hljs-number">2</span>;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">f1</span><span class="hljs-params">(<span class="hljs-keyword">int</span> x)</span></span>&#123;<br>        std::cout &lt;&lt; <span class="hljs-string">&quot;this is class B, f1 &quot;</span> &lt;&lt; x &lt;&lt; std::endl;<br>    &#125;<br>    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">f2</span><span class="hljs-params">()</span></span>&#123;<br>        std::cout &lt;&lt; <span class="hljs-string">&quot;this is class B, f2&quot;</span> &lt;&lt; std::endl;<br>        <span class="hljs-built_in">f1</span>(<span class="hljs-number">10</span>);<br>    &#125;<br>&#125;;<br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">C</span> :</span> <span class="hljs-keyword">public</span> B&#123;<br><span class="hljs-keyword">private</span>:<br>    <span class="hljs-keyword">int</span> c = <span class="hljs-number">3</span>;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">f1</span><span class="hljs-params">(<span class="hljs-keyword">int</span> x)</span></span>&#123;<br>        std::cout &lt;&lt; <span class="hljs-string">&quot;this is class C, f1 &quot;</span> &lt;&lt; x &lt;&lt; std::endl;<br>    &#125;<br>    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">f2</span><span class="hljs-params">()</span></span>&#123;<br>        std::cout &lt;&lt; <span class="hljs-string">&quot;this is class C, f2&quot;</span> &lt;&lt; std::endl;<br>        <span class="hljs-built_in">f1</span>(<span class="hljs-number">10</span>);<br>    &#125;<br>&#125;;<br><br><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>&#123;<br>    A* pa = <span class="hljs-keyword">new</span> C;<br>    pa-&gt;<span class="hljs-built_in">f2</span>();<br>    <span class="hljs-keyword">delete</span> pa;<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
 
             </div>
             <hr>
