@@ -182,6 +182,133 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
+        <a href="/2021/08/10/manifold%E6%98%AF%E4%B8%AA%E5%95%A5/" target="_self">
+          流形(manifold)是个啥?
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2021/08/10/manifold%E6%98%AF%E4%B8%AA%E5%95%A5/" target="_self">
+          
+          
+            
+          
+          今天看MobileNet v2，其中为了得到“在处理低维度的特征tensor时，Relu激活函数相比于Linear激活函数在激活前后会造成更多的特征丢失”这一推论，使用了流形（manifold）的概念。所以来看看流形到底是个啥：
+数学语言的定义是：流形是局部具有欧几里得空间性质的空间，在数学中用于描述几何形体。物理上，经典力学的相空间和构造广义相对论的时空模型的四维伪黎曼流形都是流形的实例。牵扯出
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2021-08-10 09:40" pubdate>
+              2021-08-10
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/">工作技能</a>
+            
+              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">神经网络</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E6%B5%81%E5%BD%A2/">流形</a>
+            
+              <a href="/tags/manifold/">manifold</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2021/08/08/2-MobileNet/" target="_self">
+          MobileNet v2
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2021/08/08/2-MobileNet/" target="_self">
+          
+          
+            
+          
+          背景简介2018年Google团队在v1的基础上提出的改进版。核心思想仍然是DW卷积，但是这次借鉴了ResNet的残差结构，提高了性能。
+前置知识Inverted Residual所谓倒残差结构，其实就是在ResNet残差结构的基础上做了一些修改。首先看以下简图：
+
+
+对于残差结构而言，三个卷积层每一层卷积核的个数一般依次为[64, 64, 256]这样，先对具有256个通道的输入进行降维，然后3
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2021-08-08 22:22" pubdate>
+              2021-08-08
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/">工作技能</a>
+            
+              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">神经网络</a>
+            
+              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/%E7%BB%8F%E5%85%B8%E7%BD%91%E7%BB%9C/">经典网络</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a>
+            
+              <a href="/tags/CNN/">CNN</a>
+            
+              <a href="/tags/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">卷积神经网络</a>
+            
+              <a href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">神经网络</a>
+            
+              <a href="/tags/%E7%BB%8F%E5%85%B8%E7%BD%91%E7%BB%9C/">经典网络</a>
+            
+              <a href="/tags/Residual%E7%BB%93%E6%9E%84/">Residual结构</a>
+            
+              <a href="/tags/MobileNet/">MobileNet</a>
+            
+              <a href="/tags/Inverted-Residual%E7%BB%93%E6%9E%84/">Inverted Residual结构</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
         <a href="/2021/08/08/MobileNet/" target="_self">
           MobileNet v1
         </a>
@@ -748,120 +875,6 @@ sta
               <a href="/tags/%E5%88%87%E7%89%87/">切片</a>
             
               <a href="/tags/%E8%8A%B1%E5%BC%8F%E7%B4%A2%E5%BC%95/">花式索引</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2021/07/29/python%E5%87%BD%E6%95%B0%E5%8F%82%E6%95%B0%E7%9A%84%E6%89%93%E5%8C%85%E4%B8%8E%E6%8B%86%E8%A7%A3/" target="_self">
-          python函数参数的打包与拆解
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2021/07/29/python%E5%87%BD%E6%95%B0%E5%8F%82%E6%95%B0%E7%9A%84%E6%89%93%E5%8C%85%E4%B8%8E%E6%8B%86%E8%A7%A3/" target="_self">
-          
-          
-            
-          
-          标志：单/双星号出现在入参或形参之前原则：
-
-入参前加星号代表拆解，形参前加星号代表打包
-list/tuple只有一种拆解方式，dictionary有两种
-
-打包情形1：单星号出现在形参前12345678def pack(a, *b):        print type(a), a        print type(b), b	pack(1, 2, 3, 4, 5)&gt;&gt; &lt;t
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2021-07-29 18:14" pubdate>
-              2021-07-29
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/">工作技能</a>
-            
-              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/python%E7%AC%94%E8%AE%B0/">python笔记</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/python/">python</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2021/07/26/nvidia-smi%E7%AA%81%E7%84%B6%E8%B7%AA%E4%BA%86%EF%BC%81/" target="_self">
-          nvidia-smi突然跪了！
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2021/07/26/nvidia-smi%E7%AA%81%E7%84%B6%E8%B7%AA%E4%BA%86%EF%BC%81/" target="_self">
-          
-          
-            
-          
-          解决过程看着代码唱着歌，CUDA就突然啥啥啥初始化失败了。
-nvidia-smi一看，又是一个新报错Failed to initialize NVML: Driver/library version mismatch，闹心。
-整半天，大概意思是作为内核模块的nvidia驱动程序版本和libnvidia-compute-460这个库的版本不一致。
-两者一般都应该是安装驱动的时候指定的版本（for m
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2021-07-26 17:51" pubdate>
-              2021-07-26
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/%E7%94%9F%E6%B4%BB%E8%AE%B0%E5%BD%95/">生活记录</a>
-            
-              <a href="/categories/%E7%94%9F%E6%B4%BB%E8%AE%B0%E5%BD%95/%E7%94%B5%E8%84%91%E8%AE%BE%E7%BD%AE/">电脑设置</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/Nvidia/">Nvidia</a>
-            
-              <a href="/tags/%E9%A9%B1%E5%8A%A8%E5%A4%B1%E6%95%88/">驱动失效</a>
             
           </div>
         

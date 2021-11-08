@@ -246,6 +246,131 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
+        <a href="/2021/11/08/C-%E7%B1%BB%E7%BB%A7%E6%89%BF%E6%9C%BA%E5%88%B6%E4%B8%AD%E7%9A%84%E4%BD%9C%E7%94%A8%E5%9F%9F%E5%B5%8C%E5%A5%97%E9%97%AE%E9%A2%98/" target="_self">
+          C++类继承机制中的作用域嵌套问题
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2021/11/08/C-%E7%B1%BB%E7%BB%A7%E6%89%BF%E6%9C%BA%E5%88%B6%E4%B8%AD%E7%9A%84%E4%BD%9C%E7%94%A8%E5%9F%9F%E5%B5%8C%E5%A5%97%E9%97%AE%E9%A2%98/" target="_self">
+          
+          
+            
+          
+          OOP的三个支撑概念的其中之二，继承和动态绑定，都会带来作用域模糊的问题，这里来梳理以下。
+给定一个类的实例/类的实例的指针/类的实例的引用p，现在要通过p来访问它的对象mem。mem可以是方法也可以是成员，不影响下面的逻辑展开。
+整个调用过程，可以用下面的流程图表示：
+
+
+注意几个要点：
+
+名称的搜索只会向父类递归，不会向子类递归。
+名称查找成功后，直接进行类型检查，不成功直接报错，而不是继续递
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2021-11-08 17:58" pubdate>
+              2021-11-08
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/">工作技能</a>
+            
+              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/C-C-%E7%AC%94%E8%AE%B0/">C/C++笔记</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E7%BB%A7%E6%89%BF/">继承</a>
+            
+              <a href="/tags/%E5%8A%A8%E6%80%81%E7%BB%91%E5%AE%9A/">动态绑定</a>
+            
+              <a href="/tags/%E8%99%9A%E5%87%BD%E6%95%B0/">虚函数</a>
+            
+              <a href="/tags/%E4%BD%9C%E7%94%A8%E5%9F%9F/">作用域</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2021/11/04/coredump%E6%96%87%E4%BB%B6%E7%9A%84%E4%BD%BF%E7%94%A8/" target="_self">
+          coredump文件的使用
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2021/11/04/coredump%E6%96%87%E4%BB%B6%E7%9A%84%E4%BD%BF%E7%94%A8/" target="_self">
+          
+          
+            
+          
+          简介程序崩溃之后，一般会生成一个coredump文件。
+跟可重定位目标文件和可执行目标文件一样，这个文件也是一个elf文件，是程序崩溃瞬间进程栈和寄存器状态的快照。
+可以使用gdb加载这个文件，查看崩溃瞬间的程序运行状态。
+coredump开关12345#查看允许生成的文件大小上限，coresize=0意味着不允许产生, unlimited表示无限制ulimit -a#设置权限ulimit -c 
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2021-11-04 10:36" pubdate>
+              2021-11-04
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/">工作技能</a>
+            
+              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/coredump/">coredump</a>
+            
+              <a href="/tags/gdb/">gdb</a>
+            
+              <a href="/tags/debug/">debug</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
         <a href="/2021/10/31/protobuf%E5%9F%BA%E7%A4%8E%E7%94%A8%E6%B3%95/" target="_self">
           protobuf基础用法
         </a>
@@ -670,144 +795,6 @@ H(p,q) = -\sum p(x)\log q(x)在实际应用中，一般用于计算分类损失�
               <a href="/tags/%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B/">目标检测</a>
             
               <a href="/tags/SSD/">SSD</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2021/09/01/Faster-RCNN%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90-0/" target="_self">
-          Faster RCNN源码分析（零）—— 整体框架
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2021/09/01/Faster-RCNN%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90-0/" target="_self">
-          
-          
-            
-          
-          0. 前言两段式目标检测的代表作，相当复杂。
-基于pytorch的源码，捋一遍Faster-RCNN到底干了啥。
-这里先说一下框架，后面有时间再开几篇依次展开说各个子流程的代码实现细节。
-
-
-1. 从dataset加载图像首先要从把标注好的图像文件以及标注xml文件读取进来。
-参考这里自定义的dataset类，可以知道，dataloader每次迭代返回的是，dataset类__getitem__方
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2021-09-01 18:22" pubdate>
-              2021-09-01
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/">工作技能</a>
-            
-              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">神经网络</a>
-            
-              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B/">目标检测</a>
-            
-              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B/Faster-RCNN/">Faster RCNN</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a>
-            
-              <a href="/tags/CNN/">CNN</a>
-            
-              <a href="/tags/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">卷积神经网络</a>
-            
-              <a href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">神经网络</a>
-            
-              <a href="/tags/%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B/">目标检测</a>
-            
-              <a href="/tags/Faster-RCNN/">Faster RCNN</a>
-            
-              <a href="/tags/RPN/">RPN</a>
-            
-              <a href="/tags/ROI-Align/">ROI Align</a>
-            
-              <a href="/tags/ROI-Pooling/">ROI Pooling</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2021/08/25/note%20of%20C%5CC++/" target="_self">
-          C/C++笔记
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2021/08/25/note%20of%20C%5CC++/" target="_self">
-          
-          
-            
-          
-          数组指针&amp;指针的数组&amp;数组名故事从int (*)[10]开始，这是一种数据类型，具体点是一种“指向‘长度为10的int数组’这种类型的指针”类型。12345678910111213int a[5] = &#123;1,2,3,4,5&#125;;int (*)[5] p1;					//竟然是错误的用法。。。int (*p2)[5] = a;					//正不正确看编译器的种类和版
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2021-08-25 17:13" pubdate>
-              2021-08-25
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/">工作技能</a>
-            
-              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/C-C-%E7%AC%94%E8%AE%B0/">C/C++笔记</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/C%E8%AF%AD%E8%A8%80/">C语言</a>
-            
-              <a href="/tags/C/">C++</a>
-            
-              <a href="/tags/%E6%95%B0%E7%BB%84%E6%8C%87%E9%92%88/">数组指针</a>
-            
-              <a href="/tags/%E5%AD%97%E7%AC%A6%E6%95%B0%E7%BB%84/">字符数组</a>
-            
-              <a href="/tags/%E5%AD%97%E7%AC%A6%E4%B8%B2/">字符串</a>
             
           </div>
         
