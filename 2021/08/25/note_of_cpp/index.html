@@ -230,7 +230,7 @@
             
               <p class="note note-info">
                 
-                  本文最后更新于：4 天前
+                  本文最后更新于：18 天前
                 
               </p>
             
@@ -255,18 +255,15 @@
 <li>cin以分隔符将流内的内容喂给<code>&gt;&gt;</code>右侧的变量</li>
 <li>再&gt;&gt;时，会先检查流是否为空，不为空则无需变更控制流，按照上一条的逻辑继续写目标变量。</li>
 </ol>
-<h3 id="未命名的命名空间与静态声明"><a href="#未命名的命名空间与静态声明" class="headerlink" title="未命名的命名空间与静态声明"></a>未命名的命名空间与静态声明</h3><div align=center><img title="" src="/img/article/cpp_static.png" srcset="/img/loading.gif" lazyload width="60%" height="60%" align=center></div>
-静态声明的使用方法分两大类，其中面向过程的使用方法已经被C++标准取消，相应的符号隔离机制通过未命名的命名空间来实现。
+<h3 id="未命名的命名空间与静态声明"><a href="#未命名的命名空间与静态声明" class="headerlink" title="未命名的命名空间与静态声明"></a>未命名的命名空间与静态声明</h3><div align=center><img title="" src="/img/article/cpp_static.png" srcset="/img/loading.gif" lazyload width="99%" height="99%" align=center></div>
 
-### define的特殊符号
-<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">#define <span class="hljs-constructor">Conn(<span class="hljs-params">x</span>,<span class="hljs-params">y</span>)</span>  x##y<br>#define <span class="hljs-constructor">ToChar(<span class="hljs-params">x</span>)</span>  #@x<br>#define <span class="hljs-constructor">ToString(<span class="hljs-params">x</span>)</span> #x<br><br><span class="hljs-comment">// ## 表示拼接</span><br><span class="hljs-built_in">int</span> n = <span class="hljs-constructor">Conn(123, 456)</span>;<br><span class="hljs-built_in">int</span> n = <span class="hljs-number">123456</span>;<br><br><span class="hljs-comment">// #@ 表示为后面的符号x增加单引号</span><br><span class="hljs-built_in">char</span> a = <span class="hljs-constructor">ToChar(1)</span>;<br><span class="hljs-built_in">char</span> a = <span class="hljs-character">&#x27;1&#x27;</span>;<br><br><span class="hljs-comment">// # 表示为后面的符号x增加双引号</span><br><span class="hljs-built_in">char</span>* s = <span class="hljs-constructor">ToString(123)</span>;<br><span class="hljs-built_in">char</span>* s = <span class="hljs-string">&quot;123&quot;</span>;<br></code></pre></td></tr></table></figure>
-
-### unique_ptr的两种指针释放方式
-1. release
-  release只是简单的将被unique_ptr封装的内置指针吐出来，被指向的对象的内存不会被释放，内置指针与该对象之间的指向关系也不会被破坏。
-2. reset
-  reset首先释放unique_ptr封装起来的那个内置指针所指向的内存，然后根据传入的参数对该内置指针进行赋值。
-<div align=center><img title="" src="/img/article/unique_ptr.png" srcset="/img/loading.gif" lazyload width="60%" height="60%" align=center></div>
+<p><br>静态声明的使用方法分两大类，其中面向过程的使用方法已经被C++标准取消，相应的符号隔离机制通过未命名的命名空间来实现。</p>
+<h3 id="define的特殊符号"><a href="#define的特殊符号" class="headerlink" title="define的特殊符号"></a>define的特殊符号</h3><figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">#define <span class="hljs-constructor">Conn(<span class="hljs-params">x</span>,<span class="hljs-params">y</span>)</span>  x##y<br>#define <span class="hljs-constructor">ToChar(<span class="hljs-params">x</span>)</span>  #@x<br>#define <span class="hljs-constructor">ToString(<span class="hljs-params">x</span>)</span> #x<br><br><span class="hljs-comment">// ## 表示拼接</span><br><span class="hljs-built_in">int</span> n = <span class="hljs-constructor">Conn(123, 456)</span>;<br><span class="hljs-built_in">int</span> n = <span class="hljs-number">123456</span>;<br><br><span class="hljs-comment">// #@ 表示为后面的符号x增加单引号</span><br><span class="hljs-built_in">char</span> a = <span class="hljs-constructor">ToChar(1)</span>;<br><span class="hljs-built_in">char</span> a = <span class="hljs-character">&#x27;1&#x27;</span>;<br><br><span class="hljs-comment">// # 表示为后面的符号x增加双引号</span><br><span class="hljs-built_in">char</span>* s = <span class="hljs-constructor">ToString(123)</span>;<br><span class="hljs-built_in">char</span>* s = <span class="hljs-string">&quot;123&quot;</span>;<br></code></pre></td></tr></table></figure>
+<h3 id="unique-ptr的两种指针释放方式"><a href="#unique-ptr的两种指针释放方式" class="headerlink" title="unique_ptr的两种指针释放方式"></a>unique_ptr的两种指针释放方式</h3><ol>
+<li>release<br>release只是简单的将被unique_ptr封装的内置指针吐出来，被指向的对象的内存不会被释放，内置指针与该对象之间的指向关系也不会被破坏。</li>
+<li>reset<br>reset首先释放unique_ptr封装起来的那个内置指针所指向的内存，然后根据传入的参数对该内置指针进行赋值。<div align=center><img title="" src="/img/article/unique_ptr.png" srcset="/img/loading.gif" lazyload width="80%" height="80%" align=center></div>
+</li>
+</ol>
 
             </div>
             <hr>

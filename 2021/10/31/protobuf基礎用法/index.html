@@ -178,7 +178,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      820 字
+      821 字
     </span>
   
 
@@ -230,17 +230,17 @@
             
               <p class="note note-info">
                 
-                  本文最后更新于：9 天前
+                  本文最后更新于：17 天前
                 
               </p>
             
             <div class="markdown-body">
               <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>自动驾驶框架常用protobuf作为节点之间通讯的工具，出现频率很高，了解一下基本情况。</p>
-<p>我们知道，<strong>数据只要进内存就要进行序列化，出内存就要进行反序列化</strong>。</p>
+<p>我们知道，<strong>数据只要出内存就要进行序列化，进内存就要进行反序列化</strong>。</p>
 <p>这是因为，所有数据在内存中存放的形式都是一串0/1。比如，我们定义一个结构体，然后对其实例化，我们就在内存中的某个位置写入了这串0/1序列。当我们想把这一个结构体所表示的“信息”给到另外一个用户时，应该怎么做呢？</p>
 <p>我们可以把这一串0/1序列从内存中写到硬盘上，形成一个文件，然后把这个文件发送给其他用户。由内存中的0/1序列（或者说一个结构体实例）得到这个文件的过程，就是序列化过程。</p>
 <p>用户在拿到这一文件后想使用其中包含的信息，就必须先将其恢复为结构体，才能方便地进行操作。由二进制序列（或者说拿到的这个文件）得到结构体实例的过程，就是反序列化过程。</p>
-<p>那么protobuf做了什么呢？首先，允许我们以最简的方式定义待传递的信息结构（<code>.proto文件</code>），然后使用<code>protoc</code>程序处理<code>.proto</code>文件，自动生成C++结构体，并配套一系列操作这个结构体的方法（API）。</p>
+<p>那么protobuf做了什么呢？首先，它允许我们以最简的方式定义待传递的信息结构（<code>.proto文件</code>），然后使用<code>protoc</code>程序处理<code>.proto</code>文件，自动生成C++结构体，并配套一系列操作这个结构体的方法（API）。</p>
 <p>所以说，protobuf的使用围绕三个核心要素:</p>
 <ul>
 <li><code>.proto</code>文件</li>
@@ -252,12 +252,14 @@
 <h2 id="API"><a href="#API" class="headerlink" title="API"></a>API</h2><h3 id="序列化API"><a href="#序列化API" class="headerlink" title="序列化API"></a>序列化API</h3><ul>
 <li><code>bool SerializeToString(string* output) const;</code></li>
 <li><code>bool SerializeToOstream(ostream* output) const;</code><br>一个生成类的实例调用这两种方法，将会把自身的内容以二进制串的形式写入string或ostream中，如<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function">fstream <span class="hljs-title">output</span><span class="hljs-params">(argv[<span class="hljs-number">1</span>], ios::out | ios::trunc | ios::binary)</span></span>;<br><span class="hljs-keyword">if</span> (!address_book.<span class="hljs-built_in">SerializeToOstream</span>(&amp;output)) &#123;<br>    cerr &lt;&lt; <span class="hljs-string">&quot;Failed to write address book.&quot;</span> &lt;&lt; endl;<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
-<h3 id="反序列化API"><a href="#反序列化API" class="headerlink" title="反序列化API"></a>反序列化API</h3></li>
-<li><code>bool ParseFromString(const string&amp; data);</code></li>
-<li><code>bool ParseFromIstream(istream* input);</code><br>从一个istream或string读取一个二进制串，然后这个生成类的实例中的内容便得到了填充。如，<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs css">tutorial::AddressBook address_book;<br>fstream <span class="hljs-selector-tag">input</span>(argv<span class="hljs-selector-attr">[1]</span>, ios::in | ios::binary);<br>if (!address_book<span class="hljs-selector-class">.ParseFromIstream</span>(&amp;<span class="hljs-selector-tag">input</span>)) &#123;<br>    cerr &lt;&lt; &quot;Failed <span class="hljs-selector-tag">to</span> parse <span class="hljs-selector-tag">address</span> book.&quot; &lt;&lt; endl;<br>    return -<span class="hljs-number">1</span>;<br>&#125;<br>    &#125;<br></code></pre></td></tr></table></figure>
-<h3 id="元素获取与操作API"><a href="#元素获取与操作API" class="headerlink" title="元素获取与操作API"></a>元素获取与操作API</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-comment">// id</span><br><span class="hljs-function"><span class="hljs-keyword">inline</span> <span class="hljs-keyword">bool</span> <span class="hljs-title">has_id</span><span class="hljs-params">()</span> <span class="hljs-keyword">const</span></span>;<br><span class="hljs-function"><span class="hljs-keyword">inline</span> <span class="hljs-keyword">void</span> <span class="hljs-title">clear_id</span><span class="hljs-params">()</span></span>;<br><span class="hljs-function"><span class="hljs-keyword">inline</span> <span class="hljs-keyword">void</span> <span class="hljs-title">set_id</span><span class="hljs-params">(<span class="hljs-keyword">int32_t</span> value)</span></span>;<br></code></pre></td></tr></table></figure>
 </li>
 </ul>
+<h3 id="反序列化API"><a href="#反序列化API" class="headerlink" title="反序列化API"></a>反序列化API</h3><ul>
+<li><code>bool ParseFromString(const string&amp; data);</code></li>
+<li><code>bool ParseFromIstream(istream* input);</code><br>从一个istream或string读取一个二进制串，然后这个生成类的实例中的内容便得到了填充。如，<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs css">tutorial::AddressBook address_book;<br>fstream <span class="hljs-selector-tag">input</span>(argv<span class="hljs-selector-attr">[1]</span>, ios::in | ios::binary);<br>if (!address_book<span class="hljs-selector-class">.ParseFromIstream</span>(&amp;<span class="hljs-selector-tag">input</span>)) &#123;<br>    cerr &lt;&lt; &quot;Failed <span class="hljs-selector-tag">to</span> parse <span class="hljs-selector-tag">address</span> book.&quot; &lt;&lt; endl;<br>    return -<span class="hljs-number">1</span>;<br>&#125;<br>    &#125;<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="元素获取与操作API"><a href="#元素获取与操作API" class="headerlink" title="元素获取与操作API"></a>元素获取与操作API</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-comment">// id</span><br><span class="hljs-function"><span class="hljs-keyword">inline</span> <span class="hljs-keyword">bool</span> <span class="hljs-title">has_id</span><span class="hljs-params">()</span> <span class="hljs-keyword">const</span></span>;<br><span class="hljs-function"><span class="hljs-keyword">inline</span> <span class="hljs-keyword">void</span> <span class="hljs-title">clear_id</span><span class="hljs-params">()</span></span>;<br><span class="hljs-function"><span class="hljs-keyword">inline</span> <span class="hljs-keyword">void</span> <span class="hljs-title">set_id</span><span class="hljs-params">(<span class="hljs-keyword">int32_t</span> value)</span></span>;<br></code></pre></td></tr></table></figure>
 <h3 id="通用API"><a href="#通用API" class="headerlink" title="通用API"></a>通用API</h3><ul>
 <li><code>bool IsInitialized() const;</code>: checks if all the required fields have been set.</li>
 <li><code>void Clear();</code>: clears all the elements back to the empty state.</li>
