@@ -246,6 +246,64 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
+        <a href="/2021/12/05/%E5%8D%A1%E5%B0%94%E6%9B%BC%E6%BB%A4%E6%B3%A2%E5%AE%9E%E8%B7%B5/" target="_self">
+          卡尔曼滤波的矩阵形式
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2021/12/05/%E5%8D%A1%E5%B0%94%E6%9B%BC%E6%BB%A4%E6%B3%A2%E5%AE%9E%E8%B7%B5/" target="_self">
+          
+          
+            
+          
+          写在前面前面大概说了卡尔曼滤波的原理以及一个简单的demo。
+在阅读阿波罗源码，以及其他卡尔曼滤波的教程时发现，往往使用矩阵形式。这里接上篇一起介绍下。
+数学模型
+状态转移方程
+\boldsymbol{x}_k = \boldsymbol{Ax}_{k-1} + \boldsymbol{Bu}_{k-1} + \boldsymbol{w}_k式中：
+$\boldsymbol{A}$为状态转移矩阵
+
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2021-12-05 17:46" pubdate>
+              2021-12-05
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/">工作技能</a>
+            
+              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/%E6%95%B0%E6%8D%AE%E8%9E%8D%E5%90%88/">数据融合</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E5%8D%A1%E5%B0%94%E6%9B%BC%E6%BB%A4%E6%B3%A2/">卡尔曼滤波</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
         <a href="/2021/11/23/%E9%80%86%E9%80%8F%E8%A7%86%E6%98%A0%E5%B0%84%EF%BC%88InversePerspectiveMapping%EF%BC%89/" target="_self">
           逆透视映射（InversePerspectiveMapping）
         </a>
@@ -627,8 +685,8 @@ coredump开关12345#查看允许生成的文件大小上限，coresize=0意味�
 那么，应该相信哪一种办法得到的值呢？
 怎么做的先把上述概念实例化一下，对于一个小车，我们想知道它在当前时刻$t$距离障碍物的真实距离$x_t$。我们用两种办法：
 
-测距雷达测得$m_t$
-根据上一时刻的车速$v_{t-1}$和上一时刻的最终估计值
+测距雷达测得的测量值$m_t$
+根据上一时刻的车速$v_{t-1}$和上一时刻的最
         </a>
       </p>
 
@@ -713,71 +771,6 @@ coredump开关12345#查看允许生成的文件大小上限，coresize=0意味�
               <a href="/tags/Focal-Loss/">Focal Loss</a>
             
               <a href="/tags/%E5%9B%B0%E9%9A%BE%E6%A0%B7%E6%9C%AC/">困难样本</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2021/10/12/%E5%AE%9A%E4%BD%8D%E8%AF%AF%E5%B7%AE%E5%B8%B8%E7%94%A8%E7%9A%84%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0/" target="_self">
-          定位误差常用的损失函数
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2021/10/12/%E5%AE%9A%E4%BD%8D%E8%AF%AF%E5%B7%AE%E5%B8%B8%E7%94%A8%E7%9A%84%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0/" target="_self">
-          
-          
-            
-          
-          前言在目标检测任务中，为了更好的量化定位损失，各路大神想了很多办法。从最开始的针对xywh的均方误差，到IOU损失，再到后续的GIOU损失、DIOU损失、CIOU损失，越来越复杂。其中均方误差比较简单，不再介绍。重点讲一下IOU系列。
-
-
-IOU损失这里牵涉到两个概念，“IOU”和“IOU损失”，对于前者，已经很熟悉了，不再赘述。而对于后者，则是简单地令
-
-IOU loss = - \ln(\fr
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2021-10-12 17:36" pubdate>
-              2021-10-12
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/">工作技能</a>
-            
-              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">神经网络</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0/">损失函数</a>
-            
-              <a href="/tags/IOU/">IOU</a>
-            
-              <a href="/tags/GIOU/">GIOU</a>
-            
-              <a href="/tags/DIOU/">DIOU</a>
-            
-              <a href="/tags/CIOU/">CIOU</a>
             
           </div>
         

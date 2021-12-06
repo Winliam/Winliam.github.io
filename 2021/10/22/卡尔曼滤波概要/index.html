@@ -178,7 +178,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      794 字
+      802 字
     </span>
   
 
@@ -230,7 +230,7 @@
             
               <p class="note note-info">
                 
-                  本文最后更新于：1 个月前
+                  本文最后更新于：2 天前
                 
               </p>
             
@@ -243,8 +243,8 @@
 <p>那么，应该相信哪一种办法得到的值呢？</p>
 <h2 id="怎么做的"><a href="#怎么做的" class="headerlink" title="怎么做的"></a>怎么做的</h2><p>先把上述概念实例化一下，对于一个小车，我们想知道它在当前时刻$t$距离障碍物的真实距离$x_t$。我们用两种办法：</p>
 <ol>
-<li>测距雷达测得$m_t$</li>
-<li>根据<strong>上一时刻的车速</strong>$v_{t-1}$和<strong>上一时刻的最终估计值</strong>$p_{t-1}$得到的<strong>粗略估计值</strong>$n_t$，即有<script type="math/tex; mode=display">
+<li>测距雷达测得的<strong>测量值</strong>$m_t$</li>
+<li>根据<strong>上一时刻的车速</strong>$v_{t-1}$和<strong>上一时刻的最终估计值</strong>$p_{t-1}$得到的<strong>预测值</strong>$n_t$，即有<script type="math/tex; mode=display">
 n_t = p_{t-1}-v_{t-1}</script></li>
 </ol>
 <p>然后，想办法平衡$m_t$和$n_t$，得到本时刻的<strong>最终估计值</strong>$p_t$。卡尔曼的做法是，将所有变量都视作一个正态的概率分布，而不是一个简单的标量值。即有</p>
@@ -255,12 +255,12 @@ n_t = p_{t-1}-v_{t-1}</script></li>
 <li>结果变量$p$    -&gt;     $p(\mu _p,\sigma _p)$</li>
 </ol>
 <p>然后，按照经典方式，分两步计算来得到$p_t$</p>
-<h3 id="Step-1"><a href="#Step-1" class="headerlink" title="Step 1"></a>Step 1</h3><p>首先因为</p>
+<h3 id="Step1-预测"><a href="#Step1-预测" class="headerlink" title="Step1 预测"></a>Step1 预测</h3><p>首先因为</p>
 <script type="math/tex; mode=display">
 n_t = p_{t-1}-v_{t-1}</script><p>所以，可以得到$n_t$的均值和方差分别为</p>
 <script type="math/tex; mode=display">
 \mu_t^n = \mu_{t-1}^p - \mu_{t-1}^v</script><script type="math/tex; mode=display">
-\sigma_t^n = \sigma_{t-1}^p + \sigma_{t-1}^v</script><h3 id="Step-2"><a href="#Step-2" class="headerlink" title="Step 2"></a>Step 2</h3><p>平衡$m_t$和$n_t$这两个概率分布的方式是概率的乘法，即有</p>
+\sigma_t^n = \sigma_{t-1}^p + \sigma_{t-1}^v</script><h3 id="Step2-融合-更新-校正"><a href="#Step2-融合-更新-校正" class="headerlink" title="Step2 融合/更新/校正"></a>Step2 融合/更新/校正</h3><p>平衡$m_t$和$n_t$这两个概率分布的方式是概率的乘法，即有</p>
 <script type="math/tex; mode=display">
 \mu_t^p = \frac{\mu_t^n \sigma_t^m + \mu_t^m \sigma_t^n }{\sigma_t^m + \sigma_t^n }</script><script type="math/tex; mode=display">
 \sigma_t^p = \frac{\sigma_t^m \sigma_t^n }{\sigma_t^m + \sigma_t^n }</script><p>由于正态分布在变量取均值是概率最大，所以$\mu_t^p$即为$t$时刻的最终估计值$p_t$。而$\sigma_t^p$则用于计算下时刻的最终估计值。</p>

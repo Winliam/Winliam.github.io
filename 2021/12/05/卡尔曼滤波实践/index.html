@@ -18,7 +18,7 @@
   <meta name="author" content="William Guo">
   <meta name="keywords" content="">
   
-  <title>逆透视映射（InversePerspectiveMapping） by 电竞大师小明</title>
+  <title>卡尔曼滤波的矩阵形式 by 电竞大师小明</title>
 
   <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
 
@@ -163,7 +163,7 @@
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.7)">
           <div class="page-header text-center fade-in-up">
-            <span class="h2" id="subtitle" title="逆透视映射（InversePerspectiveMapping）">
+            <span class="h2" id="subtitle" title="卡尔曼滤波的矩阵形式">
               
             </span>
 
@@ -226,178 +226,102 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">逆透视映射（InversePerspectiveMapping）</h1>
+            <h1 style="display: none">卡尔曼滤波的矩阵形式</h1>
             
               <p class="note note-info">
                 
-                  本文最后更新于：11 天前
+                  本文最后更新于：几秒前
                 
               </p>
             
             <div class="markdown-body">
-              <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>众所周知，真实世界的三维坐标在向相机的成像平面上投影时，会损失深度信息，使得整个过程不可逆。也就是说，已知图像中一个点的坐标$(u,v)$是无法求得该点在真实世界的三维坐标$(X_w, Y_w, Z_w)$的。</p>
-<p>那么，如果额外多给一项信息，即现在关心的所有三维世界的点都是同在一个平面(比如路面上的车道线)上呢？此时图像像素坐标系和世界坐标系之间的坐标转换就变成了可逆关系。</p>
-<p>这种情形下，从像素坐标系坐标得到世界坐标系坐标的做法称作<strong>逆透视映射</strong>。</p>
-<h2 id="应用一：同一物理平面在两幅图像之间的转换"><a href="#应用一：同一物理平面在两幅图像之间的转换" class="headerlink" title="应用一：同一物理平面在两幅图像之间的转换"></a>应用一：同一物理平面在两幅图像之间的转换</h2><p>现有：</p>
-<ul>
-<li>一个物理世界的平面，称作$P$</li>
-<li>两个不同位置的相机，称作$A$和$B$</li>
-<li>$P$在$A$的成像平面上的投影，称作$P_A$，其上一点在$A$的像素坐标系上的坐标记作$(u_A,v_A)$</li>
-<li>$P$在$B$的成像平面上的投影，称作$P_B$，其上一点在$B$的像素坐标系上的坐标记作$(u_B,v_B)$</li>
+              <h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><p><a target="_blank" rel="noopener" href="https://guohongming.xyz/2021/10/22/%E5%8D%A1%E5%B0%94%E6%9B%BC%E6%BB%A4%E6%B3%A2%E6%A6%82%E8%A6%81/">前面大概说了卡尔曼滤波的原理以及一个简单的demo。</a></p>
+<p>在阅读阿波罗源码，以及其他卡尔曼滤波的教程时发现，往往使用矩阵形式。这里接上篇一起介绍下。</p>
+<h2 id="数学模型"><a href="#数学模型" class="headerlink" title="数学模型"></a>数学模型</h2><ul>
+<li><strong>状态转移方程</strong><script type="math/tex; mode=display">
+\boldsymbol{x}_k = \boldsymbol{Ax}_{k-1} + \boldsymbol{Bu}_{k-1} + \boldsymbol{w}_k</script>式中：<ul>
+<li>$\boldsymbol{A}$为状态转移矩阵</li>
+<li>$\boldsymbol{B}$为控制矩阵</li>
+<li>$\boldsymbol{u}_{k-1}$为上一时刻的作用于系统的外界控制向量，本文暂时不考虑。</li>
+<li>$\boldsymbol{w}_k$为过程噪声。</li>
 </ul>
-<p><div align=center><img title="" src="/img/article/homo1.jpg" srcset="/img/loading.gif" lazyload width="129%" height="129%" align=center></div><br></p>
-<p>那么，$P_A$和$P_B$之间互为投影变换（单应性变换），这意味着存在一个3x3的可逆矩阵$\boldsymbol{H}$，使得：</p>
+</li>
+<li><strong>观测方程</strong><script type="math/tex; mode=display">
+\boldsymbol{z}_k = \boldsymbol{Hx}_{k} + \boldsymbol{v}_{k}</script>式中：<ul>
+<li>$\boldsymbol{z}_k$为直接观测值</li>
+<li>$\boldsymbol{H}$为观测矩阵，用来模拟直接观测量和状态量之间的数学关系。有时候需要估计的状态是无法直接被观测到的，所以需要这个公式，这个矩阵</li>
+<li>$\boldsymbol{v}_{k}$为观测噪声</li>
+</ul>
+</li>
+</ul>
+<h2 id="预测过程"><a href="#预测过程" class="headerlink" title="预测过程"></a>预测过程</h2><p>跟之前一样，先将上一时刻得到的最终状态估计值$\boldsymbol{x}_{k-1}$代入状态转移方程，得到当前时刻状态的理论预测值$\hat{\boldsymbol{x}}_k$。即有，</p>
+<script type="math/tex; mode=display">
+\hat{\boldsymbol{x}}_k = \boldsymbol{Ax}_{k-1}</script><p>类似地，可以得到$\hat{\boldsymbol{x}}_k$的方差$\hat{\boldsymbol{P}}_k$，</p>
+<script type="math/tex; mode=display">
+\hat{\boldsymbol{P}}_k = \boldsymbol{A}\boldsymbol{P}_{k-1}\boldsymbol{A}^T+\boldsymbol{Q}_k</script><p>其中，$\boldsymbol{Q}_k$为当前时刻过程噪声的协方差矩阵。这两个公式便是矩阵形式的卡尔曼滤波预测过程。</p>
+<h2 id="更新过程"><a href="#更新过程" class="headerlink" title="更新过程"></a>更新过程</h2><p>然后，还是要用当前时刻的观测值$\boldsymbol{z}_k$来校正理论预测值$\hat{\boldsymbol{x}_k}$。</p>
+<p>但是，对于大多数情况，$\boldsymbol{z}_k$和$\hat{\boldsymbol{x}}_k$都不表示相同的状态量（说人话就是，直接观测的量不是需要估计的量，比如引擎内部的温度，由于过高而无法测量，只能测外壁的温度然后估算）。</p>
+<p>这就使得更新过程跟原来不太一样，需要引入观测矩阵$\boldsymbol{H}$进行计算。</p>
+<p>首先，更新（融合）公式如下：</p>
+<script type="math/tex; mode=display">
+\boldsymbol{x}_k = \hat{\boldsymbol{x}}_{k} + \boldsymbol{K}(\boldsymbol{z}_k - \boldsymbol{H}\hat{\boldsymbol{x}}_{k}) = (\boldsymbol{I} - \boldsymbol{KH})\hat{\boldsymbol{x}}_{k} + \boldsymbol{K}{\boldsymbol{z}}_{k}</script><script type="math/tex; mode=display">
+\boldsymbol{P}_k = (\boldsymbol{I} - \boldsymbol{KH})\hat{\boldsymbol{P}}_{k}</script><p>式中，只有$\boldsymbol{K}$是未知的（矩阵形式的卡尔曼增益），并且可以看到观测结果的协方差以及噪声都没有直接体现在融合公式中。这是因为这些信息都包含在卡尔曼增益矩阵中，具体有：</p>
+<script type="math/tex; mode=display">
+\boldsymbol{K} = \hat{\boldsymbol{P}}_{k}\boldsymbol{H}^T\boldsymbol{S}^{-1}</script><p>其中，$\boldsymbol{S}$为$\boldsymbol{z}_k - \boldsymbol{H}\hat{\boldsymbol{x}}_{k}$的协方差矩阵，具体有：</p>
+<script type="math/tex; mode=display">
+\boldsymbol{S} = \boldsymbol{H}\hat{\boldsymbol{P}}_{k}\boldsymbol{H}^T+\boldsymbol{R}_k</script><p>综合来看，预测过程需要先计算$\boldsymbol{S}$，再计算$\boldsymbol{K}$，然后用观测值$\boldsymbol{z}_k$和$\boldsymbol{K}$参与理论预测值（状态及方差）的校正。</p>
+<h2 id="具体实例"><a href="#具体实例" class="headerlink" title="具体实例"></a>具体实例</h2><p>以阿波罗源码中目标跟踪所采用的“匀速卡尔曼滤波器”为例，应用以上理论。首先确定状态转移方程和观测方程，需要估计的状态向量为二维的坐标及车速，由于是匀速运动模型，所以有：</p>
 <script type="math/tex; mode=display">
 \left[
 \begin{array}{c} 
- u_A      \\
- v_A      \\
- 1      \\
+ x      \\
+ y      \\
+ \dot x      \\
+ \dot y      \\
 \end{array}
-\right]
- =
-\boldsymbol{H}
-\left[
-\begin{array}{c} 
- u_B      \\
- v_B      \\
- 1      \\
-\end{array}
-\right]</script><p>矩阵$\boldsymbol{H}$中的9个元素的取值可以通过在两幅图像中取4组不共线的对应点解方程得到，也可以通过两个相机内外参矩阵之间的关系得到。</p>
-<h2 id="应用二：车道线物理坐标的求解"><a href="#应用二：车道线物理坐标的求解" class="headerlink" title="应用二：车道线物理坐标的求解"></a>应用二：车道线物理坐标的求解</h2><p>道路平面上的车道线上的点在世界坐标系中的坐标，与对应点在前视相机像素坐标系中的坐标之间，同样存在上述单应性变换关系。这一点可以从下面的公式推导过程中得到：</p>
-<p><div align=center><img title="" src="/img/article/homo2.png" srcset="/img/loading.gif" lazyload width="80%" height="80%" align=center></div><br></p>
-<p>首先，图像像素坐标系和世界坐标系之间的坐标转换关系如下：</p>
-<script type="math/tex; mode=display">
-\left[
-\begin{array}{c} 
- u      \\
- v      \\
- 1      \\
-\end{array}
-\right]
+\right]_k
 =
-\frac{1}{Z_c}
-\boldsymbol{K}
-\boldsymbol{E}
-\left[
-\begin{array}{c} 
- X_w      \\
- Y_w      \\
- Z_w      \\
- 1      \\
-\end{array}
-\right]
-=
-\frac{1}{Z_c}
-\left[
-\begin{array}{ccc} 
- \frac{f}{d_x} & 0 &fu_0   \\
- 0 & \frac{f}{d_y} &fv_0   \\
- 0 & 0 &1   \\
-\end{array}
-\right]
 \left[
 \begin{array}{cccc} 
- r_{11} & r_{12} &r_{12} &t_{1}      \\
- r_{21} & r_{22} &r_{23} &t_{2}      \\
- r_{31} & r_{32} &r_{33} &t_{3}      \\
+ 1 & 0 &dt &0      \\
+ 0 & 1 &0 &dt      \\
+ 0 & 0 &1 &0      \\
+ 0 & 0 &0 &1      \\
 \end{array}
 \right]
 \left[
 \begin{array}{c} 
- X_w      \\
- Y_w      \\
- Z_w      \\
- 1      \\
+ x      \\
+ y      \\
+ \dot x      \\
+ \dot y      \\
 \end{array}
-\right]</script><p>在这个应用场景下有，$Z_w=0$，因此有：</p>
+\right]_{k-1}</script><p>直接观测状态为二维坐标，因此可以得到观测方程为：</p>
 <script type="math/tex; mode=display">
 \left[
 \begin{array}{c} 
- u      \\
- v      \\
- 1      \\
+ z_x      \\
+ z_y      \\
 \end{array}
-\right]
+\right]_k 
 =
-\frac{1}{r_{31}X_w+r_{32}Y_w+t_3}
-\left[
-\begin{array}{ccc} 
- \frac{f}{d_x} & 0 &fu_0   \\
- 0 & \frac{f}{d_y} &fv_0   \\
- 0 & 0 &1   \\
-\end{array}
-\right]
 \left[
 \begin{array}{cccc} 
- r_{11} & r_{12} &r_{12} &t_{1}      \\
- r_{21} & r_{22} &r_{23} &t_{2}      \\
- r_{31} & r_{32} &r_{33} &t_{3}      \\
+ 1 & 0 &0 &0      \\
+ 0 & 1 &0 &0      \\
 \end{array}
 \right]
 \left[
 \begin{array}{c} 
- X_w      \\
- Y_w      \\
- 0      \\
- 1      \\
+ x      \\
+ y      \\
+ \dot x      \\
+ \dot y      \\
 \end{array}
-\right]</script><p>合并内外参矩阵得：</p>
-<script type="math/tex; mode=display">
-\left[
-\begin{array}{c} 
- u      \\
- v      \\
- 1      \\
-\end{array}
-\right]
-=
-\frac{1}{r_{31}X_w+r_{32}Y_w+t_3}
-\left[
-\begin{array}{cccc} 
- h_{11} & h_{12} &h_{12} &h_{13}      \\
- h_{21} & h_{22} &h_{23} &h_{23}      \\
- r_{31} & r_{32} &r_{33} &t_{3}      \\
-\end{array}
-\right]
-\left[
-\begin{array}{c} 
- X_w      \\
- Y_w      \\
- 0      \\
- 1      \\
-\end{array}
-\right]</script><p>注意到，$\boldsymbol{H}$矩阵中的第三列元素其实是无效的，因此有：</p>
-<script type="math/tex; mode=display">
-\left[
-\begin{array}{c} 
- u      \\
- v      \\
- 1      \\
-\end{array}
-\right]
-=
-\frac{1}{r_{31}X_w+r_{32}Y_w+t_3}
-\left[
-\begin{array}{ccc} 
- h_{11} & h_{12}  &h_{13}      \\
- h_{21} & h_{22}  &h_{23}      \\
- r_{31} & r_{32}  &t_{3}      \\
-\end{array}
-\right]
-\left[
-\begin{array}{c} 
- X_w      \\
- Y_w      \\
- 1      \\
-\end{array}
-\right]</script><p>上式中，可以看到$\boldsymbol{H}$矩阵的前两列由内参矩阵和旋转矩阵相乘得到，第三列由内参矩阵和平移向量相乘得到。这也是apollo代码中，用conceptual方式求取透视投影矩阵所基于的原理。</p>
-<p>这样，用$\boldsymbol{H}$的逆矩阵与像素坐标点相乘，然后归一化Z坐标，即可得到像素坐标点在世界坐标系中的XY坐标。</p>
-<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ol>
-<li><a target="_blank" rel="noopener" href="https://towardsdatascience.com/a-hands-on-application-of-homography-ipm-18d9e47c152f">https://towardsdatascience.com/a-hands-on-application-of-homography-ipm-18d9e47c152f</a></li>
-<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/74597564">https://zhuanlan.zhihu.com/p/74597564</a></li>
-<li><a target="_blank" rel="noopener" href="https://leijiezhang001.github.io/lane-det-from-BEV/">https://leijiezhang001.github.io/lane-det-from-BEV/</a></li>
-</ol>
+\right]_{k}</script><p>至此，便得到了状态转移矩阵$\boldsymbol{A}$和观测矩阵$\boldsymbol{H}$。然后在初始化时给定$\boldsymbol{x}_0$和$\boldsymbol{P}_0$，便可完成<strong>预测</strong>、<strong>更新</strong>、<strong>预测</strong>…的迭代过程。</p>
+<blockquote>
+<p>其实还要给定$\boldsymbol{Q}$和$\boldsymbol{R}$，但对于整个卡尔曼滤波过程而言，是一个常数，初始化时给定即可，一般不跟着迭代。</p>
+</blockquote>
 
             </div>
             <hr>
@@ -409,7 +333,7 @@
                     
                       <a class="hover-with-bg" href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/">工作技能</a>
                     
-                      <a class="hover-with-bg" href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/%E6%97%A0%E4%BA%BA%E9%A9%BE%E9%A9%B6/">无人驾驶</a>
+                      <a class="hover-with-bg" href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/%E6%95%B0%E6%8D%AE%E8%9E%8D%E5%90%88/">数据融合</a>
                     
                   </div>
                 
@@ -417,13 +341,7 @@
                   <div class="post-meta">
                     <i class="iconfont icon-tags"></i>
                     
-                      <a class="hover-with-bg" href="/tags/%E8%BD%A6%E9%81%93%E7%BA%BF%E6%A3%80%E6%B5%8B/">车道线检测</a>
-                    
-                      <a class="hover-with-bg" href="/tags/Inverse-Perspective-Mapping/">Inverse Perspective Mapping</a>
-                    
-                      <a class="hover-with-bg" href="/tags/%E5%8D%95%E5%BA%94%E6%80%A7%E7%9F%A9%E9%98%B5/">单应性矩阵</a>
-                    
-                      <a class="hover-with-bg" href="/tags/homography/">homography</a>
+                      <a class="hover-with-bg" href="/tags/%E5%8D%A1%E5%B0%94%E6%9B%BC%E6%BB%A4%E6%B3%A2/">卡尔曼滤波</a>
                     
                   </div>
                 
@@ -440,18 +358,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2021/12/05/%E5%8D%A1%E5%B0%94%E6%9B%BC%E6%BB%A4%E6%B3%A2%E5%AE%9E%E8%B7%B5/">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">卡尔曼滤波的矩阵形式</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2021/11/21/camera%E7%9B%B8%E5%85%B3%E7%9A%84%E5%9D%90%E6%A0%87%E7%B3%BB/">
-                        <span class="hidden-mobile">相机成像原理</span>
+                      <a href="/2021/11/23/%E9%80%86%E9%80%8F%E8%A7%86%E6%98%A0%E5%B0%84%EF%BC%88InversePerspectiveMapping%EF%BC%89/">
+                        <span class="hidden-mobile">逆透视映射（InversePerspectiveMapping）</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
