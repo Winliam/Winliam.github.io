@@ -178,7 +178,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      1k 字
+      1.1k 字
     </span>
   
 
@@ -188,7 +188,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      13
+      14
        分钟
     </span>
   
@@ -320,7 +320,7 @@
 \end{array}
 \right]_{k}</script><p>至此，便得到了状态转移矩阵$\boldsymbol{A}$和观测矩阵$\boldsymbol{H}$。然后在初始化时给定$\boldsymbol{x}_0$和$\boldsymbol{P}_0$，便可完成<strong>预测</strong>、<strong>更新</strong>、<strong>预测</strong>…的迭代过程。</p>
 <blockquote>
-<p>其实还要给定$\boldsymbol{Q}$和$\boldsymbol{R}$，但对于整个卡尔曼滤波过程而言，是一个常数，初始化时给定即可，一般不跟着迭代。</p>
+<p>其实还要给定$\boldsymbol{Q}$和$\boldsymbol{R}$，过程噪声视情况而定要不要跟着迭代，阿波罗的做法是对于目标在图像中的中心点不跟着迭代，但是对于目标中心点的3D坐标跟着迭代。测量噪声一般来自于传感器厂家，对于整个卡尔曼滤波过程而言是一个常数，初始化时给定即可，一般不跟着迭代。</p>
 </blockquote>
 
             </div>
