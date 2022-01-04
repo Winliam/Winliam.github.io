@@ -1,0 +1,601 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/time.jpg">
+  <link rel="icon" href="/img/time.jpg">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="王者之路，就在脚下">
+  <meta name="author" content="William Guo">
+  <meta name="keywords" content="">
+  
+  <title>pytorch笔记 by 电竞大师小明</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"ApWFLRBvVptYicRhN7DQqrOa-gzGzoHsz","app_key":"ihFV8rR5s2zuqoKPXqW9sydt","server_url":"https://apwflrbv.lc-cn-n1-shared.com"}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>电竞大师小明</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/article.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.7)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="pytorch笔记">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      990 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      12
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- LeanCloud 统计文章PV -->
+      <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="leancloud-page-views"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">pytorch笔记</h1>
+            
+            <div class="markdown-body">
+              <h3 id="max-sum-等操作中指定dim的含义"><a href="#max-sum-等操作中指定dim的含义" class="headerlink" title="max() sum()等操作中指定dim的含义"></a><code>max() sum()</code>等操作中指定dim的含义</h3><figure class="highlight inform7"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs inform7">a = <span class="hljs-comment">[ <span class="hljs-comment">[ <span class="hljs-comment">[1, 2]</span>, <span class="hljs-comment">[3, 4]</span> ]</span>, <span class="hljs-comment">[ <span class="hljs-comment">[5, 6]</span>, <span class="hljs-comment">[7, 8]</span> ]</span> ]</span><br></code></pre></td></tr></table></figure>
+<ol>
+<li>对于这个[2, 2, 2]的三维矩阵，三维意味着[]有三层，三个2表示每一层[]内有两个元素</li>
+<li>对dim=0求max意味着<ol>
+<li>将<script type="math/tex">a_{000}</script>与<script type="math/tex">a_{100}</script>比较得出最大值作为<script type="math/tex">a_{00}</script></li>
+<li>将<script type="math/tex">a_{010}</script>与<script type="math/tex">a_{110}</script>比较得出最大值作为<script type="math/tex">a_{10}</script>…</li>
+</ol>
+</li>
+<li>对dim=1求max意味着<ol>
+<li>将<script type="math/tex">a_{000}</script>与<script type="math/tex">a_{010}</script>比较得出最大值作为<script type="math/tex">a_{00}</script></li>
+<li>将<script type="math/tex">a_{100}</script>与<script type="math/tex">a_{110}</script>比较得出最大值作为<script type="math/tex">a_{10}</script>…</li>
+</ol>
+</li>
+<li>而$a_{010}$对应于，第一层[]中的第一个元素的，第二个元素的，第一个元素</li>
+</ol>
+<h3 id="torch-flatten-中指定dim的含义"><a href="#torch-flatten-中指定dim的含义" class="headerlink" title="torch.flatten()中指定dim的含义"></a><code>torch.flatten()</code>中指定dim的含义</h3><figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs less"># 默认情况，消除<span class="hljs-selector-tag">x</span>第<span class="hljs-selector-tag">1</span>层<span class="hljs-selector-attr">[]</span>内的所有<span class="hljs-selector-attr">[]</span><br><span class="hljs-selector-tag">torch</span><span class="hljs-selector-class">.flatten</span>(x)<br><br># 指定<span class="hljs-selector-tag">start_dim</span>,从<span class="hljs-selector-tag">x</span>的第<span class="hljs-selector-tag">s</span>+<span class="hljs-selector-tag">1</span>层<span class="hljs-selector-attr">[]</span>开始，消除其中的所有<span class="hljs-selector-attr">[]</span><br><span class="hljs-selector-tag">torch</span><span class="hljs-selector-class">.flatten</span>(x, <span class="hljs-number">1</span>)<br><br># 指定<span class="hljs-selector-tag">start_dim</span>和<span class="hljs-selector-tag">end_dim</span>，将第<span class="hljs-selector-tag">e</span>+<span class="hljs-selector-tag">1</span>层<span class="hljs-selector-attr">[]</span>包围的元素作为一个基础元素，然后从第<span class="hljs-selector-tag">s</span>+<span class="hljs-selector-tag">1</span>层开始消除所有基础元素外的<span class="hljs-selector-attr">[]</span><br><span class="hljs-selector-tag">torch</span><span class="hljs-selector-class">.flatten</span>(x, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>)<br><br># 综上，其实就是<span class="hljs-selector-tag">start_dim</span>默认为<span class="hljs-selector-tag">0</span>，<span class="hljs-selector-tag">end_dim</span>默认为<span class="hljs-selector-tag">-1</span><br></code></pre></td></tr></table></figure>
+<h3 id="torch-cat-x-y-d-中指定dim的含义"><a href="#torch-cat-x-y-d-中指定dim的含义" class="headerlink" title="torch.cat((x,y),d)中指定dim的含义"></a><code>torch.cat((x,y),d)</code>中指定dim的含义</h3><ol>
+<li>第一种解释，d=0就是按行堆叠x和y，堆叠后有了更多的行。然后是按列，按深度，以此类推。容易理解，适用于3维以下。</li>
+<li>第二种解释，就是扩展x第d+1层[]中的内容，拿什么来扩展呢，拿y对应位置的元素，比较难理解，但适用性更广。</li>
+</ol>
+<h3 id="nn-MaxPool2d-3-stride-2-ceil-mode-True-中ceil-mode的含义"><a href="#nn-MaxPool2d-3-stride-2-ceil-mode-True-中ceil-mode的含义" class="headerlink" title="nn.MaxPool2d(3, stride=2, ceil_mode=True)中ceil_mode的含义"></a><code>nn.MaxPool2d(3, stride=2, ceil_mode=True)</code>中ceil_mode的含义</h3><p>其实就是尺寸计算公式中是向上取整还是向下取整，默认向下取整，开了ceil_mode之后就向上取整。</p>
+<h3 id="nn-AvgPool2d-kernel-size-5-stride-3-与nn-AdaptiveAvgPool2d-1-1-的区别"><a href="#nn-AvgPool2d-kernel-size-5-stride-3-与nn-AdaptiveAvgPool2d-1-1-的区别" class="headerlink" title="nn.AvgPool2d(kernel_size=5, stride=3)与nn.AdaptiveAvgPool2d((1, 1))的区别"></a><code>nn.AvgPool2d(kernel_size=5, stride=3)</code>与<code>nn.AdaptiveAvgPool2d((1, 1))</code>的区别</h3><p>前者用指定的kernel_size和stride定义池化操作，后者则通过指定输出tensor的尺寸来定义池化操作，stride和kernel_size会自动算出来。</p>
+<blockquote>
+<p>In average-pooling or max-pooling, you essentially set the stride and kernel-size by your own, setting them as hyper-parameters. You will have to re-configure them if you happen to change your input size.<br>In Adaptive Pooling on the other hand, we specify the output size instead. And the stride and kernel-size are automatically selected to adapt to the needs. The following equations are used to calculate the value in the source code.<br><figure class="highlight nix"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs nix"><span class="hljs-attr">Stride</span> = (input_size//output_size)  <br>Kernel <span class="hljs-attr">size</span> = input_size - (output_size-<span class="hljs-number">1</span>)*stride  <br><span class="hljs-attr">Padding</span> = <span class="hljs-number">0</span><br></code></pre></td></tr></table></figure></p>
+</blockquote>
+<h3 id="plt-imshow-与plt-show-的区别"><a href="#plt-imshow-与plt-show-的区别" class="headerlink" title="plt.imshow()与plt.show()的区别"></a><code>plt.imshow()</code>与<code>plt.show()</code>的区别</h3><p><code>plt.imshow()</code>只是将图片与plt发生关联，但不显示，还可以继续对这张图片进行其他draw操作，最后再用<code>plt.show()</code>显示出来。</p>
+<h3 id="dataset-dataset-loader-dataset-loader-iter的区别"><a href="#dataset-dataset-loader-dataset-loader-iter的区别" class="headerlink" title="dataset dataset_loader dataset_loader_iter的区别"></a><code>dataset</code> <code>dataset_loader</code> <code>dataset_loader_iter</code>的区别</h3><ul>
+<li><code>train_set</code>不是Iterator，也不是Iterabel;</li>
+<li><code>train_loader</code>不是Iterator，但是Iterable;</li>
+<li>Iterable意味着可用于for循环被迭代, Iterator则是算法，不断用next产生需要的数据，Iterator必然Iterable</li>
+</ul>
+<h3 id="model的常用方法"><a href="#model的常用方法" class="headerlink" title="model的常用方法"></a>model的常用方法</h3><p>一般一个model都是由一串<code>nn.Module</code>的派生类组合而成的class，而且其本身一般也是一个<code>nn.Module</code>的派生类。因为各个相关对象都来自一个公共基类，因此常用的成员函数也大致相同：</p>
+<ul>
+<li><code>model.modules()</code> &amp; <code>model.named_modules()</code></li>
+<li><code>model.children()</code> &amp; <code>model.named_children()</code></li>
+<li><code>model.parameters()</code> &amp; <code>model.named_parameters()</code></li>
+<li><code>model.buffers()</code> &amp; <code>model.named_buffers()</code></li>
+</ul>
+<p>这些方法都是返回一个generator，迭代它可以得到相应的元素。</p>
+<p>其中，module和children返回的是一个<code>nn.Module</code>的派生类对象，不同点是前者递归式地返回model所有后代(而不只是叶子节点哦)，后者返回其直接后代。</p>
+<p>parameters返回的是一个Parameter对象，暂时可以理解为是一个tensor。</p>
+<p>buffers返回的是一个tensor，保存过程数据running_mean、running_var等，具体含义暂时未知。一般只有作为叶子节点的module才有parameter和buffers。</p>
+<p>另外就是带name的版本，相比与不带name的版本，迭代generator得到的是一个包含两个元素的tuple，第一个元素是name，第二个元素跟不带name的版本一样。</p>
+<p>各个方法返回的元素的命名都是基于module的名称，以InvertedResidual模块为例，具体的命名逻辑如下图所示：</p>
+<div align=center><img title="" src="/img/article/pytorch_module_name.png" srcset="/img/loading.gif" lazyload width="90%" height="90%" align=center></div>
+
+
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/">工作技能</a>
+                    
+                      <a class="hover-with-bg" href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">神经网络</a>
+                    
+                      <a class="hover-with-bg" href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/pytorch%E4%BD%BF%E7%94%A8/">pytorch使用</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/pytorch/">pytorch</a>
+                    
+                      <a class="hover-with-bg" href="/tags/plt/">plt</a>
+                    
+                      <a class="hover-with-bg" href="/tags/AaptivePool/">AaptivePool</a>
+                    
+                      <a class="hover-with-bg" href="/tags/flatten/">flatten</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2021/02/10/TensorRT%E7%9A%84%E5%9F%BA%E7%A1%80%E4%BD%BF%E7%94%A8/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">TensorRT C++ API使用方法</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/12/13/%E5%9B%B0%E9%9A%BE%E6%A0%B7%E6%9C%AC%E4%B8%8EFocalLoss/">
+                        <span class="hidden-mobile">困难样本与FocalLoss</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="twikoo"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/twikoo@1.4.1/dist/twikoo.all.min.js', function() {
+        var options = Object.assign(
+          {"envId":"twikoo-5gimyzvb3631ef62","region":"ap-shanghai","path":"window.location.pathname"},
+          {
+            el: '#twikoo',
+            path: 'window.location.pathname'
+          }
+        )
+        twikoo.init(options)
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <small><span>——————————我是有底线的——————————</span></small> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- LeanCloud 统计PV -->
+        <span id="leancloud-site-pv-container" style="display: none">
+            总访问量 
+            <span id="leancloud-site-pv"></span>
+             次
+          </span>
+      
+      
+        <!-- LeanCloud 统计UV -->
+        <span id="leancloud-site-uv-container" style="display: none">
+            总访客数 
+            <span id="leancloud-site-uv"></span>
+             人
+          </span>
+      
+
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+  <script defer src="/js/leancloud.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.1.4/es5/tex-svg.js" ></script>
+
+  
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/shizuku.model.json"},"display":{"position":"left","width":200,"height":400},"mobile":{"show":false,"scale":0.5},"log":false});</script></body>
+</html>
