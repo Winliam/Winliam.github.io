@@ -228,12 +228,6 @@
             <!-- SEO header -->
             <h1 style="display: none">Faster RCNN源码分析（一）—— 图像预处理</h1>
             
-              <p class="note note-info">
-                
-                  本文最后更新于：4 个月前
-                
-              </p>
-            
             <div class="markdown-body">
               <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>一般数据集中的图像尺寸、通道都是不一致的，因此不管是进行训练还是预测之前，都需要进行尺寸一致化等预处理操作。处理的最终结果是每一个batch中的tensor尺寸一致，但是跨batch不一定一致。</p>
 <p>Faster RCNN源码中，将图像预处理操作封装在一个类<code>GeneralizedRCNNTransform</code>中，下面针对这个类进行介绍。</p>
@@ -315,8 +309,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2021/08/15/%E5%8F%8C%E7%BA%BF%E6%80%A7%E6%8F%92%E5%80%BC%E6%98%AF%E5%95%A5%EF%BC%9F/">
-                        <span class="hidden-mobile">双线性插值是啥？</span>
+                      <a href="/2021/08/11/pytorch%E6%A0%B8%E5%BF%83%E7%94%A8%E6%B3%95-2/">
+                        <span class="hidden-mobile">pytorch基础用法-训练</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

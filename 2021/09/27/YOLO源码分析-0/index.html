@@ -228,12 +228,6 @@
             <!-- SEO header -->
             <h1 style="display: none">YOLO源码分析（零） —— 理论基础</h1>
             
-              <p class="note note-info">
-                
-                  本文最后更新于：2 个月前
-                
-              </p>
-            
             <div class="markdown-body">
               <h2 id="0-前言"><a href="#0-前言" class="headerlink" title="0. 前言"></a>0. 前言</h2><p>One-Stage目标检测的另一代表，特点是GridCell的切分以及与之配套的GT框和anchor的匹配机制。</p>
 <p>现在看下来YOLO的故事是，YOLOv1先定下基础，然后后面的版本用各种各样的trick改善v1的效果。因此，要首先搞清楚v1都干了些啥，然后再依次搞清楚后续各个补丁的含义。</p>
@@ -402,9 +396,9 @@ L_3 = \frac{1}{N_p} \sum^{N_p} \sum_i^{Class_num} -[p_i \ln \hat{p}_i + (1-p_i) 
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2021/10/12/%E5%85%B3%E4%BA%8E%E4%BA%A4%E5%8F%89%E7%86%B5%E7%9A%84%E6%98%93%E6%B7%B7%E6%B7%86%E6%A6%82%E5%BF%B5/">
+                      <a href="/2021/10/13/%E5%9B%B0%E9%9A%BE%E6%A0%B7%E6%9C%AC%E4%B8%8EFocalLoss/">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">关于交叉熵的易混淆概念</span>
+                        <span class="hidden-mobile">困难样本与FocalLoss</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     

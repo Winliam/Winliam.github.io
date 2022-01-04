@@ -228,12 +228,6 @@
             <!-- SEO header -->
             <h1 style="display: none">C/C++笔记</h1>
             
-              <p class="note note-info">
-                
-                  本文最后更新于：1 个月前
-                
-              </p>
-            
             <div class="markdown-body">
               <h3 id="数组指针-amp-指针的数组-amp-数组名"><a href="#数组指针-amp-指针的数组-amp-数组名" class="headerlink" title="数组指针&amp;指针的数组&amp;数组名"></a>数组指针&amp;指针的数组&amp;数组名</h3><p>故事从<code>int (*)[10]</code>开始，这是一种数据类型，具体点是一种<strong>“指向‘长度为10的int数组’这种类型的指针”</strong>类型。<br><figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs angelscript"><span class="hljs-built_in">int</span> a[<span class="hljs-number">5</span>] = &#123;<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>&#125;;<br><br><span class="hljs-built_in">int</span> (*)[<span class="hljs-number">5</span>] p1;					<span class="hljs-comment">//竟然是错误的用法。。。</span><br><span class="hljs-built_in">int</span> (*p2)[<span class="hljs-number">5</span>] = a;					<span class="hljs-comment">//正不正确看编译器的种类和版本，不建议这么用</span><br><span class="hljs-built_in">int</span> (*p3)[<span class="hljs-number">5</span>] = &amp;a;					<span class="hljs-comment">//最正确的用法，注意，这里对a取地址得到的不是a的地址，而是将a的值直接赋过去，看起来就像没有取地址</span><br><br><span class="hljs-comment">/* 推荐用法 */</span><br><span class="hljs-keyword">typedef</span> <span class="hljs-built_in">uint</span>8 Dt_ARRAY_700_uint8[<span class="hljs-number">700</span>]; 		<span class="hljs-comment">//先将数组定义成数据类型</span><br>Dt_ARRAY_700_uint8 uss_raw_data;<br><br>Dt_ARRAY_700_uint8 *ptr = &amp;uss_raw_data;		<span class="hljs-comment">//正确用法</span><br>Dt_ARRAY_700_uint8 *ptr = uss_raw_data;		<span class="hljs-comment">//等价于上面p2那个不建议使用的用法，在qnx平台上编译时就报错了。</span><br><br></code></pre></td></tr></table></figure></p>
 <h3 id="终结字符串、字符的数组、字符数组名"><a href="#终结字符串、字符的数组、字符数组名" class="headerlink" title="终结字符串、字符的数组、字符数组名"></a>终结字符串、字符的数组、字符数组名</h3><ol>
@@ -310,9 +304,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2021/08/25/note_of_shell/">
+                      <a href="/2021/09/01/Faster-RCNN%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90-0/">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Shell笔记</span>
+                        <span class="hidden-mobile">Faster RCNN源码分析（零）—— 整体框架</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     

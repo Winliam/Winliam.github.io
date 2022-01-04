@@ -228,12 +228,6 @@
             <!-- SEO header -->
             <h1 style="display: none">卡尔曼滤波的矩阵形式</h1>
             
-              <p class="note note-info">
-                
-                  本文最后更新于：几秒前
-                
-              </p>
-            
             <div class="markdown-body">
               <h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><p><a target="_blank" rel="noopener" href="https://guohongming.xyz/2021/10/22/%E5%8D%A1%E5%B0%94%E6%9B%BC%E6%BB%A4%E6%B3%A2%E6%A6%82%E8%A6%81/">前面大概说了卡尔曼滤波的原理以及一个简单的demo。</a></p>
 <p>在阅读阿波罗源码，以及其他卡尔曼滤波的教程时发现，往往使用矩阵形式。这里接上篇一起介绍下。</p>
@@ -320,7 +314,8 @@
 \end{array}
 \right]_{k}</script><p>至此，便得到了状态转移矩阵$\boldsymbol{A}$和观测矩阵$\boldsymbol{H}$。然后在初始化时给定$\boldsymbol{x}_0$和$\boldsymbol{P}_0$，便可完成<strong>预测</strong>、<strong>更新</strong>、<strong>预测</strong>…的迭代过程。</p>
 <blockquote>
-<p>其实还要给定$\boldsymbol{Q}$和$\boldsymbol{R}$，过程噪声视情况而定要不要跟着迭代，阿波罗的做法是对于目标在图像中的中心点不跟着迭代，但是对于目标中心点的3D坐标跟着迭代。测量噪声一般来自于传感器厂家，对于整个卡尔曼滤波过程而言是一个常数，初始化时给定即可，一般不跟着迭代。</p>
+<p>其实还要给定$\boldsymbol{Q}$和$\boldsymbol{R}$，过程噪声视情况而定要不要跟着迭代，阿波罗的做法是对于目标在图像中的中心点不跟着迭代，但是对于目标中心点的3D坐标跟着迭代。</p>
+<p>测量噪声一般来自于传感器厂家，对于整个卡尔曼滤波过程而言是一个常数，初始化时给定即可，一般不跟着迭代。</p>
 </blockquote>
 
             </div>

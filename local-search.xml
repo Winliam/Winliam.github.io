@@ -8,7 +8,7 @@
     <link href="/2021/12/05/%E5%8D%A1%E5%B0%94%E6%9B%BC%E6%BB%A4%E6%B3%A2%E5%AE%9E%E8%B7%B5/"/>
     <url>/2021/12/05/%E5%8D%A1%E5%B0%94%E6%9B%BC%E6%BB%A4%E6%B3%A2%E5%AE%9E%E8%B7%B5/</url>
     
-    <content type="html"><![CDATA[<h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><p><a href="https://guohongming.xyz/2021/10/22/%E5%8D%A1%E5%B0%94%E6%9B%BC%E6%BB%A4%E6%B3%A2%E6%A6%82%E8%A6%81/">前面大概说了卡尔曼滤波的原理以及一个简单的demo。</a></p><p>在阅读阿波罗源码，以及其他卡尔曼滤波的教程时发现，往往使用矩阵形式。这里接上篇一起介绍下。</p><h2 id="数学模型"><a href="#数学模型" class="headerlink" title="数学模型"></a>数学模型</h2><ul><li><strong>状态转移方程</strong><script type="math/tex; mode=display">\boldsymbol{x}_k = \boldsymbol{Ax}_{k-1} + \boldsymbol{Bu}_{k-1} + \boldsymbol{w}_k</script>式中：<ul><li>$\boldsymbol{A}$为状态转移矩阵</li><li>$\boldsymbol{B}$为控制矩阵</li><li>$\boldsymbol{u}_{k-1}$为上一时刻的作用于系统的外界控制向量，本文暂时不考虑。</li><li>$\boldsymbol{w}_k$为过程噪声。</li></ul></li><li><strong>观测方程</strong><script type="math/tex; mode=display">\boldsymbol{z}_k = \boldsymbol{Hx}_{k} + \boldsymbol{v}_{k}</script>式中：<ul><li>$\boldsymbol{z}_k$为直接观测值</li><li>$\boldsymbol{H}$为观测矩阵，用来模拟直接观测量和状态量之间的数学关系。有时候需要估计的状态是无法直接被观测到的，所以需要这个公式，这个矩阵</li><li>$\boldsymbol{v}_{k}$为观测噪声</li></ul></li></ul><h2 id="预测过程"><a href="#预测过程" class="headerlink" title="预测过程"></a>预测过程</h2><p>跟之前一样，先将上一时刻得到的最终状态估计值$\boldsymbol{x}_{k-1}$代入状态转移方程，得到当前时刻状态的理论预测值$\hat{\boldsymbol{x}}_k$。即有，</p><script type="math/tex; mode=display">\hat{\boldsymbol{x}}_k = \boldsymbol{Ax}_{k-1}</script><p>类似地，可以得到$\hat{\boldsymbol{x}}_k$的方差$\hat{\boldsymbol{P}}_k$，</p><script type="math/tex; mode=display">\hat{\boldsymbol{P}}_k = \boldsymbol{A}\boldsymbol{P}_{k-1}\boldsymbol{A}^T+\boldsymbol{Q}_k</script><p>其中，$\boldsymbol{Q}_k$为当前时刻过程噪声的协方差矩阵。这两个公式便是矩阵形式的卡尔曼滤波预测过程。</p><h2 id="更新过程"><a href="#更新过程" class="headerlink" title="更新过程"></a>更新过程</h2><p>然后，还是要用当前时刻的观测值$\boldsymbol{z}_k$来校正理论预测值$\hat{\boldsymbol{x}_k}$。</p><p>但是，对于大多数情况，$\boldsymbol{z}_k$和$\hat{\boldsymbol{x}}_k$都不表示相同的状态量（说人话就是，直接观测的量不是需要估计的量，比如引擎内部的温度，由于过高而无法测量，只能测外壁的温度然后估算）。</p><p>这就使得更新过程跟原来不太一样，需要引入观测矩阵$\boldsymbol{H}$进行计算。</p><p>首先，更新（融合）公式如下：</p><script type="math/tex; mode=display">\boldsymbol{x}_k = \hat{\boldsymbol{x}}_{k} + \boldsymbol{K}(\boldsymbol{z}_k - \boldsymbol{H}\hat{\boldsymbol{x}}_{k}) = (\boldsymbol{I} - \boldsymbol{KH})\hat{\boldsymbol{x}}_{k} + \boldsymbol{K}{\boldsymbol{z}}_{k}</script><script type="math/tex; mode=display">\boldsymbol{P}_k = (\boldsymbol{I} - \boldsymbol{KH})\hat{\boldsymbol{P}}_{k}</script><p>式中，只有$\boldsymbol{K}$是未知的（矩阵形式的卡尔曼增益），并且可以看到观测结果的协方差以及噪声都没有直接体现在融合公式中。这是因为这些信息都包含在卡尔曼增益矩阵中，具体有：</p><script type="math/tex; mode=display">\boldsymbol{K} = \hat{\boldsymbol{P}}_{k}\boldsymbol{H}^T\boldsymbol{S}^{-1}</script><p>其中，$\boldsymbol{S}$为$\boldsymbol{z}_k - \boldsymbol{H}\hat{\boldsymbol{x}}_{k}$的协方差矩阵，具体有：</p><script type="math/tex; mode=display">\boldsymbol{S} = \boldsymbol{H}\hat{\boldsymbol{P}}_{k}\boldsymbol{H}^T+\boldsymbol{R}_k</script><p>综合来看，预测过程需要先计算$\boldsymbol{S}$，再计算$\boldsymbol{K}$，然后用观测值$\boldsymbol{z}_k$和$\boldsymbol{K}$参与理论预测值（状态及方差）的校正。</p><h2 id="具体实例"><a href="#具体实例" class="headerlink" title="具体实例"></a>具体实例</h2><p>以阿波罗源码中目标跟踪所采用的“匀速卡尔曼滤波器”为例，应用以上理论。首先确定状态转移方程和观测方程，需要估计的状态向量为二维的坐标及车速，由于是匀速运动模型，所以有：</p><script type="math/tex; mode=display">\left[\begin{array}{c}  x      \\ y      \\ \dot x      \\ \dot y      \\\end{array}\right]_k=\left[\begin{array}{cccc}  1 & 0 &dt &0      \\ 0 & 1 &0 &dt      \\ 0 & 0 &1 &0      \\ 0 & 0 &0 &1      \\\end{array}\right]\left[\begin{array}{c}  x      \\ y      \\ \dot x      \\ \dot y      \\\end{array}\right]_{k-1}</script><p>直接观测状态为二维坐标，因此可以得到观测方程为：</p><script type="math/tex; mode=display">\left[\begin{array}{c}  z_x      \\ z_y      \\\end{array}\right]_k =\left[\begin{array}{cccc}  1 & 0 &0 &0      \\ 0 & 1 &0 &0      \\\end{array}\right]\left[\begin{array}{c}  x      \\ y      \\ \dot x      \\ \dot y      \\\end{array}\right]_{k}</script><p>至此，便得到了状态转移矩阵$\boldsymbol{A}$和观测矩阵$\boldsymbol{H}$。然后在初始化时给定$\boldsymbol{x}_0$和$\boldsymbol{P}_0$，便可完成<strong>预测</strong>、<strong>更新</strong>、<strong>预测</strong>…的迭代过程。</p><blockquote><p>其实还要给定$\boldsymbol{Q}$和$\boldsymbol{R}$，过程噪声视情况而定要不要跟着迭代，阿波罗的做法是对于目标在图像中的中心点不跟着迭代，但是对于目标中心点的3D坐标跟着迭代。测量噪声一般来自于传感器厂家，对于整个卡尔曼滤波过程而言是一个常数，初始化时给定即可，一般不跟着迭代。</p></blockquote>]]></content>
+    <content type="html"><![CDATA[<h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><p><a href="https://guohongming.xyz/2021/10/22/%E5%8D%A1%E5%B0%94%E6%9B%BC%E6%BB%A4%E6%B3%A2%E6%A6%82%E8%A6%81/">前面大概说了卡尔曼滤波的原理以及一个简单的demo。</a></p><p>在阅读阿波罗源码，以及其他卡尔曼滤波的教程时发现，往往使用矩阵形式。这里接上篇一起介绍下。</p><h2 id="数学模型"><a href="#数学模型" class="headerlink" title="数学模型"></a>数学模型</h2><ul><li><strong>状态转移方程</strong><script type="math/tex; mode=display">\boldsymbol{x}_k = \boldsymbol{Ax}_{k-1} + \boldsymbol{Bu}_{k-1} + \boldsymbol{w}_k</script>式中：<ul><li>$\boldsymbol{A}$为状态转移矩阵</li><li>$\boldsymbol{B}$为控制矩阵</li><li>$\boldsymbol{u}_{k-1}$为上一时刻的作用于系统的外界控制向量，本文暂时不考虑。</li><li>$\boldsymbol{w}_k$为过程噪声。</li></ul></li><li><strong>观测方程</strong><script type="math/tex; mode=display">\boldsymbol{z}_k = \boldsymbol{Hx}_{k} + \boldsymbol{v}_{k}</script>式中：<ul><li>$\boldsymbol{z}_k$为直接观测值</li><li>$\boldsymbol{H}$为观测矩阵，用来模拟直接观测量和状态量之间的数学关系。有时候需要估计的状态是无法直接被观测到的，所以需要这个公式，这个矩阵</li><li>$\boldsymbol{v}_{k}$为观测噪声</li></ul></li></ul><h2 id="预测过程"><a href="#预测过程" class="headerlink" title="预测过程"></a>预测过程</h2><p>跟之前一样，先将上一时刻得到的最终状态估计值$\boldsymbol{x}_{k-1}$代入状态转移方程，得到当前时刻状态的理论预测值$\hat{\boldsymbol{x}}_k$。即有，</p><script type="math/tex; mode=display">\hat{\boldsymbol{x}}_k = \boldsymbol{Ax}_{k-1}</script><p>类似地，可以得到$\hat{\boldsymbol{x}}_k$的方差$\hat{\boldsymbol{P}}_k$，</p><script type="math/tex; mode=display">\hat{\boldsymbol{P}}_k = \boldsymbol{A}\boldsymbol{P}_{k-1}\boldsymbol{A}^T+\boldsymbol{Q}_k</script><p>其中，$\boldsymbol{Q}_k$为当前时刻过程噪声的协方差矩阵。这两个公式便是矩阵形式的卡尔曼滤波预测过程。</p><h2 id="更新过程"><a href="#更新过程" class="headerlink" title="更新过程"></a>更新过程</h2><p>然后，还是要用当前时刻的观测值$\boldsymbol{z}_k$来校正理论预测值$\hat{\boldsymbol{x}_k}$。</p><p>但是，对于大多数情况，$\boldsymbol{z}_k$和$\hat{\boldsymbol{x}}_k$都不表示相同的状态量（说人话就是，直接观测的量不是需要估计的量，比如引擎内部的温度，由于过高而无法测量，只能测外壁的温度然后估算）。</p><p>这就使得更新过程跟原来不太一样，需要引入观测矩阵$\boldsymbol{H}$进行计算。</p><p>首先，更新（融合）公式如下：</p><script type="math/tex; mode=display">\boldsymbol{x}_k = \hat{\boldsymbol{x}}_{k} + \boldsymbol{K}(\boldsymbol{z}_k - \boldsymbol{H}\hat{\boldsymbol{x}}_{k}) = (\boldsymbol{I} - \boldsymbol{KH})\hat{\boldsymbol{x}}_{k} + \boldsymbol{K}{\boldsymbol{z}}_{k}</script><script type="math/tex; mode=display">\boldsymbol{P}_k = (\boldsymbol{I} - \boldsymbol{KH})\hat{\boldsymbol{P}}_{k}</script><p>式中，只有$\boldsymbol{K}$是未知的（矩阵形式的卡尔曼增益），并且可以看到观测结果的协方差以及噪声都没有直接体现在融合公式中。这是因为这些信息都包含在卡尔曼增益矩阵中，具体有：</p><script type="math/tex; mode=display">\boldsymbol{K} = \hat{\boldsymbol{P}}_{k}\boldsymbol{H}^T\boldsymbol{S}^{-1}</script><p>其中，$\boldsymbol{S}$为$\boldsymbol{z}_k - \boldsymbol{H}\hat{\boldsymbol{x}}_{k}$的协方差矩阵，具体有：</p><script type="math/tex; mode=display">\boldsymbol{S} = \boldsymbol{H}\hat{\boldsymbol{P}}_{k}\boldsymbol{H}^T+\boldsymbol{R}_k</script><p>综合来看，预测过程需要先计算$\boldsymbol{S}$，再计算$\boldsymbol{K}$，然后用观测值$\boldsymbol{z}_k$和$\boldsymbol{K}$参与理论预测值（状态及方差）的校正。</p><h2 id="具体实例"><a href="#具体实例" class="headerlink" title="具体实例"></a>具体实例</h2><p>以阿波罗源码中目标跟踪所采用的“匀速卡尔曼滤波器”为例，应用以上理论。首先确定状态转移方程和观测方程，需要估计的状态向量为二维的坐标及车速，由于是匀速运动模型，所以有：</p><script type="math/tex; mode=display">\left[\begin{array}{c}  x      \\ y      \\ \dot x      \\ \dot y      \\\end{array}\right]_k=\left[\begin{array}{cccc}  1 & 0 &dt &0      \\ 0 & 1 &0 &dt      \\ 0 & 0 &1 &0      \\ 0 & 0 &0 &1      \\\end{array}\right]\left[\begin{array}{c}  x      \\ y      \\ \dot x      \\ \dot y      \\\end{array}\right]_{k-1}</script><p>直接观测状态为二维坐标，因此可以得到观测方程为：</p><script type="math/tex; mode=display">\left[\begin{array}{c}  z_x      \\ z_y      \\\end{array}\right]_k =\left[\begin{array}{cccc}  1 & 0 &0 &0      \\ 0 & 1 &0 &0      \\\end{array}\right]\left[\begin{array}{c}  x      \\ y      \\ \dot x      \\ \dot y      \\\end{array}\right]_{k}</script><p>至此，便得到了状态转移矩阵$\boldsymbol{A}$和观测矩阵$\boldsymbol{H}$。然后在初始化时给定$\boldsymbol{x}_0$和$\boldsymbol{P}_0$，便可完成<strong>预测</strong>、<strong>更新</strong>、<strong>预测</strong>…的迭代过程。</p><blockquote><p>其实还要给定$\boldsymbol{Q}$和$\boldsymbol{R}$，过程噪声视情况而定要不要跟着迭代，阿波罗的做法是对于目标在图像中的中心点不跟着迭代，但是对于目标中心点的3D坐标跟着迭代。</p><p>测量噪声一般来自于传感器厂家，对于整个卡尔曼滤波过程而言是一个常数，初始化时给定即可，一般不跟着迭代。</p></blockquote>]]></content>
     
     
     <categories>
@@ -99,37 +99,6 @@
   
   
   <entry>
-    <title>TensorRT C++ API使用方法</title>
-    <link href="/2021/11/10/TensorRT%E7%9A%84%E5%9F%BA%E7%A1%80%E4%BD%BF%E7%94%A8/"/>
-    <url>/2021/11/10/TensorRT%E7%9A%84%E5%9F%BA%E7%A1%80%E4%BD%BF%E7%94%A8/</url>
-    
-    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>把深度学习模型用pytorch等框架搭建、训练后，要把模型保存下来，部署到生产环境中服务于实际业务。</p><p>生产环境中运行的深度学习模型有两个特点，一当然是要快，二是只做单帧数据的前向计算（推理）。为了适应这两个特点，引入了TensorRT这个工具。</p><p>简单地，可以将它看作一个类似pytorch的深度学习框架。但是这个框架不提供模型训练相关的脚手架，只提供模型构建、前向计算和模型格式转换的工具。并且得益于NV一些未开源的黑科技，用TensorRT构建出来的模型能够更快地进行前向计算。</p><p><strong>关键概念</strong>：<br><strong>ONNX parser</strong>: Takes a converted PyTorch trained model into the ONNX format as input and populates a network object in TensorRT.<br><strong>Builder</strong>: Takes a network in TensorRT and generates an engine that is optimized for the target platform.<br><strong>Engine</strong>: Takes input data, performs inferences, and emits inference output.<br><strong>Logger</strong>: Associated with the builder and engine to capture errors, warnings, and other information during the build and inference phases.</p><h2 id="使用步骤"><a href="#使用步骤" class="headerlink" title="使用步骤"></a>使用步骤</h2><h3 id="0-头文件与namespace"><a href="#0-头文件与namespace" class="headerlink" title="0. 头文件与namespace"></a>0. 头文件与namespace</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> “NvInfer.h”</span><br><br><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> nvinfer1;<br></code></pre></td></tr></table></figure><h3 id="1-build阶段"><a href="#1-build阶段" class="headerlink" title="1. build阶段"></a>1. build阶段</h3><h4 id="1-0-创建Logger"><a href="#1-0-创建Logger" class="headerlink" title="1.0 创建Logger"></a>1.0 创建Logger</h4><p>创建builder之前，需要先根据需要继承自己的Logger类。其中主要的任务是override父类中的log方法，定义哪个级别的信息会被log，如何log。<br><figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs angelscript"><span class="hljs-keyword">class</span> <span class="hljs-symbol">RTLogger</span> : <span class="hljs-symbol">public</span> <span class="hljs-symbol">nvinfer1::<span class="hljs-symbol">ILogger</span></span> &#123;<br>  <span class="hljs-built_in">void</span> log(Severity severity, <span class="hljs-keyword">const</span> char *msg) <span class="hljs-keyword">override</span> &#123;<br>    <span class="hljs-keyword">if</span> (severity != Severity::kINFO)    &#123;<br>      AINFO &lt;&lt; msg;<br>    &#125;<br>  &#125;<br>&#125; rt_gLogger;<br></code></pre></td></tr></table></figure></p><h4 id="1-1-创建builder"><a href="#1-1-创建builder" class="headerlink" title="1.1 创建builder"></a>1.1 创建builder</h4><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs css">nvinfer1::IBuilder *builder_= nvinfer1::<span class="hljs-built_in">createInferBuilder</span>(rt_gLogger);<br></code></pre></td></tr></table></figure><h4 id="1-2-创建network"><a href="#1-2-创建network" class="headerlink" title="1.2 创建network"></a>1.2 创建network</h4><p>创建network实例的过程其实跟其他框架大同小异，只不过因为受众少，包装地没那么精致而已。</p><h5 id="1-2-1-创建空的network实例"><a href="#1-2-1-创建空的network实例" class="headerlink" title="1.2.1 创建空的network实例"></a>1.2.1 创建空的network实例</h5><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs css">nvinfer1::INetworkDefinition *network_ = builder_-&gt;<span class="hljs-built_in">createNetwork</span>();<br></code></pre></td></tr></table></figure><h5 id="1-2-2-填充network实例"><a href="#1-2-2-填充network实例" class="headerlink" title="1.2.2 填充network实例"></a>1.2.2 填充network实例</h5><p>上一步创建的network实例是一个空的、不包含网络层的对象，需要在此基础上添加网络层。由于TensorRT作为框架，是不做BP只做前向的，所以在构建网络时要同步给入权重。<br>此时有两种选择来做这件事:</p><ol><li>拿一个现成的模型文件(包含权重)进来，用TensorRT的格式转换工具转换一下；以ONNX的模型文件为例(ONNX模型是包含权重的)：<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">#<span class="hljs-keyword">include</span> “<span class="hljs-module-access"><span class="hljs-module"><span class="hljs-identifier">NvOnnxParser</span>.</span></span>h”<br><br>using namespace nvonnxparser;<br><br>IParser*  parser = create<span class="hljs-constructor">Parser(<span class="hljs-operator">*</span><span class="hljs-params">network</span>, <span class="hljs-params">logger</span>)</span>;<br>parser-&gt;parse<span class="hljs-constructor">FromFile(<span class="hljs-params">modelFile</span>, ILogger::Severity::<span class="hljs-params">kWARNING</span>)</span>;<br><span class="hljs-keyword">for</span> (int32_t i = <span class="hljs-number">0</span>; i &lt; parser.get<span class="hljs-constructor">NbErrors()</span>; ++i)&#123;<br>std::cout &lt;&lt; parser-&gt;get<span class="hljs-constructor">Error(<span class="hljs-params">i</span>)</span>-&gt;desc<span class="hljs-literal">()</span> &lt;&lt; std::endl;<br>&#125;<br></code></pre></td></tr></table></figure></li><li>拿一个描述模型结构的配置文件，用TensorRT的模型搭建工具依次添加各种各样的网络层，从无到有地搭建出来。同时，在添加网络时，要提供对应的网络权重。<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">auto data = network_-&gt;add<span class="hljs-constructor">Input(<span class="hljs-params">dims_pair</span>.<span class="hljs-params">first</span>.<span class="hljs-params">c_str</span>()</span>, nvinfer1::DataType::kFLOAT, dims_pair.second);<br>auto convLayer = network-&gt;add<span class="hljs-constructor">Convolution(<span class="hljs-operator">*</span><span class="hljs-params">inTensor</span>, <span class="hljs-params">nbOutputs</span>, <span class="hljs-params">nvinfer1</span>::DimsHW&#123;<span class="hljs-params">kernelH</span>, <span class="hljs-params">kernelW</span>&#125;, <span class="hljs-params">wt</span>, <span class="hljs-params">bias_weight</span>)</span>;<br>auto softmaxLayer = net-&gt;add<span class="hljs-constructor">SoftMax(<span class="hljs-operator">*</span><span class="hljs-params">inputs</span>[0])</span>;<br></code></pre></td></tr></table></figure>至此，填充完网络层和权重参数后，便完成了网络的搭建。</li></ol><h4 id="1-3-创建engine"><a href="#1-3-创建engine" class="headerlink" title="1.3 创建engine"></a>1.3 创建engine</h4><p>完成网络构建之后，其实只是把原有网络模型，以tensorRT的格式重新构建了一下，还没有进行优化加速。所以，现在要把优化前的network转成优化后的engine。</p><p>要做到这件事需要两种信息，一是优化什么，二是怎么优化。前者已经有了，就是network。后者需要构造一个config接口，用这个接口来配置优化项。</p><p>并且，在10.0之后的版本，创建engine之前还要先创建一个序列化模型，可用于保存到磁盘上。真正使用时，先反序列化模型，然后再构造出engine实例。<br><figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">IBuilderConfig* config = builder-&gt;create<span class="hljs-constructor">BuilderConfig()</span>;<br>config-&gt;set<span class="hljs-constructor">MaxWorkspaceSize(1U &lt;&lt; 20)</span>;<br><br>IHostMemory*  serializedModel = builder-&gt;build<span class="hljs-constructor">SerializedNetwork(<span class="hljs-operator">*</span><span class="hljs-params">network</span>, <span class="hljs-operator">*</span><span class="hljs-params">config</span>)</span>;<br><br>IRuntime* runtime = create<span class="hljs-constructor">InferRuntime(<span class="hljs-params">logger</span>)</span>;<br>ICudaEngine* engine = runtime-&gt;deserialize<span class="hljs-constructor">CudaEngine(<span class="hljs-params">modelData</span>, <span class="hljs-params">modelSize</span>)</span>;<br></code></pre></td></tr></table></figure></p><h3 id="2-inference阶段"><a href="#2-inference阶段" class="headerlink" title="2. inference阶段"></a>2. inference阶段</h3><p>The engine holds the optimized model, but to perform inference we will need to manage additional state for intermediate activations. This is done via the <code>ExecutionContext</code> interface:<br><figure class="highlight xl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs xl">IE<span class="hljs-function"><span class="hljs-title">xecutionContext</span> *context = engine-&gt;</span>createExecutionContext();<br></code></pre></td></tr></table></figure></p><p>然后，在GPU上为模型的输入和输出各申请一块buffer，<br><figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs abnf">int32_t inputIndex = engine-&gt;getBindingIndex(INPUT_NAME)<span class="hljs-comment">;</span><br>int32_t outputIndex = engine-&gt;getBindingIndex(OUTPUT_NAME)<span class="hljs-comment">;</span><br><br>void* buffers[<span class="hljs-number">2</span>]<span class="hljs-comment">;</span><br>buffers[inputIndex] = inputBuffer<span class="hljs-comment">;</span><br>buffers[outputIndex] = outputBuffer<span class="hljs-comment">;</span><br></code></pre></td></tr></table></figure><br>最后，执行推理（一般是GPU与CPU异步，即CPU上的控制流在调用GPU核函数之后并不阻塞）<br><figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">context-&gt;enqueue<span class="hljs-constructor">V2(<span class="hljs-params">buffers</span>, <span class="hljs-params">stream</span>, <span class="hljs-params">nullptr</span>)</span>;<br></code></pre></td></tr></table></figure></p><p>由于是异步调用，在推理执行完毕之后一般还要<code>cudaDeviceSynchronize()</code>一下，等待推理过程执行完毕，然后将output结果从GPU上拷贝到CPU上。</p><p>至此，整个推理过程完毕。</p><h2 id="Note"><a href="#Note" class="headerlink" title="Note"></a>Note</h2><ol><li>不同的tensorRT版本API细节有所不同，这里以TensorRT 8.2.0 Early Access (EA)为例</li><li>A CUDA context is automatically created the first time TensorRT makes a call to CUDA, if none exists prior to that point. It is generally preferable to create and configure the CUDA context yourself before the first call to TensoRT.</li><li>Interface classes in the TensorRT™ C++ API begin with the prefix I</li><li>config interface has many properties that you can set in order to control how TensorRT optimizes the network. One important property is the maximum workspace size. Layer implementations often require a temporary workspace, and this parameter limits the maximum size that any layer in the network can use. If insufficient workspace is provided, it is possible that TensorRT will not be able to find an implementation for a layer.</li><li>Serialized engines are not portable across platforms or TensorRT versions. Engines are specific to the exact GPU model they were built on (in addition to the platform and the TensorRT version).</li><li>The serialized engine contains the necessary copies of the weights, the parser, network definition, builder configuration and builder are no longer necessary and may be safely deleted.</li></ol><h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ol><li><a href="https://docs.nvidia.com/deeplearning/tensorrt/developer-guide/index.html#perform_inference_c">官方文档8.2.0 Early Access (EA)</a></li><li><a href="https://stackoverflow.com/questions/19193468/why-do-we-need-cudadevicesynchronize-in-kernels-with-device-printf">https://stackoverflow.com/questions/19193468/why-do-we-need-cudadevicesynchronize-in-kernels-with-device-printf</a></li><li><a href="https://blog.csdn.net/Bruce_0712/article/details/73477126">https://blog.csdn.net/Bruce_0712/article/details/73477126</a></li></ol>]]></content>
-    
-    
-    <categories>
-      
-      <category>工作技能</category>
-      
-      <category>神经网络</category>
-      
-    </categories>
-    
-    
-    <tags>
-      
-      <tag>TensorRT</tag>
-      
-      <tag>ONNX</tag>
-      
-      <tag>inference</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
     <title>C++类继承机制中的作用域嵌套问题</title>
     <link href="/2021/11/08/C-%E7%B1%BB%E7%BB%A7%E6%89%BF%E6%9C%BA%E5%88%B6%E4%B8%AD%E7%9A%84%E4%BD%9C%E7%94%A8%E5%9F%9F%E5%B5%8C%E5%A5%97%E9%97%AE%E9%A2%98/"/>
     <url>/2021/11/08/C-%E7%B1%BB%E7%BB%A7%E6%89%BF%E6%9C%BA%E5%88%B6%E4%B8%AD%E7%9A%84%E4%BD%9C%E7%94%A8%E5%9F%9F%E5%B5%8C%E5%A5%97%E9%97%AE%E9%A2%98/</url>
@@ -194,60 +163,6 @@
   
   
   <entry>
-    <title>protobuf基础用法</title>
-    <link href="/2021/10/31/protobuf%E5%9F%BA%E7%A4%8E%E7%94%A8%E6%B3%95/"/>
-    <url>/2021/10/31/protobuf%E5%9F%BA%E7%A4%8E%E7%94%A8%E6%B3%95/</url>
-    
-    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>自动驾驶框架常用protobuf作为节点之间通讯的工具，出现频率很高，了解一下基本情况。</p><p>我们知道，<strong>数据只要出内存就要进行序列化，进内存就要进行反序列化</strong>。</p><p>这是因为，所有数据在内存中存放的形式都是一串0/1。比如，我们定义一个结构体，然后对其实例化，我们就在内存中的某个位置写入了这串0/1序列。当我们想把这一个结构体所表示的“信息”给到另外一个用户时，应该怎么做呢？</p><p>我们可以把这一串0/1序列从内存中写到硬盘上，形成一个文件，然后把这个文件发送给其他用户。由内存中的0/1序列（或者说一个结构体实例）得到这个文件的过程，就是序列化过程。</p><p>用户在拿到这一文件后想使用其中包含的信息，就必须先将其恢复为结构体，才能方便地进行操作。由二进制序列（或者说拿到的这个文件）得到结构体实例的过程，就是反序列化过程。</p><p>那么protobuf做了什么呢？首先，它允许我们以最简的方式定义待传递的信息结构（<code>.proto文件</code>），然后使用<code>protoc</code>程序处理<code>.proto</code>文件，自动生成C++结构体，并配套一系列操作这个结构体的方法（API）。</p><p>所以说，protobuf的使用围绕三个核心要素:</p><ul><li><code>.proto</code>文件</li><li>compiler</li><li>API</li></ul><h2 id="proto文件"><a href="#proto文件" class="headerlink" title=".proto文件"></a><code>.proto</code>文件</h2><figure class="highlight protobuf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><code class="hljs protobuf"><span class="hljs-comment">// protobuf有2和3两个版本，语法不同，所以要声明版本</span><br>syntax = <span class="hljs-string">&quot;proto3&quot;</span>;<br><span class="hljs-comment">// package名称经过compile之后成为生成类所在的namespace</span><br><span class="hljs-keyword">package</span> tutorial;<br><span class="hljs-keyword">import</span> <span class="hljs-string">&quot;google/protobuf/timestamp.proto&quot;</span>;<br><br><span class="hljs-comment">// 一个message生成一个类</span><br><span class="hljs-class"><span class="hljs-keyword">message</span> <span class="hljs-title">Person</span> </span>&#123;<br>  <span class="hljs-built_in">string</span> name = <span class="hljs-number">1</span>;<br>  <span class="hljs-built_in">int32</span> id = <span class="hljs-number">2</span>; <br>  <span class="hljs-built_in">string</span> email = <span class="hljs-number">3</span>;<br><br>  <span class="hljs-class"><span class="hljs-keyword">enum</span> <span class="hljs-title">PhoneType</span> </span>&#123;<br>    MOBILE = <span class="hljs-number">0</span>;<br>    HOME = <span class="hljs-number">1</span>;<br>    WORK = <span class="hljs-number">2</span>;<br>  &#125;<br><br>  <span class="hljs-class"><span class="hljs-keyword">message</span> <span class="hljs-title">PhoneNumber</span> </span>&#123;<br>    <span class="hljs-built_in">string</span> number = <span class="hljs-number">1</span>;<br>    PhoneType type = <span class="hljs-number">2</span>;<br>  &#125;<br><br>  <span class="hljs-comment">// message元素的四个组成部分, modifier type name = uniq_tag，modifier默认为optional</span><br>  <span class="hljs-keyword">repeated</span> PhoneNumber phones = <span class="hljs-number">4</span>;<br><br>  google.protobuf.Timestamp last_updated = <span class="hljs-number">5</span>;<br>&#125;<br><br><span class="hljs-class"><span class="hljs-keyword">message</span> <span class="hljs-title">AddressBook</span> </span>&#123;<br>  <span class="hljs-keyword">repeated</span> Person people = <span class="hljs-number">1</span>;<br>&#125;<br></code></pre></td></tr></table></figure><h2 id="compile"><a href="#compile" class="headerlink" title="compile"></a>compile</h2><figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs mipsasm"><span class="hljs-comment"># 编译.proto文件，生成类的头文件和源文件</span><br>protoc protoc --cpp_out=. <span class="hljs-keyword">addressbook.proto</span><br><span class="hljs-keyword"></span><br><span class="hljs-comment">#在应用中使用生成类</span><br>c++ -std=c++<span class="hljs-number">11</span> <span class="hljs-keyword">add_person.cc </span><span class="hljs-keyword">addressbook.pb.cc </span>-o <span class="hljs-keyword">add_person_cpp </span>`pkg-<span class="hljs-built_in">config</span> --cflags --libs protobuf`<br></code></pre></td></tr></table></figure><h2 id="API"><a href="#API" class="headerlink" title="API"></a>API</h2><h3 id="序列化API"><a href="#序列化API" class="headerlink" title="序列化API"></a>序列化API</h3><ul><li><code>bool SerializeToString(string* output) const;</code></li><li><code>bool SerializeToOstream(ostream* output) const;</code><br>一个生成类的实例调用这两种方法，将会把自身的内容以二进制串的形式写入string或ostream中，如<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function">fstream <span class="hljs-title">output</span><span class="hljs-params">(argv[<span class="hljs-number">1</span>], ios::out | ios::trunc | ios::binary)</span></span>;<br><span class="hljs-keyword">if</span> (!address_book.<span class="hljs-built_in">SerializeToOstream</span>(&amp;output)) &#123;<br>    cerr &lt;&lt; <span class="hljs-string">&quot;Failed to write address book.&quot;</span> &lt;&lt; endl;<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;<br>&#125;<br></code></pre></td></tr></table></figure></li></ul><h3 id="反序列化API"><a href="#反序列化API" class="headerlink" title="反序列化API"></a>反序列化API</h3><ul><li><code>bool ParseFromString(const string&amp; data);</code></li><li><code>bool ParseFromIstream(istream* input);</code><br>从一个istream或string读取一个二进制串，然后这个生成类的实例中的内容便得到了填充。如，<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs css">tutorial::AddressBook address_book;<br>fstream <span class="hljs-selector-tag">input</span>(argv<span class="hljs-selector-attr">[1]</span>, ios::in | ios::binary);<br>if (!address_book<span class="hljs-selector-class">.ParseFromIstream</span>(&amp;<span class="hljs-selector-tag">input</span>)) &#123;<br>    cerr &lt;&lt; &quot;Failed <span class="hljs-selector-tag">to</span> parse <span class="hljs-selector-tag">address</span> book.&quot; &lt;&lt; endl;<br>    return -<span class="hljs-number">1</span>;<br>&#125;<br>    &#125;<br></code></pre></td></tr></table></figure></li></ul><h3 id="元素获取与操作API"><a href="#元素获取与操作API" class="headerlink" title="元素获取与操作API"></a>元素获取与操作API</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-comment">// id</span><br><span class="hljs-function"><span class="hljs-keyword">inline</span> <span class="hljs-keyword">bool</span> <span class="hljs-title">has_id</span><span class="hljs-params">()</span> <span class="hljs-keyword">const</span></span>;<br><span class="hljs-function"><span class="hljs-keyword">inline</span> <span class="hljs-keyword">void</span> <span class="hljs-title">clear_id</span><span class="hljs-params">()</span></span>;<br><span class="hljs-function"><span class="hljs-keyword">inline</span> <span class="hljs-keyword">void</span> <span class="hljs-title">set_id</span><span class="hljs-params">(<span class="hljs-keyword">int32_t</span> value)</span></span>;<br></code></pre></td></tr></table></figure><h3 id="通用API"><a href="#通用API" class="headerlink" title="通用API"></a>通用API</h3><ul><li><code>bool IsInitialized() const;</code>: checks if all the required fields have been set.</li><li><code>void Clear();</code>: clears all the elements back to the empty state.</li><li><code>void CopyFrom(const Person&amp; from);</code>: overwrites the message with the given message’s values.</li></ul><h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><ol><li><a href="https://developers.google.com/protocol-buffers/docs/cpptutorial">https://developers.google.com/protocol-buffers/docs/cpptutorial</a></li><li><a href="https://stackoverflow.com/questions/26826421/protocol-buffers-unique-numbered-tag-clarification">https://stackoverflow.com/questions/26826421/protocol-buffers-unique-numbered-tag-clarification</a></li></ol>]]></content>
-    
-    
-    <categories>
-      
-      <category>工作技能</category>
-      
-      <category>C/C++笔记</category>
-      
-    </categories>
-    
-    
-    <tags>
-      
-      <tag>protobuf</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
-    <title>卡尔曼滤波概要</title>
-    <link href="/2021/10/22/%E5%8D%A1%E5%B0%94%E6%9B%BC%E6%BB%A4%E6%B3%A2%E6%A6%82%E8%A6%81/"/>
-    <url>/2021/10/22/%E5%8D%A1%E5%B0%94%E6%9B%BC%E6%BB%A4%E6%B3%A2%E6%A6%82%E8%A6%81/</url>
-    
-    <content type="html"><![CDATA[<h2 id="做啥用的"><a href="#做啥用的" class="headerlink" title="做啥用的"></a>做啥用的</h2><p>我们想知道<strong>一个系统</strong>在<strong>某个时刻</strong>的真实状态，手段往往有多种，比如最常见的两种：</p><ol><li>用合适的传感器测量出来；</li><li>根据上一时刻的状态用数学模型推算出来；</li></ol><p>那么，应该相信哪一种办法得到的值呢？</p><h2 id="怎么做的"><a href="#怎么做的" class="headerlink" title="怎么做的"></a>怎么做的</h2><p>先把上述概念实例化一下，对于一个小车，我们想知道它在当前时刻$t$距离障碍物的真实距离$x_t$。我们用两种办法：</p><ol><li>测距雷达测得的<strong>测量值</strong>$m_t$</li><li>根据<strong>上一时刻的车速</strong>$v_{t-1}$和<strong>上一时刻的最终估计值</strong>$p_{t-1}$得到的<strong>预测值</strong>$n_t$，即有<script type="math/tex; mode=display">n_t = p_{t-1}-v_{t-1}</script></li></ol><p>然后，想办法平衡$m_t$和$n_t$，得到本时刻的<strong>最终估计值</strong>$p_t$。卡尔曼的做法是，将所有变量都视作一个正态的概率分布，而不是一个简单的标量值。即有</p><ol><li>自变量$v_{t-1}$    -&gt;     $v_{t-1}(\mu _v,\sigma _v)$，数据来自于传感器，可以认为均值和方差已知。</li><li>自变量$m_{t}$    -&gt;     $m_{t}(\mu _m,\sigma _m)$，数据来自于传感器，可以认为均值和方差已知。</li><li>中间变量$n_{t}$    -&gt;     $n_{t}(\mu _n,\sigma _n)$</li><li>结果变量$p$    -&gt;     $p(\mu _p,\sigma _p)$</li></ol><p>然后，按照经典方式，分两步计算来得到$p_t$</p><h3 id="Step1-预测"><a href="#Step1-预测" class="headerlink" title="Step1 预测"></a>Step1 预测</h3><p>首先因为</p><script type="math/tex; mode=display">n_t = p_{t-1}-v_{t-1}</script><p>所以，可以得到$n_t$的均值和方差分别为</p><script type="math/tex; mode=display">\mu_t^n = \mu_{t-1}^p - \mu_{t-1}^v</script><script type="math/tex; mode=display">\sigma_t^n = \sigma_{t-1}^p + \sigma_{t-1}^v</script><h3 id="Step2-融合-更新-校正"><a href="#Step2-融合-更新-校正" class="headerlink" title="Step2 融合/更新/校正"></a>Step2 融合/更新/校正</h3><p>平衡$m_t$和$n_t$这两个概率分布的方式是概率的乘法，即有</p><script type="math/tex; mode=display">\mu_t^p = \frac{\mu_t^n \sigma_t^m + \mu_t^m \sigma_t^n }{\sigma_t^m + \sigma_t^n }</script><script type="math/tex; mode=display">\sigma_t^p = \frac{\sigma_t^m \sigma_t^n }{\sigma_t^m + \sigma_t^n }</script><p>由于正态分布在变量取均值是概率最大，所以$\mu_t^p$即为$t$时刻的最终估计值$p_t$。而$\sigma_t^p$则用于计算下时刻的最终估计值。</p><h2 id="代码实例"><a href="#代码实例" class="headerlink" title="代码实例"></a>代码实例</h2><figure class="highlight nix"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><code class="hljs nix"><span class="hljs-built_in">import</span> numpy as np<br><span class="hljs-built_in">import</span> matplotlib.pyplot as plt<br><br><span class="hljs-attr">t</span> = np.linspace(<span class="hljs-number">1</span>, <span class="hljs-number">100</span>, <span class="hljs-number">100</span>)  <span class="hljs-comment"># 在1~100s内采样100次</span><br><span class="hljs-attr">a</span> = <span class="hljs-number">0.5</span>  <span class="hljs-comment"># 加速度值</span><br><span class="hljs-attr">position</span> = (a * t ** <span class="hljs-number">2</span>) / <span class="hljs-number">2</span><br><br><span class="hljs-attr">position_noise</span> = position + np.random.normal(<span class="hljs-number">0</span>, <span class="hljs-number">120</span>, <span class="hljs-attr">size=(t.shape[0]))</span>  <span class="hljs-comment"># 模拟生成GPS位置测量数据（带噪声）</span><br><br>plt.plot(t, position, <span class="hljs-attr">label=&#x27;truth</span> position&#x27;)<br>plt.plot(t, position_noise, <span class="hljs-attr">label=&#x27;only</span> use measured position&#x27;)<br><br><span class="hljs-comment"># ---------------卡尔曼滤波----------------</span><br><span class="hljs-comment"># 初始的估计导弹的位置就直接用GPS测量的位置</span><br><span class="hljs-attr">predicts</span> = [position_noise[<span class="hljs-number">0</span>]]<br><span class="hljs-attr">position_predict</span> = predicts[<span class="hljs-number">0</span>]<br><br><span class="hljs-attr">predict_var</span> = <span class="hljs-number">0</span><br><span class="hljs-attr">odo_var</span> = <span class="hljs-number">120</span> ** <span class="hljs-number">2</span>  <span class="hljs-comment"># 这是我们自己设定的位置测量仪器的方差，越大则测量值占比越低</span><br><span class="hljs-attr">v_std</span> = <span class="hljs-number">50</span>  <span class="hljs-comment"># 测量仪器的方差（这个方差在现实生活中是需要我们进行传感器标定才能算出来的，可搜Allan方差标定）</span><br>for i <span class="hljs-keyword">in</span> range(<span class="hljs-number">1</span>, t.shape[<span class="hljs-number">0</span>]):<br>    <span class="hljs-attr">dv</span> = (position[i] - position[i - <span class="hljs-number">1</span>]) + np.random.normal(<span class="hljs-number">0</span>, <span class="hljs-number">50</span>)  <span class="hljs-comment"># 模拟从IMU读取出的速度</span><br>    <span class="hljs-attr">position_predict</span> = position_predict + dv  <span class="hljs-comment"># 利用上个时刻的位置和速度预测当前位置</span><br>    predict_var += v_std ** <span class="hljs-number">2</span>  <span class="hljs-comment"># 更新预测数据的方差</span><br>    <span class="hljs-comment"># 下面是Kalman滤波</span><br>    <span class="hljs-attr">position_predict</span> = position_predict * odo_var / (predict_var + odo_var) + position_noise[i] * predict_var / (<br>                predict_var + odo_var)<br>    <span class="hljs-attr">predict_var</span> = (predict_var * odo_var) / (predict_var + odo_var) ** <span class="hljs-number">2</span><br>    predicts.append(position_predict)<br><br>plt.plot(t, predicts, <span class="hljs-attr">label=&#x27;kalman</span> filtered position&#x27;)<br><br>plt.legend()<br>plt.show()<br></code></pre></td></tr></table></figure><h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><ol><li><a href="https://zhuanlan.zhihu.com/p/77327349">https://zhuanlan.zhihu.com/p/77327349</a></li></ol>]]></content>
-    
-    
-    <categories>
-      
-      <category>工作技能</category>
-      
-      <category>数据融合</category>
-      
-    </categories>
-    
-    
-    <tags>
-      
-      <tag>卡尔曼滤波</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
     <title>困难样本与FocalLoss</title>
     <link href="/2021/10/13/%E5%9B%B0%E9%9A%BE%E6%A0%B7%E6%9C%AC%E4%B8%8EFocalLoss/"/>
     <url>/2021/10/13/%E5%9B%B0%E9%9A%BE%E6%A0%B7%E6%9C%AC%E4%B8%8EFocalLoss/</url>
@@ -271,74 +186,6 @@
       <tag>Focal Loss</tag>
       
       <tag>困难样本</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
-    <title>定位误差常用的损失函数</title>
-    <link href="/2021/10/12/%E5%AE%9A%E4%BD%8D%E8%AF%AF%E5%B7%AE%E5%B8%B8%E7%94%A8%E7%9A%84%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0/"/>
-    <url>/2021/10/12/%E5%AE%9A%E4%BD%8D%E8%AF%AF%E5%B7%AE%E5%B8%B8%E7%94%A8%E7%9A%84%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0/</url>
-    
-    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在目标检测任务中，为了更好的量化定位损失，各路大神想了很多办法。从最开始的针对xywh的均方误差，到IOU损失，再到后续的GIOU损失、DIOU损失、CIOU损失，越来越复杂。其中均方误差比较简单，不再介绍。重点讲一下IOU系列。</p><div align=center><img title="" src="/img/article/iou.png" width="80%" height="80%" align=center></div><h2 id="IOU损失"><a href="#IOU损失" class="headerlink" title="IOU损失"></a>IOU损失</h2><p>这里牵涉到两个概念，“IOU”和“IOU损失”，对于前者，已经很熟悉了，不再赘述。而对于后者，则是简单地令</p><script type="math/tex; mode=display">IOU loss = - \ln(\frac{I}{U})</script><p>这样，IOU越接近于1，损失越接近于0。并且相比于均方误差没有尺度大小影响wh损失的现象。但美中不足的是，当I=0，即两个框不相交时无法正确计算。</p><h2 id="GeneralizedIOU损失"><a href="#GeneralizedIOU损失" class="headerlink" title="GeneralizedIOU损失"></a>GeneralizedIOU损失</h2><script type="math/tex; mode=display">GIOU = \frac{I}{U} - \frac{D_1 + D_2}{S}</script><script type="math/tex; mode=display">GIOU loss = 1 - GIOU</script><p>IOU越大，损失越小。D1和D2占S的比例越大，IOU越大。</p><h2 id="DistanceIOU损失"><a href="#DistanceIOU损失" class="headerlink" title="DistanceIOU损失"></a>DistanceIOU损失</h2><script type="math/tex; mode=display">DIOU = \frac{I}{U} - \frac{d^2}{c^2}</script><script type="math/tex; mode=display">DIOU loss = 1 - DIOU</script><p>IOU越大，损失越小。d越小，两个框的中心越接近，损失越小。</p><h2 id="CompleteIOU损失"><a href="#CompleteIOU损失" class="headerlink" title="CompleteIOU损失"></a>CompleteIOU损失</h2><p>作者说，一个好的定位误差量化指标应该兼顾：<strong>重叠面积</strong>、<strong>中心点距离</strong>、<strong>长宽比</strong>。前两者在DIOU中都已经考虑了，因此CIOU又增加了长宽比这一因素，也就是说两个框的形状哪怕不全等，也应该尽可能相似。</p><script type="math/tex; mode=display">CIOU = \frac{I}{U} - \frac{d^2}{c^2} - \alpha v</script><script type="math/tex; mode=display">v = \frac{4}{\pi ^2}({\rm arctan} \frac{w_1}{h_1} - {\rm arctan} \frac{w_2}{h_2})^2</script><script type="math/tex; mode=display">\alpha = \frac{v}{(1-IOU)+v}</script><script type="math/tex; mode=display">CIOU loss = 1 - CIOU</script><p>$\alpha v$暂时看不懂是啥原理，暂时知道是在比较两个框的相似程度就够了，而且越小越相似。</p>]]></content>
-    
-    
-    <categories>
-      
-      <category>工作技能</category>
-      
-      <category>神经网络</category>
-      
-    </categories>
-    
-    
-    <tags>
-      
-      <tag>损失函数</tag>
-      
-      <tag>IOU</tag>
-      
-      <tag>GIOU</tag>
-      
-      <tag>DIOU</tag>
-      
-      <tag>CIOU</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
-    <title>关于交叉熵的易混淆概念</title>
-    <link href="/2021/10/12/%E5%85%B3%E4%BA%8E%E4%BA%A4%E5%8F%89%E7%86%B5%E7%9A%84%E6%98%93%E6%B7%B7%E6%B7%86%E6%A6%82%E5%BF%B5/"/>
-    <url>/2021/10/12/%E5%85%B3%E4%BA%8E%E4%BA%A4%E5%8F%89%E7%86%B5%E7%9A%84%E6%98%93%E6%B7%B7%E6%B7%86%E6%A6%82%E5%BF%B5/</url>
-    
-    <content type="html"><![CDATA[<h2 id="0-前言"><a href="#0-前言" class="headerlink" title="0. 前言"></a>0. 前言</h2><p>交叉熵，二值交叉熵，softmax，sigmoid等概念经常一起出现，这里结合pytorch的具体实现来捋清楚这几个概念。</p><h2 id="1-概念"><a href="#1-概念" class="headerlink" title="1. 概念"></a>1. 概念</h2><h3 id="1-1-交叉熵"><a href="#1-1-交叉熵" class="headerlink" title="1.1 交叉熵"></a>1.1 交叉熵</h3><p>交叉熵用于描述两个概率分布的差异，也就是说处理的都是0-1之间的数值。</p><script type="math/tex; mode=display">H(p,q) = -\sum p(x)\log q(x)</script><p>在实际应用中，一般用于计算分类损失。并且，为了避免对0取对数，会将GT的one-hot向量作为$p$，预测结果作为$q$。</p><h3 id="1-2-二值交叉熵"><a href="#1-2-二值交叉熵" class="headerlink" title="1.2 二值交叉熵"></a>1.2 二值交叉熵</h3><p>二值交叉熵就是上述交叉熵公式在$x$只有两个取值时的特例。</p><script type="math/tex; mode=display">H(p,q) = -[p \log q + (1-p) \log (1-q)]</script><h3 id="1-3-sigmoid函数"><a href="#1-3-sigmoid函数" class="headerlink" title="1.3 sigmoid函数"></a>1.3 sigmoid函数</h3><p>一般模型直接输出的结果向量不保证其中的标量元素的数值（pytorch等官方术语称logits）在0-1之间，因此要用到sigmoid这种值域在0-1之间的激活函数将<strong>每一个logit单独</strong>作映射，然后再进行交叉熵计算。</p><div align=center><img title="" src="/img/article/sigmoid.png" width="50%" height="50%" align=center></div><h3 id="1-4-softmax函数"><a href="#1-4-softmax函数" class="headerlink" title="1.4 softmax函数"></a>1.4 softmax函数</h3><p>跟sigmoid一样，也是一个logit归一化的工具，但是需要所有logits一起做联合映射，而不是独立映射。</p><script type="math/tex; mode=display">\sigma (\boldsymbol{\rm x}) = \frac{\rm exp(\boldsymbol{x})} {\boldsymbol{1}^T \rm exp(\boldsymbol{x})}</script><h2 id="2-pytorch实现"><a href="#2-pytorch实现" class="headerlink" title="2. pytorch实现"></a>2. pytorch实现</h2><p>pytorch中的nn模块和nn.funtional模块中都有交叉熵损失的实现，这里只介绍nn下的3个模块。</p><h3 id="2-1-nn-CrossEntropyLoss"><a href="#2-1-nn-CrossEntropyLoss" class="headerlink" title="2.1 nn.CrossEntropyLoss"></a>2.1 <code>nn.CrossEntropyLoss</code></h3><p>主要的入参有input(N, C)和target(N,)两个，N是结果向量有几个，C是类别数量。</p><p>input的每一行都是一个结果向量，包含C个类别的各自的logit，这是因为这个模块内部集成了softmax函数，在进行损失计算之前会先对input做0-1的映射。</p><p>target每一行是一个真实标签序号，值在[0, C-1]之间。在进行算是计算之前会将target的每一行拓展成一个one-hot向量，hot的位置就是这个真实标签序号。</p><p>然后用1.1中的公式逐行计算这N个结果向量与N个one-hot向量的交叉熵，最后求和或求算数平均值（默认求均值）。</p><h3 id="2-2-nn-BCEWithLogitsLoss"><a href="#2-2-nn-BCEWithLogitsLoss" class="headerlink" title="2.2 nn.BCEWithLogitsLoss"></a>2.2 <code>nn.BCEWithLogitsLoss</code></h3><p>主要的入参还是input(N, C)和target(N, C)两个，但是target的形状不同，其每一行都直接是GT的one-hot向量。</p><p>也同样集成了sigmoid函数，计算损失之前会先对input做0-1的映射。</p><p>然后逐行选中一个C维的结果行向量和一个C维的GT one-hot行向量，按照1.2中的公式计算得到C个标量，求均值即可得到这一行的loss。</p><p>最后求各行的loss均值即可得到最终的loss。</p><h3 id="2-3-nn-BCELoss"><a href="#2-3-nn-BCELoss" class="headerlink" title="2.3 nn.BCELoss"></a>2.3 <code>nn.BCELoss</code></h3><p>未集成sigmoid的二值交叉熵计算模块，有要求入参input的标量元素值在0-1之间，所以一般不使用，直接使用2.2。</p><h2 id="3-附录"><a href="#3-附录" class="headerlink" title="3. 附录"></a>3. 附录</h2><div align=center><img title="" src="/img/article/cross_entropy.png" width="80%" height="80%" align=center></div><p><br></p><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs stylus">import torch<span class="hljs-selector-class">.nn</span> as nn<br>import torch<br><br>logits = torch<span class="hljs-selector-class">.tensor</span>(<span class="hljs-selector-attr">[[2, -3, 0.8, 1.2]</span>, <span class="hljs-selector-attr">[1.5, -0.1, 0.9, -1.3]</span>])<br><br>sigmoid = torch<span class="hljs-selector-class">.sigmoid</span>(logits)<br>softmax = torch<span class="hljs-selector-class">.softmax</span>(logits, <span class="hljs-number">1</span>)<br><br>GT4bce = torch<span class="hljs-selector-class">.tensor</span>(<span class="hljs-selector-attr">[[0, 0, 1, 0]</span>, <span class="hljs-selector-attr">[0, 1, 0, 0]</span>], dtype=torch.<span class="hljs-attribute">float</span>)<br>GT4ce = torch<span class="hljs-selector-class">.tensor</span>(<span class="hljs-selector-attr">[2, 1]</span>)<br><br>ce = nn<span class="hljs-selector-class">.CrossEntropyLoss</span>(reduction=<span class="hljs-string">&#x27;sum&#x27;</span>)<br>ce_loss = ce(logits, GT4ce)<br><br>bce = nn<span class="hljs-selector-class">.BCEWithLogitsLoss</span>(reduction=<span class="hljs-string">&#x27;sum&#x27;</span>)<br>bce_loss = bce(logits, GT4bce)<br><br><span class="hljs-function"><span class="hljs-title">print</span><span class="hljs-params">(<span class="hljs-string">&quot;CE loss is &#123;&#125; \nBCE loss is &#123;&#125;&quot;</span>.format(ce_loss, bce_loss)</span></span>)<br></code></pre></td></tr></table></figure>]]></content>
-    
-    
-    <categories>
-      
-      <category>工作技能</category>
-      
-      <category>神经网络</category>
-      
-    </categories>
-    
-    
-    <tags>
-      
-      <tag>pytorch</tag>
-      
-      <tag>交叉熵</tag>
-      
-      <tag>二值交叉熵</tag>
-      
-      <tag>损失函数</tag>
       
     </tags>
     
@@ -476,41 +323,6 @@
   
   
   <entry>
-    <title>Shell笔记</title>
-    <link href="/2021/08/25/note_of_shell/"/>
-    <url>/2021/08/25/note_of_shell/</url>
-    
-    <content type="html"><![CDATA[<h3 id="shell解释器的种类"><a href="#shell解释器的种类" class="headerlink" title="shell解释器的种类"></a>shell解释器的种类</h3><ol><li>一个shell脚本可以被不同的解释器解释执行，常见的解释器有sh、bash、zsh、dash。可以使用以下命令查看本机的shell解释器配置：<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs awk"><span class="hljs-comment">#本机可用的shell解释器</span><br>cat <span class="hljs-regexp">/etc/</span>shells<br><br><span class="hljs-comment">#当前默认设置，一般在第一行</span><br>cat <span class="hljs-regexp">/etc/</span>passwd<br><br><span class="hljs-comment">#当前设置</span><br>echo <span class="hljs-variable">$SHELL</span><br></code></pre></td></tr></table></figure></li><li>一个shell脚本具体被哪一个解释器解释执行，依次看：<ul><li>cmd命令指定的是哪个</li><li>shebang指定的是哪个</li><li><a href="https://stackoverflow.com/questions/69643212/how-is-it-determined-which-shell-runs-a-script?noredirect=1#comment123105552_69643212">都不指定的话不清楚用哪个</a><figure class="highlight d"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs d">#cmd命令指定<br>bash ./test.sh<br>zsh ./test.sh<br><br>#Shebang指定<br><span class="hljs-meta">#!/usr/bin/env bash到PATH路径下找到bash以执行脚本</span><br><span class="hljs-meta">#!/bin/bash用/bin目录下的bash程序执行脚本</span><br><br>#暂时不清楚用哪个shell来执行<br>./test.sh<br></code></pre></td></tr></table></figure></li></ul></li></ol><h3 id="shell脚本的执行方式"><a href="#shell脚本的执行方式" class="headerlink" title="shell脚本的执行方式"></a>shell脚本的执行方式</h3><p>shell脚本的执行方式有source和bash两类，前者的一般用途是实现python的import机制，即在另一个shell脚本中实现一堆公用的变量和函数，然后加载到当前脚本中。而后者则是真实的执行。</p><p>When you execute the script you are opening a new shell, type the commands in the new shell, copy the output back to your current shell, then close the new shell. Any changes to environment will take effect only in the new shell and will be lost once the new shell is closed.</p><p>When you source the script you are typing the commands in your current shell. Any changes to the environment will take effect and stay in your current shell.</p><p>Sourcing a script will run the commands in the current shell process. Changes to the environment take effect in the current shell.</p><p>Executing a script will run the commands in a new shell process. Changes to the environment take effect in the new shell and is lost when the script is done and the new shell is terminated.</p><p>Use source if you want the script to change the environment in your currently running shell. use execute otherwise.</p><h3 id="重定向"><a href="#重定向" class="headerlink" title="重定向"></a>重定向</h3><figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">cmd</span> &gt; file <span class="hljs-number">2</span>&gt;&amp;<span class="hljs-number">1</span><br><span class="hljs-comment"># 首先将cmd的输出重定向到file中，然后将标准错误输出绑定到标准输出上。合起来的意思是将cmd产生的，本来应该分别输出到标准输出和标准错误输出的打印信息，全部输出到file文件中</span><br><br></code></pre></td></tr></table></figure><figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs gradle">cmd &amp;&gt;<span class="hljs-regexp">/dev/</span><span class="hljs-keyword">null</span><br>cmd &gt;<span class="hljs-regexp">/dev/</span><span class="hljs-keyword">null</span> <span class="hljs-number">2</span>&gt;&amp;<span class="hljs-number">1</span><br># 这两句话等价，那么从第二句看，并且结合前面的内容可以知道，这里的意思是将cmd产生的stdout和stderr都重定向到<span class="hljs-regexp">/dev/</span><span class="hljs-keyword">null</span>中。这个<span class="hljs-regexp">/dev/</span><span class="hljs-keyword">null</span>可以看作一个blackhole，会把所有输进去的内容吃掉。因此，这句话一般用作忽略cmd的任何输出信息。<br></code></pre></td></tr></table></figure><h3 id="静默执行"><a href="#静默执行" class="headerlink" title="静默执行"></a>静默执行</h3><p>涉及到的概念有：<strong>前/后台程序</strong>，<strong>nohup前缀</strong>，<strong>&amp;后缀</strong>，<strong>Ctrl-Z</strong>，<strong>bg/fg命令</strong>，<strong>HUP信号</strong>，<strong>TSTP信号</strong>。</p><h4 id="前-后台程序"><a href="#前-后台程序" class="headerlink" title="前/后台程序"></a>前/后台程序</h4><p>前/后台程序的区别在于，启动该程序的shell是否被该程序阻塞。阻塞，意味着shell暂时不能跟用户交互了，只能等待前台程序执行结束，后台则无此影响。</p><p>在原本的启动命令后加上 &amp; 后缀，即可将该程序放到后台执行。并且，若此时未经过重定向，还是会将打印信息输出到终端，所以要想完全放到后台还需要将输出重定向。<br>  <figure class="highlight arcade"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs arcade">yes love &amp;&gt;<span class="hljs-regexp">/dev/</span><span class="hljs-literal">null</span> &amp;<br></code></pre></td></tr></table></figure></p><p>当一个程序已经在前台阻塞式执行时，使用Ctrl-Z命令可以向程序发送TSTP信号，将程序暂停。然后通过bg命令可以将该程序恢复到后台执行，fg则恢复到前台。</p><h4 id="防挂起"><a href="#防挂起" class="headerlink" title="防挂起"></a>防挂起</h4><p>nohup前缀产生的相关效果是独立于前/后台程序的另一个话题，其直接效果是使得程序免疫HUP信号。HUP信号一般会在关闭终端或用户注销时发出，接收到HUP信号的程序会终止执行。间接效果是将程序的stdout和stderr信息重定向到一个nohup.out文件。</p><p>综上，用下面这个形式的命令可以实现一个程序的<strong>安全(终端关掉也不会停)</strong>、<strong>静默(启动了就跟没启动一样)</strong>执行。<br><figure class="highlight arcade"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs arcade">nohup cmd &amp;&gt;<span class="hljs-regexp">/dev/</span><span class="hljs-literal">null</span> &amp;<br></code></pre></td></tr></table></figure></p><p><a href="https://linuxhint.com/how_to_use_nohup_linux/">参考链接</a></p>]]></content>
-    
-    
-    <categories>
-      
-      <category>工作技能</category>
-      
-      <category>shell笔记</category>
-      
-    </categories>
-    
-    
-    <tags>
-      
-      <tag>shell</tag>
-      
-      <tag>bash</tag>
-      
-      <tag>重定向</tag>
-      
-      <tag>nohup</tag>
-      
-      <tag>后台</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
     <title>C/C++笔记</title>
     <link href="/2021/08/25/note_of_cpp/"/>
     <url>/2021/08/25/note_of_cpp/</url>
@@ -591,99 +403,6 @@
   
   
   <entry>
-    <title>双线性插值是啥？</title>
-    <link href="/2021/08/15/%E5%8F%8C%E7%BA%BF%E6%80%A7%E6%8F%92%E5%80%BC%E6%98%AF%E5%95%A5%EF%BC%9F/"/>
-    <url>/2021/08/15/%E5%8F%8C%E7%BA%BF%E6%80%A7%E6%8F%92%E5%80%BC%E6%98%AF%E5%95%A5%EF%BC%9F/</url>
-    
-    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>今天看FASTER RCNN的pytorch实现源码，进行图像缩放时用到了双线性插值算法，记录一下自己的理解。</p><h2 id="目的"><a href="#目的" class="headerlink" title="目的"></a>目的</h2><p>当将一幅图像从100x100的尺寸放大到200x200时，势必要新增30000个像素点。那么这些新增的像素点的灰度值如何得到呢？</p><h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p>双线性插值的做法是这样：</p><h3 id="1-建立坐标的对应关系"><a href="#1-建立坐标的对应关系" class="headerlink" title="1. 建立坐标的对应关系"></a>1. 建立坐标的对应关系</h3><p>将放大前的图像A和放大后的图形B的几何中心对齐，然后有</p><script type="math/tex; mode=display">\frac{x_A + 0.5}{x_B + 0.5} = \frac{w_A}{w_B}</script><script type="math/tex; mode=display">\frac{y_A + 0.5}{y_B + 0.5} = \frac{h_A}{h_B}</script><p>如果按照上面公式计算出来是整数，就直接将原图中的对应位置的灰度值复制过来。如果是小数，说明原图像中没有对应点，就将x/y分别向上/下取整得到4个坐标。</p><blockquote><p>其实也无所谓，一律按照下面方法计算即可，只不过是整数的时候取得是两个相同灰度值的均值，也就是还是他自己罢了。省的在这讨论，x整数y小数，x小数y整数这些问题了。</p></blockquote><h3 id="2-用A上4个对应像素点的灰度值计算B上1个像素点的灰度值"><a href="#2-用A上4个对应像素点的灰度值计算B上1个像素点的灰度值" class="headerlink" title="2. 用A上4个对应像素点的灰度值计算B上1个像素点的灰度值"></a>2. 用A上4个对应像素点的灰度值计算B上1个像素点的灰度值</h3><p>双线性插值说白了就是先将这4个点分成两组在一个方向上进行线性插值，得到两个中间值，然后用这两个中间值再进行一次线性插值，得到最终结果。</p><div align=center><img title="" src="/img/sxxcz.png" width="40%" height="40%" align=center></div><p>即，先有</p><script type="math/tex; mode=display">\frac{R_1-Q_{11}}{x-x_1}=\frac{Q_{21}-Q_{11}}{x_2-x_1}</script><script type="math/tex; mode=display">\frac{R_2-Q_{12}}{x-x_1}=\frac{Q_{22}-Q_{12}}{x_2-x_1}</script><p>然后，有</p><script type="math/tex; mode=display">\frac{P-R_1}{y-y_1}=\frac{R_2-R_1}{y_2-y_1}</script><p>其中，P为所求的B上$(x_B, y_B)$处的灰度值，$(x,y)$就是上面的$(x_A, y_A)$，四个Q就是A上四个对应像素点的灰度值，R为中间值。</p>]]></content>
-    
-    
-    <categories>
-      
-      <category>工作技能</category>
-      
-      <category>神经网络</category>
-      
-    </categories>
-    
-    
-    <tags>
-      
-      <tag>图像缩放</tag>
-      
-      <tag>双线性插值</tag>
-      
-      <tag>bilinear interpolation</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
-    <title>自定义目标检测数据集</title>
-    <link href="/2021/08/12/%E8%87%AA%E5%AE%9A%E4%B9%89%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B%E6%95%B0%E6%8D%AE%E9%9B%86/"/>
-    <url>/2021/08/12/%E8%87%AA%E5%AE%9A%E4%B9%89%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B%E6%95%B0%E6%8D%AE%E9%9B%86/</url>
-    
-    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>目标检测的数据集跟分类数据集不同，不仅仅包含图片和图片的类别信息，还要包括bounding box等一些额外的信息。因此，使用<a href="https://guohongming.xyz/2021/08/11/pytorch%E6%A0%B8%E5%BF%83%E7%94%A8%E6%B3%95-2/">之前</a>建立目录结构 + <code>datasets.ImageFolder()</code>的方法是不行的。</p><p>总的来看，自定义目标检测数据集要围绕<strong>原始图像</strong>、<strong>标注文件</strong>、<strong>入选名单</strong>三个要素，完成<strong>图像标注</strong>和<strong>自定义dataset类</strong>两项工作。</p><h2 id="三个要素"><a href="#三个要素" class="headerlink" title="三个要素"></a>三个要素</h2><ol><li>原始图像，统统存放在一个目录下</li><li>标注文件，一般为一个xml或json，文件名与原始图像一一对应，保存对应图像的标注相关信息</li><li>入选名单，一个txt文档，记录分到train_set和val_set的名单，每行一个去掉后缀的文件名</li></ol><h2 id="两项工作"><a href="#两项工作" class="headerlink" title="两项工作"></a>两项工作</h2><h3 id="图像标注"><a href="#图像标注" class="headerlink" title="图像标注"></a>图像标注</h3><ol><li>安装lableImg<blockquote><p>pip3 install labelImg   #中间遇到报错，参考<a href="https://stackoverflow.com/questions/59711301/install-pyqt5-5-14-1-on-linux">here</a>解决。</p></blockquote></li><li>新建一个文件夹，包含img目录，annotation目录，class.txt，分别用于存放待标注图像，标注结果，类别清单。<blockquote><p>labelImg ./img ./class.txt   #即可开始标注</p></blockquote></li><li>标注完成后写一个随机抽样脚本，生成train_set和val_set入选清单两个txt文件。<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><code class="hljs css">import os<br>import random<br><br>def <span class="hljs-selector-tag">main</span>():<br>    random.<span class="hljs-built_in">seed</span>(<span class="hljs-number">0</span>)  # 设置随机种子，保证随机结果可复现<br><br>    files_path = <span class="hljs-string">&quot;./annotation&quot;</span><br>    assert os.path.<span class="hljs-built_in">exists</span>(files_path), <span class="hljs-string">&quot;path: &#x27;&#123;&#125;&#x27; does not exist.&quot;</span>.<span class="hljs-built_in">format</span>(files_path)<br><br>    val_rate = <span class="hljs-number">0.5</span><br><br>    files_name = <span class="hljs-built_in">sorted</span>([file.<span class="hljs-built_in">split</span>(<span class="hljs-string">&quot;.&quot;</span>)[<span class="hljs-number">0</span>] for file in os.<span class="hljs-built_in">listdir</span>(files_path)])<br>    files_num = <span class="hljs-built_in">len</span>(files_name)<br>    val_index = random.<span class="hljs-built_in">sample</span>(<span class="hljs-built_in">range</span>(<span class="hljs-number">0</span>, files_num), k=<span class="hljs-built_in">int</span>(files_num*val_rate))<br>    train_files = []<br>    val_files = []<br>    for index, file_name in <span class="hljs-built_in">enumerate</span>(files_name):<br>        if index in val_index:<br>            val_files.<span class="hljs-built_in">append</span>(file_name)<br>        else:<br>            train_files.<span class="hljs-built_in">append</span>(file_name)<br><br>    try:<br>        train_f = <span class="hljs-built_in">open</span>(<span class="hljs-string">&quot;train.txt&quot;</span>, <span class="hljs-string">&quot;x&quot;</span>)<br>        eval_f = <span class="hljs-built_in">open</span>(<span class="hljs-string">&quot;val.txt&quot;</span>, <span class="hljs-string">&quot;x&quot;</span>)<br>        train_f.<span class="hljs-built_in">write</span>(<span class="hljs-string">&quot;\n&quot;</span>.<span class="hljs-built_in">join</span>(train_files))<br>        eval_f.<span class="hljs-built_in">write</span>(<span class="hljs-string">&quot;\n&quot;</span>.<span class="hljs-built_in">join</span>(val_files))<br>    except FileExistsError as e:<br>        <span class="hljs-built_in">print</span>(e)<br>        <span class="hljs-built_in">exit</span>(<span class="hljs-number">1</span>)<br><br>if __name__ == <span class="hljs-string">&#x27;__main__&#x27;</span>:<br>    <span class="hljs-built_in">main</span>()<br></code></pre></td></tr></table></figure></li></ol><h3 id="自定义dataset类"><a href="#自定义dataset类" class="headerlink" title="自定义dataset类"></a>自定义dataset类</h3><p>自定义一个dataset类需要先继承<code>torch.utils.data.Dataset</code>类，然后重写<code>__init__</code>方法，<code>__getitem__</code>方法，<code>__len__</code>方法</p><h4 id="init-方法"><a href="#init-方法" class="headerlink" title="__init__方法"></a><code>__init__</code>方法</h4><p>主要有以下几项工作：</p><ol><li>根据train_set.txt或者val_set.txt的内容建立<code>self.xml_list</code>，一个存放所有xml文件路径的list，并检查这些xml文件是否确实存在</li><li>根据描述类别信息的json文件建立<code>self.class_dict</code></li><li>根据传入参数设定预处理函数<code>self.transforms</code>的行为，包括RandomFlip等augmentation操作以及to_tensor，normalize等操作，在<code>getitem</code>方法中也就是具体内容前执行。</li></ol><h4 id="getitem-方法"><a href="#getitem-方法" class="headerlink" title="__getitem__方法"></a><code>__getitem__</code>方法</h4><p><code>__getitem__</code>方法目的是定义用[idx]索引本类示例时返回什么。在这里，是返回一个tuple，内容为<code>(image_tensor, img_attr_dict)</code>。整个函数的行为就是为了得到这两个元素。</p><ol><li>解析<code>self.xml_list[idx]</code>对应的xml，得到一个dict<blockquote><p>借助lxml的etree工具</p></blockquote></li><li>根据dict中的<code>filename</code>找到对应的图像文件，并转化tensor，得到<code>image_tensor</code><blockquote><p>借助PIL库的<code>Image.open()</code>函数</p></blockquote></li><li>根据dict中的其他信息找到boxes，label等标注信息，并转为tensor，最后组装成<code>img_attr_dict</code>。<blockquote><p>多目标情形时，box作为key，对应一个list of tensor，每个tensor对应一个box，label等同理。一个典型的包含两个box的dict如下：<br>{boxes:tensor(2x4),<br>labels:tensor(2x1),<br>image_id:tensor(1x1),<br>area:tensor(2x1),<br>iscrowd:tensor(2x1),<br>}</p></blockquote></li></ol><h4 id="len-方法"><a href="#len-方法" class="headerlink" title="__len__方法"></a><code>__len__</code>方法</h4><p>返回<code>self.xml_list</code>的长度即可</p><h4 id="one-more-thing"><a href="#one-more-thing" class="headerlink" title="one more thing"></a>one more thing</h4><p>当<code>torch.utils.data.DataLoader</code>按照既定的batch_size去获取和组装图像时，不能用默认的<code>collate_fn</code>。</p><p>因为这个默认的<code>collate_fn</code>只是简单的调用<code>torch.stack()</code>将b个[c, h, w]的tensor组合成一个[b, c, h, w]的tensor。但是这里索引到的是b个<code>(image_tensor, img_attr_dict)</code>，直接stack将得到一个</p><blockquote><p>[(image_tensor_0, img_attr_dict_0)<br> ···<br> (image_tensor_b, img_attr_dict_b)]</p></blockquote><p>这不是我们想要的。我们想要的是各个图像的像素值集中在一起，图像的标注信息集中在一起：</p><blockquote><p>[(image_tensor_0,<br>  …<br>  image_tensor_b),</p><p> (img_attr_dict_0,<br>  …,<br>  img_attr_dict_b)]</p></blockquote><p>所以要<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">collate_fn</span>(<span class="hljs-params">batch</span>):</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-built_in">tuple</span>(<span class="hljs-built_in">zip</span>(*batch))<br></code></pre></td></tr></table></figure></p>]]></content>
-    
-    
-    <categories>
-      
-      <category>工作技能</category>
-      
-      <category>神经网络</category>
-      
-      <category>pytorch使用</category>
-      
-    </categories>
-    
-    
-    <tags>
-      
-      <tag>目标检测</tag>
-      
-      <tag>pytorch</tag>
-      
-      <tag>数据集</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
-    <title>pytorch基础用法-预测</title>
-    <link href="/2021/08/11/pytorch%E6%A0%B8%E5%BF%83%E7%94%A8%E6%B3%95-3/"/>
-    <url>/2021/08/11/pytorch%E6%A0%B8%E5%BF%83%E7%94%A8%E6%B3%95-3/</url>
-    
-    <content type="html"><![CDATA[<h2 id="数据准备"><a href="#数据准备" class="headerlink" title="数据准备"></a>数据准备</h2><figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs julia">transform = transforms.Compose(<br>        [transforms.Resize((<span class="hljs-number">32</span>, <span class="hljs-number">32</span>)),<br>         transforms.ToTensor(),<br>         transforms.Normalize((<span class="hljs-number">0.5</span>, <span class="hljs-number">0.5</span>, <span class="hljs-number">0.5</span>), (<span class="hljs-number">0.5</span>, <span class="hljs-number">0.5</span>, <span class="hljs-number">0.5</span>))])<br><br><span class="hljs-literal">im</span> = Image.open(&#x27;<span class="hljs-number">1.</span>jpg&#x27;)<br><span class="hljs-literal">im</span> = transform(<span class="hljs-literal">im</span>)  <span class="hljs-comment"># [C, H, W]</span><br><span class="hljs-literal">im</span> = torch.unsqueeze(<span class="hljs-literal">im</span>, dim=<span class="hljs-number">0</span>)  <span class="hljs-comment"># [N, C, H, W]</span><br></code></pre></td></tr></table></figure><h2 id="模型定义"><a href="#模型定义" class="headerlink" title="模型定义"></a>模型定义</h2><figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs ini"><span class="hljs-comment"># 不需要to(device)吗？mark</span><br><span class="hljs-attr">net</span> = LeNet()<br></code></pre></td></tr></table></figure><h2 id="参数加载"><a href="#参数加载" class="headerlink" title="参数加载"></a>参数加载</h2><figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs reasonml"># 优化器也有同样的操作，可用于恢复训练<br>net.load<span class="hljs-constructor">_state_dict(<span class="hljs-params">torch</span>.<span class="hljs-params">load</span>(&#x27;Lenet.<span class="hljs-params">pth</span>&#x27;)</span>)<br></code></pre></td></tr></table></figure><h2 id="前向计算"><a href="#前向计算" class="headerlink" title="前向计算"></a>前向计算</h2><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs stylus">with torch<span class="hljs-selector-class">.no_grad</span>():<br>    outputs = net(im)<br>    predict = torch<span class="hljs-selector-class">.max</span>(outputs, dim=<span class="hljs-number">1</span>)<span class="hljs-selector-attr">[1]</span><span class="hljs-selector-class">.data</span><span class="hljs-selector-class">.numpy</span>()<br></code></pre></td></tr></table></figure>]]></content>
-    
-    
-    <categories>
-      
-      <category>工作技能</category>
-      
-      <category>神经网络</category>
-      
-      <category>pytorch使用</category>
-      
-    </categories>
-    
-    
-    <tags>
-      
-      <tag>pytorch</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
     <title>pytorch基础用法-训练</title>
     <link href="/2021/08/11/pytorch%E6%A0%B8%E5%BF%83%E7%94%A8%E6%B3%95-2/"/>
     <url>/2021/08/11/pytorch%E6%A0%B8%E5%BF%83%E7%94%A8%E6%B3%95-2/</url>
@@ -744,35 +463,6 @@
   
   
   <entry>
-    <title>流形(manifold)是个啥?</title>
-    <link href="/2021/08/10/manifold%E6%98%AF%E4%B8%AA%E5%95%A5/"/>
-    <url>/2021/08/10/manifold%E6%98%AF%E4%B8%AA%E5%95%A5/</url>
-    
-    <content type="html"><![CDATA[<p>今天看MobileNet v2，其中为了得到<strong><em>“在处理低维度的特征tensor时，Relu激活函数相比于Linear激活函数在激活前后会造成更多的特征丢失”</em></strong>这一推论，使用了流形（manifold）的概念。所以来看看流形到底是个啥：</p><p>数学语言的定义是：<strong><em>流形是局部具有欧几里得空间性质的空间，在数学中用于描述几何形体。物理上，经典力学的相空间和构造广义相对论的时空模型的四维伪黎曼流形都是流形的实例</em></strong>。牵扯出更多新概念，比较复杂。所以这里只看machine learning中的流形概念。如下图所示，</p><div align=center><img title="" src="/img/article/manifold.jpeg" width="60%" height="60%" align=center></div><p><br>图中的每一个点，严格来讲都是一个三维的点。但是又可以明显看出这些点在三维空间中的分布是非常有规律的，基本上都集中在一个三维曲面上。基于这种现象，我们将流形理解为，高维空间中一个可变换成低维空间的子空间，例如上图，这个曲面作为一个三维曲面其实可以变换为一个二维平面。</p><p>对于机器学习和深度学习领域的数据，一般数据因为固有的特性（比如在不同光照条件下的同一张人脸的灰度图像），导致无法“填满”整个高维空间。例如如果数据只能出现在三维空间中的一个球面上。那这个球面以外的空间永远不会有数据点。而一个表面我们完全可以只用两个参数来表示(经度、维度)。</p><p>这样在聚类求样本间的相似距离时，就有了两种方式。一种是在流形的高维空间中求，即图中直线。另一种是在流形展开后的低维空间中求，即图中的曲线。具体用途，后面谈到再说吧。mark</p><p>参考链接：<br>[1] <a href="https://www.zhihu.com/question/24015486/answer/194284643">https://www.zhihu.com/question/24015486/answer/194284643</a></p>]]></content>
-    
-    
-    <categories>
-      
-      <category>工作技能</category>
-      
-      <category>神经网络</category>
-      
-    </categories>
-    
-    
-    <tags>
-      
-      <tag>流形</tag>
-      
-      <tag>manifold</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
     <title>MobileNet v2</title>
     <link href="/2021/08/08/2-MobileNet/"/>
     <url>/2021/08/08/2-MobileNet/</url>
@@ -808,49 +498,6 @@
       <tag>Residual结构</tag>
       
       <tag>Inverted Residual结构</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
-    <title>MobileNet v1</title>
-    <link href="/2021/08/08/MobileNet/"/>
-    <url>/2021/08/08/MobileNet/</url>
-    
-    <content type="html"><![CDATA[<h2 id="背景简介"><a href="#背景简介" class="headerlink" title="背景简介"></a>背景简介</h2><p>由Google团队于2017年提出，专注于移动端和嵌入式设备。采用Depthwise卷积，大幅减少参数量，虽然效果有一些折扣，但是可以接受。</p><h2 id="前置知识"><a href="#前置知识" class="headerlink" title="前置知识"></a>前置知识</h2><h3 id="DW卷积"><a href="#DW卷积" class="headerlink" title="DW卷积"></a><strong>DW卷积</strong></h3><p>先来回忆以下常规的卷积是怎样的，如下图所示。</p><div align=center><img title="" src="/img/net/mobilenet1.png" width="70%" height="70%" align=center></div><p>而DW卷积呢，其实就是最符合直觉的那种卷积。就是每个卷积核的深度不是和上一层输出相同，而是等于1。这意味着：</p><ul><li>卷积之后不再做跨深度的求和</li><li>每一个DW卷积层的#参数必然等于输入tensor的深度，因为要保证输入tensor的每一个通道都有一个1层的卷积核去和它运算</li><li>经过DW卷积之后得到的输出，深度不变</li></ul><div align=center><img title="" src="/img/net/mobilenet2.png" width="70%" height="70%" align=center></div><h3 id="PW卷积"><a href="#PW卷积" class="headerlink" title="PW卷积"></a><strong>PW卷积</strong></h3><p>DW卷积一看就是个瘸腿儿的机制，搞来搞去没法manipulate tensor的深度啊，所以必须伴随这PW卷积使用。PW卷积就是常规1x1的卷积，它的特点是不改变tensor的尺寸，只改变tensor的深度。这么一来跟DW卷积就完美配合了——先对tensor进行DW卷积改变尺寸，然后进行PW卷积对DW的输出进行跨通道加权求和，每个PW卷积核得到一个2维的tensor，这样，通过设置不同的卷积核个数即可控制最终输出的通道数。</p><div align=center><img title="" src="/img/net/mobilenet3.png" width="70%" height="70%" align=center></div><h2 id="网络结构"><a href="#网络结构" class="headerlink" title="网络结构"></a>网络结构</h2><div align=center><img title="" src="/img/net/mbv1.png" width="60%" height="60%" align=center></div><p>主要就是DW层和PW层的堆叠。另外，额外设有两个可调的超参数$\alpha$和$\beta$，前者是每一层的PW卷积核数量基于上表中数量的系数，后者是基于224x224的输入图像分辨率的系数。</p><h2 id="其他内容"><a href="#其他内容" class="headerlink" title="其他内容"></a>其他内容</h2><ol><li>实际使用发现，经常有很多DW卷积核的元素值为0，造成浪费，原因后面再补充吧。mark</li></ol>]]></content>
-    
-    
-    <categories>
-      
-      <category>工作技能</category>
-      
-      <category>神经网络</category>
-      
-      <category>经典网络</category>
-      
-    </categories>
-    
-    
-    <tags>
-      
-      <tag>深度学习</tag>
-      
-      <tag>神经网络</tag>
-      
-      <tag>卷积神经网络</tag>
-      
-      <tag>CNN</tag>
-      
-      <tag>经典网络</tag>
-      
-      <tag>MobileNet</tag>
-      
-      <tag>DW卷积</tag>
-      
-      <tag>PW卷积</tag>
       
     </tags>
     
@@ -1083,37 +730,6 @@
       <tag>经典网络</tag>
       
       <tag>AlexNet</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
-    <title>python列表的切片</title>
-    <link href="/2021/07/29/python%E5%88%97%E8%A1%A8%E7%9A%84%E5%88%87%E7%89%87/"/>
-    <url>/2021/07/29/python%E5%88%97%E8%A1%A8%E7%9A%84%E5%88%87%E7%89%87/</url>
-    
-    <content type="html"><![CDATA[<p>普通索引<code>a[i]</code>返回序列对象的一个元素，切片<code>a[::1]</code>则返回一些元素。</p><h2 id="基本索引"><a href="#基本索引" class="headerlink" title="基本索引"></a>基本索引</h2><div class="table-container"><table><thead><tr><th style="text-align:center">a中元素</th><th style="text-align:center">2</th><th style="text-align:center">4</th><th style="text-align:center">6</th><th style="text-align:center">8</th></tr></thead><tbody><tr><td style="text-align:center">非负索引</td><td style="text-align:center">0</td><td style="text-align:center">1</td><td style="text-align:center">2</td><td style="text-align:center">3</td></tr><tr><td style="text-align:center">负数索引</td><td style="text-align:center">-4</td><td style="text-align:center">-3</td><td style="text-align:center">-2</td><td style="text-align:center">-1</td></tr></tbody></table></div><blockquote><p>非负索引从0开始，负数索引从-1开始<br>基本索引不可越界</p></blockquote><h2 id="简单切片"><a href="#简单切片" class="headerlink" title="简单切片"></a>简单切片</h2><p><code>a[start:stop]</code>返回基本索引范围在[start,stop)内的元素</p><ol><li>start/stop越界：此时有多少算多少，不报错</li><li>start &gt; stop：返回空即可</li><li>start/stop缺省：start默认无穷小，stop默认无穷大</li></ol><h2 id="扩展切片"><a href="#扩展切片" class="headerlink" title="扩展切片"></a>扩展切片</h2><h4 id="step为正数，从前往后选取"><a href="#step为正数，从前往后选取" class="headerlink" title="step为正数，从前往后选取"></a>step为正数，从前往后选取</h4><p><code>a[start:stop:step]</code>在[start,stop)区间内，依次选取索引为start, start + step, start + 2step…..直到索引值不在[start, stop)区间中</p><ol><li>越界：同样有多少算多少，不报错</li><li>start &gt; stop：返回空</li><li>缺省：同上</li></ol><h4 id="step为负数，从后向前选取"><a href="#step为负数，从后向前选取" class="headerlink" title="step为负数，从后向前选取"></a>step为负数，从后向前选取</h4><p>此时，start是stop，stop是start，而且还是左开右闭，比如<br><figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">a</span>[<span class="hljs-number">2</span>:<span class="hljs-number">0</span>:-<span class="hljs-number">1</span>] -&gt;<span class="hljs-meta"> [6, 4]</span><br><br><span class="hljs-attribute">a</span>[:<span class="hljs-number">1</span>:-<span class="hljs-number">2</span>] -&gt;<span class="hljs-meta"> [8]</span><br></code></pre></td></tr></table></figure></p><h2 id="多维数组切片"><a href="#多维数组切片" class="headerlink" title="多维数组切片"></a>多维数组切片</h2><p>numpy和tensor这样的数据类型相比于原生的list提供了多维数组切片方法，示例如下：<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs stylus">pad_img<span class="hljs-selector-attr">[: img.shape[0]</span>, : <span class="hljs-selector-tag">img</span><span class="hljs-selector-class">.shape</span><span class="hljs-selector-attr">[1]</span>, : <span class="hljs-selector-tag">img</span><span class="hljs-selector-class">.shape</span><span class="hljs-selector-attr">[2]</span>]<span class="hljs-selector-class">.copy_</span>(img)<br></code></pre></td></tr></table></figure><br>两个逗号隔开三个索引表达式，分别对应这个图像/tensor/numpy数组的3个维度，各个索引表达式在各自维度上的切片规则同上，得到各个维度上的索引列表后对3个列表的元素进行全排列，即可得到最终的三维索引(x, y, z)。这个例子的含义是把img中的像素值复制到pad_img中，左上角对齐。</p><p>研究SSD的源码时又发现一个tensor的切片方式：<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs stylus">bboxes = <span class="hljs-selector-attr">[[0, 1, 2]</span>, <span class="hljs-selector-attr">[3, 4, 5]</span>, <span class="hljs-selector-attr">[6, 7, 8]</span>]<br><br><span class="hljs-selector-tag">a</span> = bboxes<span class="hljs-selector-attr">[[True, False, True]</span>, <span class="hljs-number">0</span>]<br><span class="hljs-selector-tag">b</span> = bboxes<span class="hljs-selector-attr">[[1, 0, 1]</span>, <span class="hljs-number">0</span>]<br><br>&gt;&gt;&gt; <span class="hljs-selector-tag">a</span> = <span class="hljs-selector-attr">[0, 6]</span><br>&gt;&gt;&gt; <span class="hljs-selector-tag">b</span> = <span class="hljs-selector-attr">[3, 0, 3]</span><br></code></pre></td></tr></table></figure><br>基本的规则还是跟第一个例子一样，先获取各个维度的索引列表，然后进行全排列，得到最终的二维索引(x, y)。但是第一个维度上的索引列表是一个bool类型元素的列表，当取Fasle时，不参与索引。</p>]]></content>
-    
-    
-    <categories>
-      
-      <category>工作技能</category>
-      
-      <category>python笔记</category>
-      
-    </categories>
-    
-    
-    <tags>
-      
-      <tag>python</tag>
-      
-      <tag>切片</tag>
-      
-      <tag>花式索引</tag>
       
     </tags>
     
@@ -1364,6 +980,390 @@
       <tag>vim</tag>
       
       <tag>markdown</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>卡尔曼滤波概要</title>
+    <link href="/2021/05/22/%E5%8D%A1%E5%B0%94%E6%9B%BC%E6%BB%A4%E6%B3%A2%E6%A6%82%E8%A6%81/"/>
+    <url>/2021/05/22/%E5%8D%A1%E5%B0%94%E6%9B%BC%E6%BB%A4%E6%B3%A2%E6%A6%82%E8%A6%81/</url>
+    
+    <content type="html"><![CDATA[<h2 id="做啥用的"><a href="#做啥用的" class="headerlink" title="做啥用的"></a>做啥用的</h2><p>我们想知道<strong>一个系统</strong>在<strong>某个时刻</strong>的真实状态，手段往往有多种，比如最常见的两种：</p><ol><li>用合适的传感器测量出来；</li><li>根据上一时刻的状态用数学模型推算出来；</li></ol><p>那么，应该相信哪一种办法得到的值呢？</p><h2 id="怎么做的"><a href="#怎么做的" class="headerlink" title="怎么做的"></a>怎么做的</h2><p>先把上述概念实例化一下，对于一个小车，我们想知道它在当前时刻$t$距离障碍物的真实距离$x_t$。我们用两种办法：</p><ol><li>测距雷达测得的<strong>测量值</strong>$m_t$</li><li>根据<strong>上一时刻的车速</strong>$v_{t-1}$和<strong>上一时刻的最终估计值</strong>$p_{t-1}$得到的<strong>预测值</strong>$n_t$，即有<script type="math/tex; mode=display">n_t = p_{t-1}-v_{t-1}</script></li></ol><p>然后，想办法平衡$m_t$和$n_t$，得到本时刻的<strong>最终估计值</strong>$p_t$。卡尔曼的做法是，将所有变量都视作一个正态的概率分布，而不是一个简单的标量值。即有</p><ol><li>自变量$v_{t-1}$    -&gt;     $v_{t-1}(\mu _v,\sigma _v)$，数据来自于传感器，可以认为均值和方差已知。</li><li>自变量$m_{t}$    -&gt;     $m_{t}(\mu _m,\sigma _m)$，数据来自于传感器，可以认为均值和方差已知。</li><li>中间变量$n_{t}$    -&gt;     $n_{t}(\mu _n,\sigma _n)$</li><li>结果变量$p$    -&gt;     $p(\mu _p,\sigma _p)$</li></ol><p>然后，按照经典方式，分两步计算来得到$p_t$</p><h3 id="Step1-预测"><a href="#Step1-预测" class="headerlink" title="Step1 预测"></a>Step1 预测</h3><p>首先因为</p><script type="math/tex; mode=display">n_t = p_{t-1}-v_{t-1}</script><p>所以，可以得到$n_t$的均值和方差分别为</p><script type="math/tex; mode=display">\mu_t^n = \mu_{t-1}^p - \mu_{t-1}^v</script><script type="math/tex; mode=display">\sigma_t^n = \sigma_{t-1}^p + \sigma_{t-1}^v</script><h3 id="Step2-融合-更新-校正"><a href="#Step2-融合-更新-校正" class="headerlink" title="Step2 融合/更新/校正"></a>Step2 融合/更新/校正</h3><p>平衡$m_t$和$n_t$这两个概率分布的方式是概率的乘法，即有</p><script type="math/tex; mode=display">\mu_t^p = \frac{\mu_t^n \sigma_t^m + \mu_t^m \sigma_t^n }{\sigma_t^m + \sigma_t^n }</script><script type="math/tex; mode=display">\sigma_t^p = \frac{\sigma_t^m \sigma_t^n }{\sigma_t^m + \sigma_t^n }</script><p>由于正态分布在变量取均值是概率最大，所以$\mu_t^p$即为$t$时刻的最终估计值$p_t$。而$\sigma_t^p$则用于计算下时刻的最终估计值。</p><h2 id="代码实例"><a href="#代码实例" class="headerlink" title="代码实例"></a>代码实例</h2><figure class="highlight nix"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><code class="hljs nix"><span class="hljs-built_in">import</span> numpy as np<br><span class="hljs-built_in">import</span> matplotlib.pyplot as plt<br><br><span class="hljs-attr">t</span> = np.linspace(<span class="hljs-number">1</span>, <span class="hljs-number">100</span>, <span class="hljs-number">100</span>)  <span class="hljs-comment"># 在1~100s内采样100次</span><br><span class="hljs-attr">a</span> = <span class="hljs-number">0.5</span>  <span class="hljs-comment"># 加速度值</span><br><span class="hljs-attr">position</span> = (a * t ** <span class="hljs-number">2</span>) / <span class="hljs-number">2</span><br><br><span class="hljs-attr">position_noise</span> = position + np.random.normal(<span class="hljs-number">0</span>, <span class="hljs-number">120</span>, <span class="hljs-attr">size=(t.shape[0]))</span>  <span class="hljs-comment"># 模拟生成GPS位置测量数据（带噪声）</span><br><br>plt.plot(t, position, <span class="hljs-attr">label=&#x27;truth</span> position&#x27;)<br>plt.plot(t, position_noise, <span class="hljs-attr">label=&#x27;only</span> use measured position&#x27;)<br><br><span class="hljs-comment"># ---------------卡尔曼滤波----------------</span><br><span class="hljs-comment"># 初始的估计导弹的位置就直接用GPS测量的位置</span><br><span class="hljs-attr">predicts</span> = [position_noise[<span class="hljs-number">0</span>]]<br><span class="hljs-attr">position_predict</span> = predicts[<span class="hljs-number">0</span>]<br><br><span class="hljs-attr">predict_var</span> = <span class="hljs-number">0</span><br><span class="hljs-attr">odo_var</span> = <span class="hljs-number">120</span> ** <span class="hljs-number">2</span>  <span class="hljs-comment"># 这是我们自己设定的位置测量仪器的方差，越大则测量值占比越低</span><br><span class="hljs-attr">v_std</span> = <span class="hljs-number">50</span>  <span class="hljs-comment"># 测量仪器的方差（这个方差在现实生活中是需要我们进行传感器标定才能算出来的，可搜Allan方差标定）</span><br>for i <span class="hljs-keyword">in</span> range(<span class="hljs-number">1</span>, t.shape[<span class="hljs-number">0</span>]):<br>    <span class="hljs-attr">dv</span> = (position[i] - position[i - <span class="hljs-number">1</span>]) + np.random.normal(<span class="hljs-number">0</span>, <span class="hljs-number">50</span>)  <span class="hljs-comment"># 模拟从IMU读取出的速度</span><br>    <span class="hljs-attr">position_predict</span> = position_predict + dv  <span class="hljs-comment"># 利用上个时刻的位置和速度预测当前位置</span><br>    predict_var += v_std ** <span class="hljs-number">2</span>  <span class="hljs-comment"># 更新预测数据的方差</span><br>    <span class="hljs-comment"># 下面是Kalman滤波</span><br>    <span class="hljs-attr">position_predict</span> = position_predict * odo_var / (predict_var + odo_var) + position_noise[i] * predict_var / (<br>                predict_var + odo_var)<br>    <span class="hljs-attr">predict_var</span> = (predict_var * odo_var) / (predict_var + odo_var) ** <span class="hljs-number">2</span><br>    predicts.append(position_predict)<br><br>plt.plot(t, predicts, <span class="hljs-attr">label=&#x27;kalman</span> filtered position&#x27;)<br><br>plt.legend()<br>plt.show()<br></code></pre></td></tr></table></figure><h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><ol><li><a href="https://zhuanlan.zhihu.com/p/77327349">https://zhuanlan.zhihu.com/p/77327349</a></li></ol>]]></content>
+    
+    
+    <categories>
+      
+      <category>工作技能</category>
+      
+      <category>数据融合</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>卡尔曼滤波</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>流形(manifold)是个啥?</title>
+    <link href="/2021/04/10/manifold%E6%98%AF%E4%B8%AA%E5%95%A5/"/>
+    <url>/2021/04/10/manifold%E6%98%AF%E4%B8%AA%E5%95%A5/</url>
+    
+    <content type="html"><![CDATA[<p>今天看MobileNet v2，其中为了得到<strong><em>“在处理低维度的特征tensor时，Relu激活函数相比于Linear激活函数在激活前后会造成更多的特征丢失”</em></strong>这一推论，使用了流形（manifold）的概念。所以来看看流形到底是个啥：</p><p>数学语言的定义是：<strong><em>流形是局部具有欧几里得空间性质的空间，在数学中用于描述几何形体。物理上，经典力学的相空间和构造广义相对论的时空模型的四维伪黎曼流形都是流形的实例</em></strong>。牵扯出更多新概念，比较复杂。所以这里只看machine learning中的流形概念。如下图所示，</p><div align=center><img title="" src="/img/article/manifold.jpeg" width="60%" height="60%" align=center></div><p><br>图中的每一个点，严格来讲都是一个三维的点。但是又可以明显看出这些点在三维空间中的分布是非常有规律的，基本上都集中在一个三维曲面上。基于这种现象，我们将流形理解为，高维空间中一个可变换成低维空间的子空间，例如上图，这个曲面作为一个三维曲面其实可以变换为一个二维平面。</p><p>对于机器学习和深度学习领域的数据，一般数据因为固有的特性（比如在不同光照条件下的同一张人脸的灰度图像），导致无法“填满”整个高维空间。例如如果数据只能出现在三维空间中的一个球面上。那这个球面以外的空间永远不会有数据点。而一个表面我们完全可以只用两个参数来表示(经度、维度)。</p><p>这样在聚类求样本间的相似距离时，就有了两种方式。一种是在流形的高维空间中求，即图中直线。另一种是在流形展开后的低维空间中求，即图中的曲线。具体用途，后面谈到再说吧。mark</p><p>参考链接：<br>[1] <a href="https://www.zhihu.com/question/24015486/answer/194284643">https://www.zhihu.com/question/24015486/answer/194284643</a></p>]]></content>
+    
+    
+    <categories>
+      
+      <category>工作技能</category>
+      
+      <category>神经网络</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>流形</tag>
+      
+      <tag>manifold</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>python列表的切片</title>
+    <link href="/2021/03/29/python%E5%88%97%E8%A1%A8%E7%9A%84%E5%88%87%E7%89%87/"/>
+    <url>/2021/03/29/python%E5%88%97%E8%A1%A8%E7%9A%84%E5%88%87%E7%89%87/</url>
+    
+    <content type="html"><![CDATA[<p>普通索引<code>a[i]</code>返回序列对象的一个元素，切片<code>a[::1]</code>则返回一些元素。</p><h2 id="基本索引"><a href="#基本索引" class="headerlink" title="基本索引"></a>基本索引</h2><div class="table-container"><table><thead><tr><th style="text-align:center">a中元素</th><th style="text-align:center">2</th><th style="text-align:center">4</th><th style="text-align:center">6</th><th style="text-align:center">8</th></tr></thead><tbody><tr><td style="text-align:center">非负索引</td><td style="text-align:center">0</td><td style="text-align:center">1</td><td style="text-align:center">2</td><td style="text-align:center">3</td></tr><tr><td style="text-align:center">负数索引</td><td style="text-align:center">-4</td><td style="text-align:center">-3</td><td style="text-align:center">-2</td><td style="text-align:center">-1</td></tr></tbody></table></div><blockquote><p>非负索引从0开始，负数索引从-1开始<br>基本索引不可越界</p></blockquote><h2 id="简单切片"><a href="#简单切片" class="headerlink" title="简单切片"></a>简单切片</h2><p><code>a[start:stop]</code>返回基本索引范围在[start,stop)内的元素</p><ol><li>start/stop越界：此时有多少算多少，不报错</li><li>start &gt; stop：返回空即可</li><li>start/stop缺省：start默认无穷小，stop默认无穷大</li></ol><h2 id="扩展切片"><a href="#扩展切片" class="headerlink" title="扩展切片"></a>扩展切片</h2><h4 id="step为正数，从前往后选取"><a href="#step为正数，从前往后选取" class="headerlink" title="step为正数，从前往后选取"></a>step为正数，从前往后选取</h4><p><code>a[start:stop:step]</code>在[start,stop)区间内，依次选取索引为start, start + step, start + 2step…..直到索引值不在[start, stop)区间中</p><ol><li>越界：同样有多少算多少，不报错</li><li>start &gt; stop：返回空</li><li>缺省：同上</li></ol><h4 id="step为负数，从后向前选取"><a href="#step为负数，从后向前选取" class="headerlink" title="step为负数，从后向前选取"></a>step为负数，从后向前选取</h4><p>此时，start是stop，stop是start，而且还是左开右闭，比如<br><figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">a</span>[<span class="hljs-number">2</span>:<span class="hljs-number">0</span>:-<span class="hljs-number">1</span>] -&gt;<span class="hljs-meta"> [6, 4]</span><br><br><span class="hljs-attribute">a</span>[:<span class="hljs-number">1</span>:-<span class="hljs-number">2</span>] -&gt;<span class="hljs-meta"> [8]</span><br></code></pre></td></tr></table></figure></p><h2 id="多维数组切片"><a href="#多维数组切片" class="headerlink" title="多维数组切片"></a>多维数组切片</h2><p>numpy和tensor这样的数据类型相比于原生的list提供了多维数组切片方法，示例如下：<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs stylus">pad_img<span class="hljs-selector-attr">[: img.shape[0]</span>, : <span class="hljs-selector-tag">img</span><span class="hljs-selector-class">.shape</span><span class="hljs-selector-attr">[1]</span>, : <span class="hljs-selector-tag">img</span><span class="hljs-selector-class">.shape</span><span class="hljs-selector-attr">[2]</span>]<span class="hljs-selector-class">.copy_</span>(img)<br></code></pre></td></tr></table></figure><br>两个逗号隔开三个索引表达式，分别对应这个图像/tensor/numpy数组的3个维度，各个索引表达式在各自维度上的切片规则同上，得到各个维度上的索引列表后对3个列表的元素进行全排列，即可得到最终的三维索引(x, y, z)。这个例子的含义是把img中的像素值复制到pad_img中，左上角对齐。</p><p>研究SSD的源码时又发现一个tensor的切片方式：<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs stylus">bboxes = <span class="hljs-selector-attr">[[0, 1, 2]</span>, <span class="hljs-selector-attr">[3, 4, 5]</span>, <span class="hljs-selector-attr">[6, 7, 8]</span>]<br><br><span class="hljs-selector-tag">a</span> = bboxes<span class="hljs-selector-attr">[[True, False, True]</span>, <span class="hljs-number">0</span>]<br><span class="hljs-selector-tag">b</span> = bboxes<span class="hljs-selector-attr">[[1, 0, 1]</span>, <span class="hljs-number">0</span>]<br><br>&gt;&gt;&gt; <span class="hljs-selector-tag">a</span> = <span class="hljs-selector-attr">[0, 6]</span><br>&gt;&gt;&gt; <span class="hljs-selector-tag">b</span> = <span class="hljs-selector-attr">[3, 0, 3]</span><br></code></pre></td></tr></table></figure><br>基本的规则还是跟第一个例子一样，先获取各个维度的索引列表，然后进行全排列，得到最终的二维索引(x, y)。但是第一个维度上的索引列表是一个bool类型元素的列表，当取Fasle时，不参与索引。</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>工作技能</category>
+      
+      <category>python笔记</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>python</tag>
+      
+      <tag>切片</tag>
+      
+      <tag>花式索引</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>MobileNet v1</title>
+    <link href="/2021/03/11/MobileNet/"/>
+    <url>/2021/03/11/MobileNet/</url>
+    
+    <content type="html"><![CDATA[<h2 id="背景简介"><a href="#背景简介" class="headerlink" title="背景简介"></a>背景简介</h2><p>由Google团队于2017年提出，专注于移动端和嵌入式设备。采用Depthwise卷积，大幅减少参数量，虽然效果有一些折扣，但是可以接受。</p><h2 id="前置知识"><a href="#前置知识" class="headerlink" title="前置知识"></a>前置知识</h2><h3 id="DW卷积"><a href="#DW卷积" class="headerlink" title="DW卷积"></a><strong>DW卷积</strong></h3><p>先来回忆以下常规的卷积是怎样的，如下图所示。</p><div align=center><img title="" src="/img/net/mobilenet1.png" width="70%" height="70%" align=center></div><p>而DW卷积呢，其实就是最符合直觉的那种卷积。就是每个卷积核的深度不是和上一层输出相同，而是等于1。这意味着：</p><ul><li>卷积之后不再做跨深度的求和</li><li>每一个DW卷积层的#参数必然等于输入tensor的深度，因为要保证输入tensor的每一个通道都有一个1层的卷积核去和它运算</li><li>经过DW卷积之后得到的输出，深度不变</li></ul><div align=center><img title="" src="/img/net/mobilenet2.png" width="70%" height="70%" align=center></div><h3 id="PW卷积"><a href="#PW卷积" class="headerlink" title="PW卷积"></a><strong>PW卷积</strong></h3><p>DW卷积一看就是个瘸腿儿的机制，搞来搞去没法manipulate tensor的深度啊，所以必须伴随这PW卷积使用。PW卷积就是常规1x1的卷积，它的特点是不改变tensor的尺寸，只改变tensor的深度。这么一来跟DW卷积就完美配合了——先对tensor进行DW卷积改变尺寸，然后进行PW卷积对DW的输出进行跨通道加权求和，每个PW卷积核得到一个2维的tensor，这样，通过设置不同的卷积核个数即可控制最终输出的通道数。</p><div align=center><img title="" src="/img/net/mobilenet3.png" width="70%" height="70%" align=center></div><h2 id="网络结构"><a href="#网络结构" class="headerlink" title="网络结构"></a>网络结构</h2><div align=center><img title="" src="/img/net/mbv1.png" width="60%" height="60%" align=center></div><p>主要就是DW层和PW层的堆叠。另外，额外设有两个可调的超参数$\alpha$和$\beta$，前者是每一层的PW卷积核数量基于上表中数量的系数，后者是基于224x224的输入图像分辨率的系数。</p><h2 id="其他内容"><a href="#其他内容" class="headerlink" title="其他内容"></a>其他内容</h2><ol><li>实际使用发现，经常有很多DW卷积核的元素值为0，造成浪费，原因后面再补充吧。mark</li></ol>]]></content>
+    
+    
+    <categories>
+      
+      <category>工作技能</category>
+      
+      <category>神经网络</category>
+      
+      <category>经典网络</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>深度学习</tag>
+      
+      <tag>神经网络</tag>
+      
+      <tag>卷积神经网络</tag>
+      
+      <tag>CNN</tag>
+      
+      <tag>经典网络</tag>
+      
+      <tag>MobileNet</tag>
+      
+      <tag>DW卷积</tag>
+      
+      <tag>PW卷积</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>protobuf基础用法</title>
+    <link href="/2021/03/03/protobuf%E5%9F%BA%E7%A4%8E%E7%94%A8%E6%B3%95/"/>
+    <url>/2021/03/03/protobuf%E5%9F%BA%E7%A4%8E%E7%94%A8%E6%B3%95/</url>
+    
+    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>自动驾驶框架常用protobuf作为节点之间通讯的工具，出现频率很高，了解一下基本情况。</p><p>我们知道，<strong>数据只要出内存就要进行序列化，进内存就要进行反序列化</strong>。</p><p>这是因为，所有数据在内存中存放的形式都是一串0/1。比如，我们定义一个结构体，然后对其实例化，我们就在内存中的某个位置写入了这串0/1序列。当我们想把这一个结构体所表示的“信息”给到另外一个用户时，应该怎么做呢？</p><p>我们可以把这一串0/1序列从内存中写到硬盘上，形成一个文件，然后把这个文件发送给其他用户。由内存中的0/1序列（或者说一个结构体实例）得到这个文件的过程，就是序列化过程。</p><p>用户在拿到这一文件后想使用其中包含的信息，就必须先将其恢复为结构体，才能方便地进行操作。由二进制序列（或者说拿到的这个文件）得到结构体实例的过程，就是反序列化过程。</p><p>那么protobuf做了什么呢？首先，它允许我们以最简的方式定义待传递的信息结构（<code>.proto文件</code>），然后使用<code>protoc</code>程序处理<code>.proto</code>文件，自动生成C++结构体，并配套一系列操作这个结构体的方法（API）。</p><p>所以说，protobuf的使用围绕三个核心要素:</p><ul><li><code>.proto</code>文件</li><li>compiler</li><li>API</li></ul><h2 id="proto文件"><a href="#proto文件" class="headerlink" title=".proto文件"></a><code>.proto</code>文件</h2><figure class="highlight protobuf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><code class="hljs protobuf"><span class="hljs-comment">// protobuf有2和3两个版本，语法不同，所以要声明版本</span><br>syntax = <span class="hljs-string">&quot;proto3&quot;</span>;<br><span class="hljs-comment">// package名称经过compile之后成为生成类所在的namespace</span><br><span class="hljs-keyword">package</span> tutorial;<br><span class="hljs-keyword">import</span> <span class="hljs-string">&quot;google/protobuf/timestamp.proto&quot;</span>;<br><br><span class="hljs-comment">// 一个message生成一个类</span><br><span class="hljs-class"><span class="hljs-keyword">message</span> <span class="hljs-title">Person</span> </span>&#123;<br>  <span class="hljs-built_in">string</span> name = <span class="hljs-number">1</span>;<br>  <span class="hljs-built_in">int32</span> id = <span class="hljs-number">2</span>; <br>  <span class="hljs-built_in">string</span> email = <span class="hljs-number">3</span>;<br><br>  <span class="hljs-class"><span class="hljs-keyword">enum</span> <span class="hljs-title">PhoneType</span> </span>&#123;<br>    MOBILE = <span class="hljs-number">0</span>;<br>    HOME = <span class="hljs-number">1</span>;<br>    WORK = <span class="hljs-number">2</span>;<br>  &#125;<br><br>  <span class="hljs-class"><span class="hljs-keyword">message</span> <span class="hljs-title">PhoneNumber</span> </span>&#123;<br>    <span class="hljs-built_in">string</span> number = <span class="hljs-number">1</span>;<br>    PhoneType type = <span class="hljs-number">2</span>;<br>  &#125;<br><br>  <span class="hljs-comment">// message元素的四个组成部分, modifier type name = uniq_tag，modifier默认为optional</span><br>  <span class="hljs-keyword">repeated</span> PhoneNumber phones = <span class="hljs-number">4</span>;<br><br>  google.protobuf.Timestamp last_updated = <span class="hljs-number">5</span>;<br>&#125;<br><br><span class="hljs-class"><span class="hljs-keyword">message</span> <span class="hljs-title">AddressBook</span> </span>&#123;<br>  <span class="hljs-keyword">repeated</span> Person people = <span class="hljs-number">1</span>;<br>&#125;<br></code></pre></td></tr></table></figure><h2 id="compile"><a href="#compile" class="headerlink" title="compile"></a>compile</h2><figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs mipsasm"><span class="hljs-comment"># 编译.proto文件，生成类的头文件和源文件</span><br>protoc protoc --cpp_out=. <span class="hljs-keyword">addressbook.proto</span><br><span class="hljs-keyword"></span><br><span class="hljs-comment">#在应用中使用生成类</span><br>c++ -std=c++<span class="hljs-number">11</span> <span class="hljs-keyword">add_person.cc </span><span class="hljs-keyword">addressbook.pb.cc </span>-o <span class="hljs-keyword">add_person_cpp </span>`pkg-<span class="hljs-built_in">config</span> --cflags --libs protobuf`<br></code></pre></td></tr></table></figure><h2 id="API"><a href="#API" class="headerlink" title="API"></a>API</h2><h3 id="序列化API"><a href="#序列化API" class="headerlink" title="序列化API"></a>序列化API</h3><ul><li><code>bool SerializeToString(string* output) const;</code></li><li><code>bool SerializeToOstream(ostream* output) const;</code><br>一个生成类的实例调用这两种方法，将会把自身的内容以二进制串的形式写入string或ostream中，如<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function">fstream <span class="hljs-title">output</span><span class="hljs-params">(argv[<span class="hljs-number">1</span>], ios::out | ios::trunc | ios::binary)</span></span>;<br><span class="hljs-keyword">if</span> (!address_book.<span class="hljs-built_in">SerializeToOstream</span>(&amp;output)) &#123;<br>    cerr &lt;&lt; <span class="hljs-string">&quot;Failed to write address book.&quot;</span> &lt;&lt; endl;<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;<br>&#125;<br></code></pre></td></tr></table></figure></li></ul><h3 id="反序列化API"><a href="#反序列化API" class="headerlink" title="反序列化API"></a>反序列化API</h3><ul><li><code>bool ParseFromString(const string&amp; data);</code></li><li><code>bool ParseFromIstream(istream* input);</code><br>从一个istream或string读取一个二进制串，然后这个生成类的实例中的内容便得到了填充。如，<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs css">tutorial::AddressBook address_book;<br>fstream <span class="hljs-selector-tag">input</span>(argv<span class="hljs-selector-attr">[1]</span>, ios::in | ios::binary);<br>if (!address_book<span class="hljs-selector-class">.ParseFromIstream</span>(&amp;<span class="hljs-selector-tag">input</span>)) &#123;<br>    cerr &lt;&lt; &quot;Failed <span class="hljs-selector-tag">to</span> parse <span class="hljs-selector-tag">address</span> book.&quot; &lt;&lt; endl;<br>    return -<span class="hljs-number">1</span>;<br>&#125;<br>    &#125;<br></code></pre></td></tr></table></figure></li></ul><h3 id="元素获取与操作API"><a href="#元素获取与操作API" class="headerlink" title="元素获取与操作API"></a>元素获取与操作API</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-comment">// id</span><br><span class="hljs-function"><span class="hljs-keyword">inline</span> <span class="hljs-keyword">bool</span> <span class="hljs-title">has_id</span><span class="hljs-params">()</span> <span class="hljs-keyword">const</span></span>;<br><span class="hljs-function"><span class="hljs-keyword">inline</span> <span class="hljs-keyword">void</span> <span class="hljs-title">clear_id</span><span class="hljs-params">()</span></span>;<br><span class="hljs-function"><span class="hljs-keyword">inline</span> <span class="hljs-keyword">void</span> <span class="hljs-title">set_id</span><span class="hljs-params">(<span class="hljs-keyword">int32_t</span> value)</span></span>;<br></code></pre></td></tr></table></figure><h3 id="通用API"><a href="#通用API" class="headerlink" title="通用API"></a>通用API</h3><ul><li><code>bool IsInitialized() const;</code>: checks if all the required fields have been set.</li><li><code>void Clear();</code>: clears all the elements back to the empty state.</li><li><code>void CopyFrom(const Person&amp; from);</code>: overwrites the message with the given message’s values.</li></ul><h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><ol><li><a href="https://developers.google.com/protocol-buffers/docs/cpptutorial">https://developers.google.com/protocol-buffers/docs/cpptutorial</a></li><li><a href="https://stackoverflow.com/questions/26826421/protocol-buffers-unique-numbered-tag-clarification">https://stackoverflow.com/questions/26826421/protocol-buffers-unique-numbered-tag-clarification</a></li></ol>]]></content>
+    
+    
+    <categories>
+      
+      <category>工作技能</category>
+      
+      <category>C/C++笔记</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>protobuf</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>定位误差常用的损失函数</title>
+    <link href="/2020/11/12/%E5%AE%9A%E4%BD%8D%E8%AF%AF%E5%B7%AE%E5%B8%B8%E7%94%A8%E7%9A%84%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0/"/>
+    <url>/2020/11/12/%E5%AE%9A%E4%BD%8D%E8%AF%AF%E5%B7%AE%E5%B8%B8%E7%94%A8%E7%9A%84%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0/</url>
+    
+    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在目标检测任务中，为了更好的量化定位损失，各路大神想了很多办法。从最开始的针对xywh的均方误差，到IOU损失，再到后续的GIOU损失、DIOU损失、CIOU损失，越来越复杂。其中均方误差比较简单，不再介绍。重点讲一下IOU系列。</p><div align=center><img title="" src="/img/article/iou.png" width="80%" height="80%" align=center></div><h2 id="IOU损失"><a href="#IOU损失" class="headerlink" title="IOU损失"></a>IOU损失</h2><p>这里牵涉到两个概念，“IOU”和“IOU损失”，对于前者，已经很熟悉了，不再赘述。而对于后者，则是简单地令</p><script type="math/tex; mode=display">IOU loss = - \ln(\frac{I}{U})</script><p>这样，IOU越接近于1，损失越接近于0。并且相比于均方误差没有尺度大小影响wh损失的现象。但美中不足的是，当I=0，即两个框不相交时无法正确计算。</p><h2 id="GeneralizedIOU损失"><a href="#GeneralizedIOU损失" class="headerlink" title="GeneralizedIOU损失"></a>GeneralizedIOU损失</h2><script type="math/tex; mode=display">GIOU = \frac{I}{U} - \frac{D_1 + D_2}{S}</script><script type="math/tex; mode=display">GIOU loss = 1 - GIOU</script><p>IOU越大，损失越小。D1和D2占S的比例越大，IOU越大。</p><h2 id="DistanceIOU损失"><a href="#DistanceIOU损失" class="headerlink" title="DistanceIOU损失"></a>DistanceIOU损失</h2><script type="math/tex; mode=display">DIOU = \frac{I}{U} - \frac{d^2}{c^2}</script><script type="math/tex; mode=display">DIOU loss = 1 - DIOU</script><p>IOU越大，损失越小。d越小，两个框的中心越接近，损失越小。</p><h2 id="CompleteIOU损失"><a href="#CompleteIOU损失" class="headerlink" title="CompleteIOU损失"></a>CompleteIOU损失</h2><p>作者说，一个好的定位误差量化指标应该兼顾：<strong>重叠面积</strong>、<strong>中心点距离</strong>、<strong>长宽比</strong>。前两者在DIOU中都已经考虑了，因此CIOU又增加了长宽比这一因素，也就是说两个框的形状哪怕不全等，也应该尽可能相似。</p><script type="math/tex; mode=display">CIOU = \frac{I}{U} - \frac{d^2}{c^2} - \alpha v</script><script type="math/tex; mode=display">v = \frac{4}{\pi ^2}({\rm arctan} \frac{w_1}{h_1} - {\rm arctan} \frac{w_2}{h_2})^2</script><script type="math/tex; mode=display">\alpha = \frac{v}{(1-IOU)+v}</script><script type="math/tex; mode=display">CIOU loss = 1 - CIOU</script><p>$\alpha v$暂时看不懂是啥原理，暂时知道是在比较两个框的相似程度就够了，而且越小越相似。</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>工作技能</category>
+      
+      <category>神经网络</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>损失函数</tag>
+      
+      <tag>IOU</tag>
+      
+      <tag>GIOU</tag>
+      
+      <tag>DIOU</tag>
+      
+      <tag>CIOU</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>关于交叉熵的易混淆概念</title>
+    <link href="/2020/10/12/%E5%85%B3%E4%BA%8E%E4%BA%A4%E5%8F%89%E7%86%B5%E7%9A%84%E6%98%93%E6%B7%B7%E6%B7%86%E6%A6%82%E5%BF%B5/"/>
+    <url>/2020/10/12/%E5%85%B3%E4%BA%8E%E4%BA%A4%E5%8F%89%E7%86%B5%E7%9A%84%E6%98%93%E6%B7%B7%E6%B7%86%E6%A6%82%E5%BF%B5/</url>
+    
+    <content type="html"><![CDATA[<h2 id="0-前言"><a href="#0-前言" class="headerlink" title="0. 前言"></a>0. 前言</h2><p>交叉熵，二值交叉熵，softmax，sigmoid等概念经常一起出现，这里结合pytorch的具体实现来捋清楚这几个概念。</p><h2 id="1-概念"><a href="#1-概念" class="headerlink" title="1. 概念"></a>1. 概念</h2><h3 id="1-1-交叉熵"><a href="#1-1-交叉熵" class="headerlink" title="1.1 交叉熵"></a>1.1 交叉熵</h3><p>交叉熵用于描述两个概率分布的差异，也就是说处理的都是0-1之间的数值。</p><script type="math/tex; mode=display">H(p,q) = -\sum p(x)\log q(x)</script><p>在实际应用中，一般用于计算分类损失。并且，为了避免对0取对数，会将GT的one-hot向量作为$p$，预测结果作为$q$。</p><h3 id="1-2-二值交叉熵"><a href="#1-2-二值交叉熵" class="headerlink" title="1.2 二值交叉熵"></a>1.2 二值交叉熵</h3><p>二值交叉熵就是上述交叉熵公式在$x$只有两个取值时的特例。</p><script type="math/tex; mode=display">H(p,q) = -[p \log q + (1-p) \log (1-q)]</script><h3 id="1-3-sigmoid函数"><a href="#1-3-sigmoid函数" class="headerlink" title="1.3 sigmoid函数"></a>1.3 sigmoid函数</h3><p>一般模型直接输出的结果向量不保证其中的标量元素的数值（pytorch等官方术语称logits）在0-1之间，因此要用到sigmoid这种值域在0-1之间的激活函数将<strong>每一个logit单独</strong>作映射，然后再进行交叉熵计算。</p><div align=center><img title="" src="/img/article/sigmoid.png" width="50%" height="50%" align=center></div><h3 id="1-4-softmax函数"><a href="#1-4-softmax函数" class="headerlink" title="1.4 softmax函数"></a>1.4 softmax函数</h3><p>跟sigmoid一样，也是一个logit归一化的工具，但是需要所有logits一起做联合映射，而不是独立映射。</p><script type="math/tex; mode=display">\sigma (\boldsymbol{\rm x}) = \frac{\rm exp(\boldsymbol{x})} {\boldsymbol{1}^T \rm exp(\boldsymbol{x})}</script><h2 id="2-pytorch实现"><a href="#2-pytorch实现" class="headerlink" title="2. pytorch实现"></a>2. pytorch实现</h2><p>pytorch中的nn模块和nn.funtional模块中都有交叉熵损失的实现，这里只介绍nn下的3个模块。</p><h3 id="2-1-nn-CrossEntropyLoss"><a href="#2-1-nn-CrossEntropyLoss" class="headerlink" title="2.1 nn.CrossEntropyLoss"></a>2.1 <code>nn.CrossEntropyLoss</code></h3><p>主要的入参有input(N, C)和target(N,)两个，N是结果向量有几个，C是类别数量。</p><p>input的每一行都是一个结果向量，包含C个类别的各自的logit，这是因为这个模块内部集成了softmax函数，在进行损失计算之前会先对input做0-1的映射。</p><p>target每一行是一个真实标签序号，值在[0, C-1]之间。在进行算是计算之前会将target的每一行拓展成一个one-hot向量，hot的位置就是这个真实标签序号。</p><p>然后用1.1中的公式逐行计算这N个结果向量与N个one-hot向量的交叉熵，最后求和或求算数平均值（默认求均值）。</p><h3 id="2-2-nn-BCEWithLogitsLoss"><a href="#2-2-nn-BCEWithLogitsLoss" class="headerlink" title="2.2 nn.BCEWithLogitsLoss"></a>2.2 <code>nn.BCEWithLogitsLoss</code></h3><p>主要的入参还是input(N, C)和target(N, C)两个，但是target的形状不同，其每一行都直接是GT的one-hot向量。</p><p>也同样集成了sigmoid函数，计算损失之前会先对input做0-1的映射。</p><p>然后逐行选中一个C维的结果行向量和一个C维的GT one-hot行向量，按照1.2中的公式计算得到C个标量，求均值即可得到这一行的loss。</p><p>最后求各行的loss均值即可得到最终的loss。</p><h3 id="2-3-nn-BCELoss"><a href="#2-3-nn-BCELoss" class="headerlink" title="2.3 nn.BCELoss"></a>2.3 <code>nn.BCELoss</code></h3><p>未集成sigmoid的二值交叉熵计算模块，有要求入参input的标量元素值在0-1之间，所以一般不使用，直接使用2.2。</p><h2 id="3-附录"><a href="#3-附录" class="headerlink" title="3. 附录"></a>3. 附录</h2><div align=center><img title="" src="/img/article/cross_entropy.png" width="80%" height="80%" align=center></div><p><br></p><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs stylus">import torch<span class="hljs-selector-class">.nn</span> as nn<br>import torch<br><br>logits = torch<span class="hljs-selector-class">.tensor</span>(<span class="hljs-selector-attr">[[2, -3, 0.8, 1.2]</span>, <span class="hljs-selector-attr">[1.5, -0.1, 0.9, -1.3]</span>])<br><br>sigmoid = torch<span class="hljs-selector-class">.sigmoid</span>(logits)<br>softmax = torch<span class="hljs-selector-class">.softmax</span>(logits, <span class="hljs-number">1</span>)<br><br>GT4bce = torch<span class="hljs-selector-class">.tensor</span>(<span class="hljs-selector-attr">[[0, 0, 1, 0]</span>, <span class="hljs-selector-attr">[0, 1, 0, 0]</span>], dtype=torch.<span class="hljs-attribute">float</span>)<br>GT4ce = torch<span class="hljs-selector-class">.tensor</span>(<span class="hljs-selector-attr">[2, 1]</span>)<br><br>ce = nn<span class="hljs-selector-class">.CrossEntropyLoss</span>(reduction=<span class="hljs-string">&#x27;sum&#x27;</span>)<br>ce_loss = ce(logits, GT4ce)<br><br>bce = nn<span class="hljs-selector-class">.BCEWithLogitsLoss</span>(reduction=<span class="hljs-string">&#x27;sum&#x27;</span>)<br>bce_loss = bce(logits, GT4bce)<br><br><span class="hljs-function"><span class="hljs-title">print</span><span class="hljs-params">(<span class="hljs-string">&quot;CE loss is &#123;&#125; \nBCE loss is &#123;&#125;&quot;</span>.format(ce_loss, bce_loss)</span></span>)<br></code></pre></td></tr></table></figure>]]></content>
+    
+    
+    <categories>
+      
+      <category>工作技能</category>
+      
+      <category>神经网络</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>pytorch</tag>
+      
+      <tag>交叉熵</tag>
+      
+      <tag>二值交叉熵</tag>
+      
+      <tag>损失函数</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>TensorRT C++ API使用方法</title>
+    <link href="/2020/09/10/TensorRT%E7%9A%84%E5%9F%BA%E7%A1%80%E4%BD%BF%E7%94%A8/"/>
+    <url>/2020/09/10/TensorRT%E7%9A%84%E5%9F%BA%E7%A1%80%E4%BD%BF%E7%94%A8/</url>
+    
+    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>把深度学习模型用pytorch等框架搭建、训练后，要把模型保存下来，部署到生产环境中服务于实际业务。</p><p>生产环境中运行的深度学习模型有两个特点，一当然是要快，二是只做单帧数据的前向计算（推理）。为了适应这两个特点，引入了TensorRT这个工具。</p><p>简单地，可以将它看作一个类似pytorch的深度学习框架。但是这个框架不提供模型训练相关的脚手架，只提供模型构建、前向计算和模型格式转换的工具。并且得益于NV一些未开源的黑科技，用TensorRT构建出来的模型能够更快地进行前向计算。</p><p><strong>关键概念</strong>：<br><strong>ONNX parser</strong>: Takes a converted PyTorch trained model into the ONNX format as input and populates a network object in TensorRT.<br><strong>Builder</strong>: Takes a network in TensorRT and generates an engine that is optimized for the target platform.<br><strong>Engine</strong>: Takes input data, performs inferences, and emits inference output.<br><strong>Logger</strong>: Associated with the builder and engine to capture errors, warnings, and other information during the build and inference phases.</p><h2 id="使用步骤"><a href="#使用步骤" class="headerlink" title="使用步骤"></a>使用步骤</h2><h3 id="0-头文件与namespace"><a href="#0-头文件与namespace" class="headerlink" title="0. 头文件与namespace"></a>0. 头文件与namespace</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> “NvInfer.h”</span><br><br><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> nvinfer1;<br></code></pre></td></tr></table></figure><h3 id="1-build阶段"><a href="#1-build阶段" class="headerlink" title="1. build阶段"></a>1. build阶段</h3><h4 id="1-0-创建Logger"><a href="#1-0-创建Logger" class="headerlink" title="1.0 创建Logger"></a>1.0 创建Logger</h4><p>创建builder之前，需要先根据需要继承自己的Logger类。其中主要的任务是override父类中的log方法，定义哪个级别的信息会被log，如何log。<br><figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs angelscript"><span class="hljs-keyword">class</span> <span class="hljs-symbol">RTLogger</span> : <span class="hljs-symbol">public</span> <span class="hljs-symbol">nvinfer1::<span class="hljs-symbol">ILogger</span></span> &#123;<br>  <span class="hljs-built_in">void</span> log(Severity severity, <span class="hljs-keyword">const</span> char *msg) <span class="hljs-keyword">override</span> &#123;<br>    <span class="hljs-keyword">if</span> (severity != Severity::kINFO)    &#123;<br>      AINFO &lt;&lt; msg;<br>    &#125;<br>  &#125;<br>&#125; rt_gLogger;<br></code></pre></td></tr></table></figure></p><h4 id="1-1-创建builder"><a href="#1-1-创建builder" class="headerlink" title="1.1 创建builder"></a>1.1 创建builder</h4><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs css">nvinfer1::IBuilder *builder_= nvinfer1::<span class="hljs-built_in">createInferBuilder</span>(rt_gLogger);<br></code></pre></td></tr></table></figure><h4 id="1-2-创建network"><a href="#1-2-创建network" class="headerlink" title="1.2 创建network"></a>1.2 创建network</h4><p>创建network实例的过程其实跟其他框架大同小异，只不过因为受众少，包装地没那么精致而已。</p><h5 id="1-2-1-创建空的network实例"><a href="#1-2-1-创建空的network实例" class="headerlink" title="1.2.1 创建空的network实例"></a>1.2.1 创建空的network实例</h5><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs css">nvinfer1::INetworkDefinition *network_ = builder_-&gt;<span class="hljs-built_in">createNetwork</span>();<br></code></pre></td></tr></table></figure><h5 id="1-2-2-填充network实例"><a href="#1-2-2-填充network实例" class="headerlink" title="1.2.2 填充network实例"></a>1.2.2 填充network实例</h5><p>上一步创建的network实例是一个空的、不包含网络层的对象，需要在此基础上添加网络层。由于TensorRT作为框架，是不做BP只做前向的，所以在构建网络时要同步给入权重。<br>此时有两种选择来做这件事:</p><ol><li>拿一个现成的模型文件(包含权重)进来，用TensorRT的格式转换工具转换一下；以ONNX的模型文件为例(ONNX模型是包含权重的)：<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">#<span class="hljs-keyword">include</span> “<span class="hljs-module-access"><span class="hljs-module"><span class="hljs-identifier">NvOnnxParser</span>.</span></span>h”<br><br>using namespace nvonnxparser;<br><br>IParser*  parser = create<span class="hljs-constructor">Parser(<span class="hljs-operator">*</span><span class="hljs-params">network</span>, <span class="hljs-params">logger</span>)</span>;<br>parser-&gt;parse<span class="hljs-constructor">FromFile(<span class="hljs-params">modelFile</span>, ILogger::Severity::<span class="hljs-params">kWARNING</span>)</span>;<br><span class="hljs-keyword">for</span> (int32_t i = <span class="hljs-number">0</span>; i &lt; parser.get<span class="hljs-constructor">NbErrors()</span>; ++i)&#123;<br>std::cout &lt;&lt; parser-&gt;get<span class="hljs-constructor">Error(<span class="hljs-params">i</span>)</span>-&gt;desc<span class="hljs-literal">()</span> &lt;&lt; std::endl;<br>&#125;<br></code></pre></td></tr></table></figure></li><li>拿一个描述模型结构的配置文件，用TensorRT的模型搭建工具依次添加各种各样的网络层，从无到有地搭建出来。同时，在添加网络时，要提供对应的网络权重。<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">auto data = network_-&gt;add<span class="hljs-constructor">Input(<span class="hljs-params">dims_pair</span>.<span class="hljs-params">first</span>.<span class="hljs-params">c_str</span>()</span>, nvinfer1::DataType::kFLOAT, dims_pair.second);<br>auto convLayer = network-&gt;add<span class="hljs-constructor">Convolution(<span class="hljs-operator">*</span><span class="hljs-params">inTensor</span>, <span class="hljs-params">nbOutputs</span>, <span class="hljs-params">nvinfer1</span>::DimsHW&#123;<span class="hljs-params">kernelH</span>, <span class="hljs-params">kernelW</span>&#125;, <span class="hljs-params">wt</span>, <span class="hljs-params">bias_weight</span>)</span>;<br>auto softmaxLayer = net-&gt;add<span class="hljs-constructor">SoftMax(<span class="hljs-operator">*</span><span class="hljs-params">inputs</span>[0])</span>;<br></code></pre></td></tr></table></figure>至此，填充完网络层和权重参数后，便完成了网络的搭建。</li></ol><h4 id="1-3-创建engine"><a href="#1-3-创建engine" class="headerlink" title="1.3 创建engine"></a>1.3 创建engine</h4><p>完成网络构建之后，其实只是把原有网络模型，以tensorRT的格式重新构建了一下，还没有进行优化加速。所以，现在要把优化前的network转成优化后的engine。</p><p>要做到这件事需要两种信息，一是优化什么，二是怎么优化。前者已经有了，就是network。后者需要构造一个config接口，用这个接口来配置优化项。</p><p>并且，在10.0之后的版本，创建engine之前还要先创建一个序列化模型，可用于保存到磁盘上。真正使用时，先反序列化模型，然后再构造出engine实例。<br><figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">IBuilderConfig* config = builder-&gt;create<span class="hljs-constructor">BuilderConfig()</span>;<br>config-&gt;set<span class="hljs-constructor">MaxWorkspaceSize(1U &lt;&lt; 20)</span>;<br><br>IHostMemory*  serializedModel = builder-&gt;build<span class="hljs-constructor">SerializedNetwork(<span class="hljs-operator">*</span><span class="hljs-params">network</span>, <span class="hljs-operator">*</span><span class="hljs-params">config</span>)</span>;<br><br>IRuntime* runtime = create<span class="hljs-constructor">InferRuntime(<span class="hljs-params">logger</span>)</span>;<br>ICudaEngine* engine = runtime-&gt;deserialize<span class="hljs-constructor">CudaEngine(<span class="hljs-params">modelData</span>, <span class="hljs-params">modelSize</span>)</span>;<br></code></pre></td></tr></table></figure></p><h3 id="2-inference阶段"><a href="#2-inference阶段" class="headerlink" title="2. inference阶段"></a>2. inference阶段</h3><p>The engine holds the optimized model, but to perform inference we will need to manage additional state for intermediate activations. This is done via the <code>ExecutionContext</code> interface:<br><figure class="highlight xl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs xl">IE<span class="hljs-function"><span class="hljs-title">xecutionContext</span> *context = engine-&gt;</span>createExecutionContext();<br></code></pre></td></tr></table></figure></p><p>然后，在GPU上为模型的输入和输出各申请一块buffer，<br><figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs abnf">int32_t inputIndex = engine-&gt;getBindingIndex(INPUT_NAME)<span class="hljs-comment">;</span><br>int32_t outputIndex = engine-&gt;getBindingIndex(OUTPUT_NAME)<span class="hljs-comment">;</span><br><br>void* buffers[<span class="hljs-number">2</span>]<span class="hljs-comment">;</span><br>buffers[inputIndex] = inputBuffer<span class="hljs-comment">;</span><br>buffers[outputIndex] = outputBuffer<span class="hljs-comment">;</span><br></code></pre></td></tr></table></figure><br>最后，执行推理（一般是GPU与CPU异步，即CPU上的控制流在调用GPU核函数之后并不阻塞）<br><figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">context-&gt;enqueue<span class="hljs-constructor">V2(<span class="hljs-params">buffers</span>, <span class="hljs-params">stream</span>, <span class="hljs-params">nullptr</span>)</span>;<br></code></pre></td></tr></table></figure></p><p>由于是异步调用，在推理执行完毕之后一般还要<code>cudaDeviceSynchronize()</code>一下，等待推理过程执行完毕，然后将output结果从GPU上拷贝到CPU上。</p><p>至此，整个推理过程完毕。</p><h2 id="Note"><a href="#Note" class="headerlink" title="Note"></a>Note</h2><ol><li>不同的tensorRT版本API细节有所不同，这里以TensorRT 8.2.0 Early Access (EA)为例</li><li>A CUDA context is automatically created the first time TensorRT makes a call to CUDA, if none exists prior to that point. It is generally preferable to create and configure the CUDA context yourself before the first call to TensoRT.</li><li>Interface classes in the TensorRT™ C++ API begin with the prefix I</li><li>config interface has many properties that you can set in order to control how TensorRT optimizes the network. One important property is the maximum workspace size. Layer implementations often require a temporary workspace, and this parameter limits the maximum size that any layer in the network can use. If insufficient workspace is provided, it is possible that TensorRT will not be able to find an implementation for a layer.</li><li>Serialized engines are not portable across platforms or TensorRT versions. Engines are specific to the exact GPU model they were built on (in addition to the platform and the TensorRT version).</li><li>The serialized engine contains the necessary copies of the weights, the parser, network definition, builder configuration and builder are no longer necessary and may be safely deleted.</li></ol><h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ol><li><a href="https://docs.nvidia.com/deeplearning/tensorrt/developer-guide/index.html#perform_inference_c">官方文档8.2.0 Early Access (EA)</a></li><li><a href="https://stackoverflow.com/questions/19193468/why-do-we-need-cudadevicesynchronize-in-kernels-with-device-printf">https://stackoverflow.com/questions/19193468/why-do-we-need-cudadevicesynchronize-in-kernels-with-device-printf</a></li><li><a href="https://blog.csdn.net/Bruce_0712/article/details/73477126">https://blog.csdn.net/Bruce_0712/article/details/73477126</a></li></ol>]]></content>
+    
+    
+    <categories>
+      
+      <category>工作技能</category>
+      
+      <category>神经网络</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>TensorRT</tag>
+      
+      <tag>ONNX</tag>
+      
+      <tag>inference</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>pytorch基础用法-预测</title>
+    <link href="/2020/08/11/pytorch%E6%A0%B8%E5%BF%83%E7%94%A8%E6%B3%95-3/"/>
+    <url>/2020/08/11/pytorch%E6%A0%B8%E5%BF%83%E7%94%A8%E6%B3%95-3/</url>
+    
+    <content type="html"><![CDATA[<h2 id="数据准备"><a href="#数据准备" class="headerlink" title="数据准备"></a>数据准备</h2><figure class="highlight julia"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs julia">transform = transforms.Compose(<br>        [transforms.Resize((<span class="hljs-number">32</span>, <span class="hljs-number">32</span>)),<br>         transforms.ToTensor(),<br>         transforms.Normalize((<span class="hljs-number">0.5</span>, <span class="hljs-number">0.5</span>, <span class="hljs-number">0.5</span>), (<span class="hljs-number">0.5</span>, <span class="hljs-number">0.5</span>, <span class="hljs-number">0.5</span>))])<br><br><span class="hljs-literal">im</span> = Image.open(&#x27;<span class="hljs-number">1.</span>jpg&#x27;)<br><span class="hljs-literal">im</span> = transform(<span class="hljs-literal">im</span>)  <span class="hljs-comment"># [C, H, W]</span><br><span class="hljs-literal">im</span> = torch.unsqueeze(<span class="hljs-literal">im</span>, dim=<span class="hljs-number">0</span>)  <span class="hljs-comment"># [N, C, H, W]</span><br></code></pre></td></tr></table></figure><h2 id="模型定义"><a href="#模型定义" class="headerlink" title="模型定义"></a>模型定义</h2><figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs ini"><span class="hljs-comment"># 不需要to(device)吗？mark</span><br><span class="hljs-attr">net</span> = LeNet()<br></code></pre></td></tr></table></figure><h2 id="参数加载"><a href="#参数加载" class="headerlink" title="参数加载"></a>参数加载</h2><figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs reasonml"># 优化器也有同样的操作，可用于恢复训练<br>net.load<span class="hljs-constructor">_state_dict(<span class="hljs-params">torch</span>.<span class="hljs-params">load</span>(&#x27;Lenet.<span class="hljs-params">pth</span>&#x27;)</span>)<br></code></pre></td></tr></table></figure><h2 id="前向计算"><a href="#前向计算" class="headerlink" title="前向计算"></a>前向计算</h2><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs stylus">with torch<span class="hljs-selector-class">.no_grad</span>():<br>    outputs = net(im)<br>    predict = torch<span class="hljs-selector-class">.max</span>(outputs, dim=<span class="hljs-number">1</span>)<span class="hljs-selector-attr">[1]</span><span class="hljs-selector-class">.data</span><span class="hljs-selector-class">.numpy</span>()<br></code></pre></td></tr></table></figure>]]></content>
+    
+    
+    <categories>
+      
+      <category>工作技能</category>
+      
+      <category>神经网络</category>
+      
+      <category>pytorch使用</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>pytorch</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>自定义目标检测数据集</title>
+    <link href="/2020/03/12/%E8%87%AA%E5%AE%9A%E4%B9%89%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B%E6%95%B0%E6%8D%AE%E9%9B%86/"/>
+    <url>/2020/03/12/%E8%87%AA%E5%AE%9A%E4%B9%89%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B%E6%95%B0%E6%8D%AE%E9%9B%86/</url>
+    
+    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>目标检测的数据集跟分类数据集不同，不仅仅包含图片和图片的类别信息，还要包括bounding box等一些额外的信息。因此，使用<a href="https://guohongming.xyz/2021/08/11/pytorch%E6%A0%B8%E5%BF%83%E7%94%A8%E6%B3%95-2/">之前</a>建立目录结构 + <code>datasets.ImageFolder()</code>的方法是不行的。</p><p>总的来看，自定义目标检测数据集要围绕<strong>原始图像</strong>、<strong>标注文件</strong>、<strong>入选名单</strong>三个要素，完成<strong>图像标注</strong>和<strong>自定义dataset类</strong>两项工作。</p><h2 id="三个要素"><a href="#三个要素" class="headerlink" title="三个要素"></a>三个要素</h2><ol><li>原始图像，统统存放在一个目录下</li><li>标注文件，一般为一个xml或json，文件名与原始图像一一对应，保存对应图像的标注相关信息</li><li>入选名单，一个txt文档，记录分到train_set和val_set的名单，每行一个去掉后缀的文件名</li></ol><h2 id="两项工作"><a href="#两项工作" class="headerlink" title="两项工作"></a>两项工作</h2><h3 id="图像标注"><a href="#图像标注" class="headerlink" title="图像标注"></a>图像标注</h3><ol><li>安装lableImg<blockquote><p>pip3 install labelImg   #中间遇到报错，参考<a href="https://stackoverflow.com/questions/59711301/install-pyqt5-5-14-1-on-linux">here</a>解决。</p></blockquote></li><li>新建一个文件夹，包含img目录，annotation目录，class.txt，分别用于存放待标注图像，标注结果，类别清单。<blockquote><p>labelImg ./img ./class.txt   #即可开始标注</p></blockquote></li><li>标注完成后写一个随机抽样脚本，生成train_set和val_set入选清单两个txt文件。<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><code class="hljs css">import os<br>import random<br><br>def <span class="hljs-selector-tag">main</span>():<br>    random.<span class="hljs-built_in">seed</span>(<span class="hljs-number">0</span>)  # 设置随机种子，保证随机结果可复现<br><br>    files_path = <span class="hljs-string">&quot;./annotation&quot;</span><br>    assert os.path.<span class="hljs-built_in">exists</span>(files_path), <span class="hljs-string">&quot;path: &#x27;&#123;&#125;&#x27; does not exist.&quot;</span>.<span class="hljs-built_in">format</span>(files_path)<br><br>    val_rate = <span class="hljs-number">0.5</span><br><br>    files_name = <span class="hljs-built_in">sorted</span>([file.<span class="hljs-built_in">split</span>(<span class="hljs-string">&quot;.&quot;</span>)[<span class="hljs-number">0</span>] for file in os.<span class="hljs-built_in">listdir</span>(files_path)])<br>    files_num = <span class="hljs-built_in">len</span>(files_name)<br>    val_index = random.<span class="hljs-built_in">sample</span>(<span class="hljs-built_in">range</span>(<span class="hljs-number">0</span>, files_num), k=<span class="hljs-built_in">int</span>(files_num*val_rate))<br>    train_files = []<br>    val_files = []<br>    for index, file_name in <span class="hljs-built_in">enumerate</span>(files_name):<br>        if index in val_index:<br>            val_files.<span class="hljs-built_in">append</span>(file_name)<br>        else:<br>            train_files.<span class="hljs-built_in">append</span>(file_name)<br><br>    try:<br>        train_f = <span class="hljs-built_in">open</span>(<span class="hljs-string">&quot;train.txt&quot;</span>, <span class="hljs-string">&quot;x&quot;</span>)<br>        eval_f = <span class="hljs-built_in">open</span>(<span class="hljs-string">&quot;val.txt&quot;</span>, <span class="hljs-string">&quot;x&quot;</span>)<br>        train_f.<span class="hljs-built_in">write</span>(<span class="hljs-string">&quot;\n&quot;</span>.<span class="hljs-built_in">join</span>(train_files))<br>        eval_f.<span class="hljs-built_in">write</span>(<span class="hljs-string">&quot;\n&quot;</span>.<span class="hljs-built_in">join</span>(val_files))<br>    except FileExistsError as e:<br>        <span class="hljs-built_in">print</span>(e)<br>        <span class="hljs-built_in">exit</span>(<span class="hljs-number">1</span>)<br><br>if __name__ == <span class="hljs-string">&#x27;__main__&#x27;</span>:<br>    <span class="hljs-built_in">main</span>()<br></code></pre></td></tr></table></figure></li></ol><h3 id="自定义dataset类"><a href="#自定义dataset类" class="headerlink" title="自定义dataset类"></a>自定义dataset类</h3><p>自定义一个dataset类需要先继承<code>torch.utils.data.Dataset</code>类，然后重写<code>__init__</code>方法，<code>__getitem__</code>方法，<code>__len__</code>方法</p><h4 id="init-方法"><a href="#init-方法" class="headerlink" title="__init__方法"></a><code>__init__</code>方法</h4><p>主要有以下几项工作：</p><ol><li>根据train_set.txt或者val_set.txt的内容建立<code>self.xml_list</code>，一个存放所有xml文件路径的list，并检查这些xml文件是否确实存在</li><li>根据描述类别信息的json文件建立<code>self.class_dict</code></li><li>根据传入参数设定预处理函数<code>self.transforms</code>的行为，包括RandomFlip等augmentation操作以及to_tensor，normalize等操作，在<code>getitem</code>方法中也就是具体内容前执行。</li></ol><h4 id="getitem-方法"><a href="#getitem-方法" class="headerlink" title="__getitem__方法"></a><code>__getitem__</code>方法</h4><p><code>__getitem__</code>方法目的是定义用[idx]索引本类示例时返回什么。在这里，是返回一个tuple，内容为<code>(image_tensor, img_attr_dict)</code>。整个函数的行为就是为了得到这两个元素。</p><ol><li>解析<code>self.xml_list[idx]</code>对应的xml，得到一个dict<blockquote><p>借助lxml的etree工具</p></blockquote></li><li>根据dict中的<code>filename</code>找到对应的图像文件，并转化tensor，得到<code>image_tensor</code><blockquote><p>借助PIL库的<code>Image.open()</code>函数</p></blockquote></li><li>根据dict中的其他信息找到boxes，label等标注信息，并转为tensor，最后组装成<code>img_attr_dict</code>。<blockquote><p>多目标情形时，box作为key，对应一个list of tensor，每个tensor对应一个box，label等同理。一个典型的包含两个box的dict如下：<br>{boxes:tensor(2x4),<br>labels:tensor(2x1),<br>image_id:tensor(1x1),<br>area:tensor(2x1),<br>iscrowd:tensor(2x1),<br>}</p></blockquote></li></ol><h4 id="len-方法"><a href="#len-方法" class="headerlink" title="__len__方法"></a><code>__len__</code>方法</h4><p>返回<code>self.xml_list</code>的长度即可</p><h4 id="one-more-thing"><a href="#one-more-thing" class="headerlink" title="one more thing"></a>one more thing</h4><p>当<code>torch.utils.data.DataLoader</code>按照既定的batch_size去获取和组装图像时，不能用默认的<code>collate_fn</code>。</p><p>因为这个默认的<code>collate_fn</code>只是简单的调用<code>torch.stack()</code>将b个[c, h, w]的tensor组合成一个[b, c, h, w]的tensor。但是这里索引到的是b个<code>(image_tensor, img_attr_dict)</code>，直接stack将得到一个</p><blockquote><p>[(image_tensor_0, img_attr_dict_0)<br> ···<br> (image_tensor_b, img_attr_dict_b)]</p></blockquote><p>这不是我们想要的。我们想要的是各个图像的像素值集中在一起，图像的标注信息集中在一起：</p><blockquote><p>[(image_tensor_0,<br>  …<br>  image_tensor_b),</p><p> (img_attr_dict_0,<br>  …,<br>  img_attr_dict_b)]</p></blockquote><p>所以要<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">collate_fn</span>(<span class="hljs-params">batch</span>):</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-built_in">tuple</span>(<span class="hljs-built_in">zip</span>(*batch))<br></code></pre></td></tr></table></figure></p>]]></content>
+    
+    
+    <categories>
+      
+      <category>工作技能</category>
+      
+      <category>神经网络</category>
+      
+      <category>pytorch使用</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>目标检测</tag>
+      
+      <tag>pytorch</tag>
+      
+      <tag>数据集</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>Shell笔记</title>
+    <link href="/2019/12/25/note_of_shell/"/>
+    <url>/2019/12/25/note_of_shell/</url>
+    
+    <content type="html"><![CDATA[<h3 id="shell解释器的种类"><a href="#shell解释器的种类" class="headerlink" title="shell解释器的种类"></a>shell解释器的种类</h3><ol><li>一个shell脚本可以被不同的解释器解释执行，常见的解释器有sh、bash、zsh、dash。可以使用以下命令查看本机的shell解释器配置：<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs awk"><span class="hljs-comment">#本机可用的shell解释器</span><br>cat <span class="hljs-regexp">/etc/</span>shells<br><br><span class="hljs-comment">#当前默认设置，一般在第一行</span><br>cat <span class="hljs-regexp">/etc/</span>passwd<br><br><span class="hljs-comment">#当前设置</span><br>echo <span class="hljs-variable">$SHELL</span><br></code></pre></td></tr></table></figure></li><li>一个shell脚本具体被哪一个解释器解释执行，依次看：<ul><li>cmd命令指定的是哪个</li><li>shebang指定的是哪个</li><li><a href="https://stackoverflow.com/questions/69643212/how-is-it-determined-which-shell-runs-a-script?noredirect=1#comment123105552_69643212">都不指定的话不清楚用哪个</a><figure class="highlight d"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs d">#cmd命令指定<br>bash ./test.sh<br>zsh ./test.sh<br><br>#Shebang指定<br><span class="hljs-meta">#!/usr/bin/env bash到PATH路径下找到bash以执行脚本</span><br><span class="hljs-meta">#!/bin/bash用/bin目录下的bash程序执行脚本</span><br><br>#暂时不清楚用哪个shell来执行<br>./test.sh<br></code></pre></td></tr></table></figure></li></ul></li></ol><h3 id="shell脚本的执行方式"><a href="#shell脚本的执行方式" class="headerlink" title="shell脚本的执行方式"></a>shell脚本的执行方式</h3><p>shell脚本的执行方式有source和bash两类，前者的一般用途是实现python的import机制，即在另一个shell脚本中实现一堆公用的变量和函数，然后加载到当前脚本中。而后者则是真实的执行。</p><p>When you execute the script you are opening a new shell, type the commands in the new shell, copy the output back to your current shell, then close the new shell. Any changes to environment will take effect only in the new shell and will be lost once the new shell is closed.</p><p>When you source the script you are typing the commands in your current shell. Any changes to the environment will take effect and stay in your current shell.</p><p>Sourcing a script will run the commands in the current shell process. Changes to the environment take effect in the current shell.</p><p>Executing a script will run the commands in a new shell process. Changes to the environment take effect in the new shell and is lost when the script is done and the new shell is terminated.</p><p>Use source if you want the script to change the environment in your currently running shell. use execute otherwise.</p><h3 id="重定向"><a href="#重定向" class="headerlink" title="重定向"></a>重定向</h3><figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">cmd</span> &gt; file <span class="hljs-number">2</span>&gt;&amp;<span class="hljs-number">1</span><br><span class="hljs-comment"># 首先将cmd的输出重定向到file中，然后将标准错误输出绑定到标准输出上。合起来的意思是将cmd产生的，本来应该分别输出到标准输出和标准错误输出的打印信息，全部输出到file文件中</span><br><br></code></pre></td></tr></table></figure><figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs gradle">cmd &amp;&gt;<span class="hljs-regexp">/dev/</span><span class="hljs-keyword">null</span><br>cmd &gt;<span class="hljs-regexp">/dev/</span><span class="hljs-keyword">null</span> <span class="hljs-number">2</span>&gt;&amp;<span class="hljs-number">1</span><br># 这两句话等价，那么从第二句看，并且结合前面的内容可以知道，这里的意思是将cmd产生的stdout和stderr都重定向到<span class="hljs-regexp">/dev/</span><span class="hljs-keyword">null</span>中。这个<span class="hljs-regexp">/dev/</span><span class="hljs-keyword">null</span>可以看作一个blackhole，会把所有输进去的内容吃掉。因此，这句话一般用作忽略cmd的任何输出信息。<br></code></pre></td></tr></table></figure><h3 id="静默执行"><a href="#静默执行" class="headerlink" title="静默执行"></a>静默执行</h3><p>涉及到的概念有：<strong>前/后台程序</strong>，<strong>nohup前缀</strong>，<strong>&amp;后缀</strong>，<strong>Ctrl-Z</strong>，<strong>bg/fg命令</strong>，<strong>HUP信号</strong>，<strong>TSTP信号</strong>。</p><h4 id="前-后台程序"><a href="#前-后台程序" class="headerlink" title="前/后台程序"></a>前/后台程序</h4><p>前/后台程序的区别在于，启动该程序的shell是否被该程序阻塞。阻塞，意味着shell暂时不能跟用户交互了，只能等待前台程序执行结束，后台则无此影响。</p><p>在原本的启动命令后加上 &amp; 后缀，即可将该程序放到后台执行。并且，若此时未经过重定向，还是会将打印信息输出到终端，所以要想完全放到后台还需要将输出重定向。<br>  <figure class="highlight arcade"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs arcade">yes love &amp;&gt;<span class="hljs-regexp">/dev/</span><span class="hljs-literal">null</span> &amp;<br></code></pre></td></tr></table></figure></p><p>当一个程序已经在前台阻塞式执行时，使用Ctrl-Z命令可以向程序发送TSTP信号，将程序暂停。然后通过bg命令可以将该程序恢复到后台执行，fg则恢复到前台。</p><h4 id="防挂起"><a href="#防挂起" class="headerlink" title="防挂起"></a>防挂起</h4><p>nohup前缀产生的相关效果是独立于前/后台程序的另一个话题，其直接效果是使得程序免疫HUP信号。HUP信号一般会在关闭终端或用户注销时发出，接收到HUP信号的程序会终止执行。间接效果是将程序的stdout和stderr信息重定向到一个nohup.out文件。</p><p>综上，用下面这个形式的命令可以实现一个程序的<strong>安全(终端关掉也不会停)</strong>、<strong>静默(启动了就跟没启动一样)</strong>执行。<br><figure class="highlight arcade"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs arcade">nohup cmd &amp;&gt;<span class="hljs-regexp">/dev/</span><span class="hljs-literal">null</span> &amp;<br></code></pre></td></tr></table></figure></p><p><a href="https://linuxhint.com/how_to_use_nohup_linux/">参考链接</a></p>]]></content>
+    
+    
+    <categories>
+      
+      <category>工作技能</category>
+      
+      <category>shell笔记</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>shell</tag>
+      
+      <tag>bash</tag>
+      
+      <tag>重定向</tag>
+      
+      <tag>nohup</tag>
+      
+      <tag>后台</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>双线性插值是啥？</title>
+    <link href="/2019/11/15/%E5%8F%8C%E7%BA%BF%E6%80%A7%E6%8F%92%E5%80%BC%E6%98%AF%E5%95%A5%EF%BC%9F/"/>
+    <url>/2019/11/15/%E5%8F%8C%E7%BA%BF%E6%80%A7%E6%8F%92%E5%80%BC%E6%98%AF%E5%95%A5%EF%BC%9F/</url>
+    
+    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>今天看FASTER RCNN的pytorch实现源码，进行图像缩放时用到了双线性插值算法，记录一下自己的理解。</p><h2 id="目的"><a href="#目的" class="headerlink" title="目的"></a>目的</h2><p>当将一幅图像从100x100的尺寸放大到200x200时，势必要新增30000个像素点。那么这些新增的像素点的灰度值如何得到呢？</p><h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p>双线性插值的做法是这样：</p><h3 id="1-建立坐标的对应关系"><a href="#1-建立坐标的对应关系" class="headerlink" title="1. 建立坐标的对应关系"></a>1. 建立坐标的对应关系</h3><p>将放大前的图像A和放大后的图形B的几何中心对齐，然后有</p><script type="math/tex; mode=display">\frac{x_A + 0.5}{x_B + 0.5} = \frac{w_A}{w_B}</script><script type="math/tex; mode=display">\frac{y_A + 0.5}{y_B + 0.5} = \frac{h_A}{h_B}</script><p>如果按照上面公式计算出来是整数，就直接将原图中的对应位置的灰度值复制过来。如果是小数，说明原图像中没有对应点，就将x/y分别向上/下取整得到4个坐标。</p><blockquote><p>其实也无所谓，一律按照下面方法计算即可，只不过是整数的时候取得是两个相同灰度值的均值，也就是还是他自己罢了。省的在这讨论，x整数y小数，x小数y整数这些问题了。</p></blockquote><h3 id="2-用A上4个对应像素点的灰度值计算B上1个像素点的灰度值"><a href="#2-用A上4个对应像素点的灰度值计算B上1个像素点的灰度值" class="headerlink" title="2. 用A上4个对应像素点的灰度值计算B上1个像素点的灰度值"></a>2. 用A上4个对应像素点的灰度值计算B上1个像素点的灰度值</h3><p>双线性插值说白了就是先将这4个点分成两组在一个方向上进行线性插值，得到两个中间值，然后用这两个中间值再进行一次线性插值，得到最终结果。</p><div align=center><img title="" src="/img/sxxcz.png" width="40%" height="40%" align=center></div><p>即，先有</p><script type="math/tex; mode=display">\frac{R_1-Q_{11}}{x-x_1}=\frac{Q_{21}-Q_{11}}{x_2-x_1}</script><script type="math/tex; mode=display">\frac{R_2-Q_{12}}{x-x_1}=\frac{Q_{22}-Q_{12}}{x_2-x_1}</script><p>然后，有</p><script type="math/tex; mode=display">\frac{P-R_1}{y-y_1}=\frac{R_2-R_1}{y_2-y_1}</script><p>其中，P为所求的B上$(x_B, y_B)$处的灰度值，$(x,y)$就是上面的$(x_A, y_A)$，四个Q就是A上四个对应像素点的灰度值，R为中间值。</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>工作技能</category>
+      
+      <category>神经网络</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>图像缩放</tag>
+      
+      <tag>双线性插值</tag>
+      
+      <tag>bilinear interpolation</tag>
       
     </tags>
     

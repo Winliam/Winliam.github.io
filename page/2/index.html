@@ -182,411 +182,6 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2021/10/12/%E5%AE%9A%E4%BD%8D%E8%AF%AF%E5%B7%AE%E5%B8%B8%E7%94%A8%E7%9A%84%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0/" target="_self">
-          定位误差常用的损失函数
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2021/10/12/%E5%AE%9A%E4%BD%8D%E8%AF%AF%E5%B7%AE%E5%B8%B8%E7%94%A8%E7%9A%84%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0/" target="_self">
-          
-          
-            
-          
-          前言在目标检测任务中，为了更好的量化定位损失，各路大神想了很多办法。从最开始的针对xywh的均方误差，到IOU损失，再到后续的GIOU损失、DIOU损失、CIOU损失，越来越复杂。其中均方误差比较简单，不再介绍。重点讲一下IOU系列。
-
-
-IOU损失这里牵涉到两个概念，“IOU”和“IOU损失”，对于前者，已经很熟悉了，不再赘述。而对于后者，则是简单地令
-
-IOU loss = - \ln(\fr
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2021-10-12 17:36" pubdate>
-              2021-10-12
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/">工作技能</a>
-            
-              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">神经网络</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0/">损失函数</a>
-            
-              <a href="/tags/IOU/">IOU</a>
-            
-              <a href="/tags/GIOU/">GIOU</a>
-            
-              <a href="/tags/DIOU/">DIOU</a>
-            
-              <a href="/tags/CIOU/">CIOU</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2021/10/12/%E5%85%B3%E4%BA%8E%E4%BA%A4%E5%8F%89%E7%86%B5%E7%9A%84%E6%98%93%E6%B7%B7%E6%B7%86%E6%A6%82%E5%BF%B5/" target="_self">
-          关于交叉熵的易混淆概念
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2021/10/12/%E5%85%B3%E4%BA%8E%E4%BA%A4%E5%8F%89%E7%86%B5%E7%9A%84%E6%98%93%E6%B7%B7%E6%B7%86%E6%A6%82%E5%BF%B5/" target="_self">
-          
-          
-            
-          
-          0. 前言交叉熵，二值交叉熵，softmax，sigmoid等概念经常一起出现，这里结合pytorch的具体实现来捋清楚这几个概念。
-1. 概念1.1 交叉熵交叉熵用于描述两个概率分布的差异，也就是说处理的都是0-1之间的数值。
-
-H(p,q) = -\sum p(x)\log q(x)在实际应用中，一般用于计算分类损失。并且，为了避免对0取对数，会将GT的one-hot向量作为$p$，预测结果作
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2021-10-12 09:39" pubdate>
-              2021-10-12
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/">工作技能</a>
-            
-              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">神经网络</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/pytorch/">pytorch</a>
-            
-              <a href="/tags/%E4%BA%A4%E5%8F%89%E7%86%B5/">交叉熵</a>
-            
-              <a href="/tags/%E4%BA%8C%E5%80%BC%E4%BA%A4%E5%8F%89%E7%86%B5/">二值交叉熵</a>
-            
-              <a href="/tags/%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0/">损失函数</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2021/09/27/YOLO%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90-0/" target="_self">
-          YOLO源码分析（零） —— 理论基础
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2021/09/27/YOLO%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90-0/" target="_self">
-          
-          
-            
-          
-          0. 前言One-Stage目标检测的另一代表，特点是GridCell的切分以及与之配套的GT框和anchor的匹配机制。
-现在看下来YOLO的故事是，YOLOv1先定下基础，然后后面的版本用各种各样的trick改善v1的效果。因此，要首先搞清楚v1都干了些啥，然后再依次搞清楚后续各个补丁的含义。
-而且由于YOLOv1的检测效果相对而言并不是很好，目前应用的至少是v3起步，所以对于v1和v2只在理
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2021-09-27 18:22" pubdate>
-              2021-09-27
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/">工作技能</a>
-            
-              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">神经网络</a>
-            
-              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B/">目标检测</a>
-            
-              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B/YOLO/">YOLO</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a>
-            
-              <a href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">神经网络</a>
-            
-              <a href="/tags/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">卷积神经网络</a>
-            
-              <a href="/tags/CNN/">CNN</a>
-            
-              <a href="/tags/%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B/">目标检测</a>
-            
-              <a href="/tags/YOLO/">YOLO</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2021/09/23/SSD%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90-0/" target="_self">
-          SSD源码分析 —— 整体框架
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2021/09/23/SSD%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90-0/" target="_self">
-          
-          
-            
-          
-          0. 前言最近忙着搞超声波，SSD的源码分析拖得有点久了。不过鉴于SSD的模型结构比较简单，而且较为复杂的gtbox匹配、损失计算等机制在Faster RCNN业已理解，所以前后也没用多长时间。
-首先，还是算法的总体流程图，可以看出比Faster RCNN那是简单太多了。
-
-
-第一步还是从dataset中加载图像，然后经过图像预处理，再通过以ResNet50为蓝本的feature extracto
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2021-09-23 18:22" pubdate>
-              2021-09-23
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/">工作技能</a>
-            
-              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">神经网络</a>
-            
-              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B/">目标检测</a>
-            
-              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B/SSD/">SSD</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a>
-            
-              <a href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">神经网络</a>
-            
-              <a href="/tags/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">卷积神经网络</a>
-            
-              <a href="/tags/CNN/">CNN</a>
-            
-              <a href="/tags/%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B/">目标检测</a>
-            
-              <a href="/tags/SSD/">SSD</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2021/09/01/Faster-RCNN%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90-0/" target="_self">
-          Faster RCNN源码分析（零）—— 整体框架
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2021/09/01/Faster-RCNN%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90-0/" target="_self">
-          
-          
-            
-          
-          0. 前言两段式目标检测的代表作，相当复杂。
-基于pytorch的源码，捋一遍Faster-RCNN到底干了啥。
-这里先说一下框架，后面有时间再开几篇依次展开说各个子流程的代码实现细节。
-
-
-1. 从dataset加载图像首先要从把标注好的图像文件以及标注xml文件读取进来。
-参考这里自定义的dataset类，可以知道，dataloader每次迭代返回的是，dataset类__getitem__方
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2021-09-01 18:22" pubdate>
-              2021-09-01
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/">工作技能</a>
-            
-              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">神经网络</a>
-            
-              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B/">目标检测</a>
-            
-              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B/Faster-RCNN/">Faster RCNN</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a>
-            
-              <a href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">神经网络</a>
-            
-              <a href="/tags/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">卷积神经网络</a>
-            
-              <a href="/tags/CNN/">CNN</a>
-            
-              <a href="/tags/%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B/">目标检测</a>
-            
-              <a href="/tags/Faster-RCNN/">Faster RCNN</a>
-            
-              <a href="/tags/RPN/">RPN</a>
-            
-              <a href="/tags/ROI-Align/">ROI Align</a>
-            
-              <a href="/tags/ROI-Pooling/">ROI Pooling</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2021/08/25/note_of_shell/" target="_self">
-          Shell笔记
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2021/08/25/note_of_shell/" target="_self">
-          
-          
-            
-          
-          shell解释器的种类
-一个shell脚本可以被不同的解释器解释执行，常见的解释器有sh、bash、zsh、dash。可以使用以下命令查看本机的shell解释器配置：12345678#本机可用的shell解释器cat /etc/shells#当前默认设置，一般在第一行cat /etc/passwd#当前设置echo $SHELL
-一个shell脚本具体被哪一个解释器解释执行，依次看：
-cmd命令指
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2021-08-25 17:13" pubdate>
-              2021-08-25
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/">工作技能</a>
-            
-              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/shell%E7%AC%94%E8%AE%B0/">shell笔记</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/shell/">shell</a>
-            
-              <a href="/tags/bash/">bash</a>
-            
-              <a href="/tags/%E9%87%8D%E5%AE%9A%E5%90%91/">重定向</a>
-            
-              <a href="/tags/nohup/">nohup</a>
-            
-              <a href="/tags/%E5%90%8E%E5%8F%B0/">后台</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
         <a href="/2021/08/25/note_of_cpp/" target="_self">
           C/C++笔记
         </a>
@@ -719,22 +314,18 @@ Faster RCNN源码中，将图像预处理操作封装在一个类GeneralizedRCNN
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2021/08/15/%E5%8F%8C%E7%BA%BF%E6%80%A7%E6%8F%92%E5%80%BC%E6%98%AF%E5%95%A5%EF%BC%9F/" target="_self">
-          双线性插值是啥？
+        <a href="/2021/08/11/pytorch%E6%A0%B8%E5%BF%83%E7%94%A8%E6%B3%95-2/" target="_self">
+          pytorch基础用法-训练
         </a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2021/08/15/%E5%8F%8C%E7%BA%BF%E6%80%A7%E6%8F%92%E5%80%BC%E6%98%AF%E5%95%A5%EF%BC%9F/" target="_self">
+        <a href="/2021/08/11/pytorch%E6%A0%B8%E5%BF%83%E7%94%A8%E6%B3%95-2/" target="_self">
           
           
             
           
-          前言今天看FASTER RCNN的pytorch实现源码，进行图像缩放时用到了双线性插值算法，记录一下自己的理解。
-目的当将一幅图像从100x100的尺寸放大到200x200时，势必要新增30000个像素点。那么这些新增的像素点的灰度值如何得到呢？
-原理双线性插值的做法是这样：
-1. 建立坐标的对应关系将放大前的图像A和放大后的图形B的几何中心对齐，然后有
-\frac{x_A + 0.5}{x_B
+          数据准备引入数据集12345678910111213141516171819202122232425262728293031323334# 图片在送入网络之前要进行一定的变化才能适应网络入口的要求，比如尺寸一致化，张量化，归一化等data_transform = &#123;        &quot;train&quot;: transforms.Compose([transforms.Rand
         </a>
       </p>
 
@@ -742,68 +333,8 @@ Faster RCNN源码中，将图像预处理操作封装在一个类GeneralizedRCNN
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2021-08-15 19:19" pubdate>
-              2021-08-15
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/">工作技能</a>
-            
-              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">神经网络</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E5%9B%BE%E5%83%8F%E7%BC%A9%E6%94%BE/">图像缩放</a>
-            
-              <a href="/tags/%E5%8F%8C%E7%BA%BF%E6%80%A7%E6%8F%92%E5%80%BC/">双线性插值</a>
-            
-              <a href="/tags/bilinear-interpolation/">bilinear interpolation</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2021/08/12/%E8%87%AA%E5%AE%9A%E4%B9%89%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B%E6%95%B0%E6%8D%AE%E9%9B%86/" target="_self">
-          自定义目标检测数据集
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2021/08/12/%E8%87%AA%E5%AE%9A%E4%B9%89%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B%E6%95%B0%E6%8D%AE%E9%9B%86/" target="_self">
-          
-          
-            
-          
-          前言目标检测的数据集跟分类数据集不同，不仅仅包含图片和图片的类别信息，还要包括bounding box等一些额外的信息。因此，使用之前建立目录结构 + datasets.ImageFolder()的方法是不行的。
-总的来看，自定义目标检测数据集要围绕原始图像、标注文件、入选名单三个要素，完成图像标注和自定义dataset类两项工作。
-三个要素
-原始图像，统统存放在一个目录下
-标注文件，一般为一个x
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2021-08-12 11:41" pubdate>
-              2021-08-12
+            <time datetime="2021-08-11 17:52" pubdate>
+              2021-08-11
             </time>
           </div>
         
@@ -823,11 +354,478 @@ Faster RCNN源码中，将图像预处理操作封装在一个类GeneralizedRCNN
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B/">目标检测</a>
+              <a href="/tags/pytorch/">pytorch</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2021/08/11/pytorch%E6%A0%B8%E5%BF%83%E7%94%A8%E6%B3%95-1/" target="_self">
+          pytorch基础用法-模型
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2021/08/11/pytorch%E6%A0%B8%E5%BF%83%E7%94%A8%E6%B3%95-1/" target="_self">
+          
+          
+            
+          
+          搭建一个CNN模型用作图像分类的过程，整体而言还是比较清晰的，主要分为模型、训练、预测三项工作。
+第一项工作，模型搭建，套路也很清晰。新建一个继承于nn.Module的类，然后
+
+将网络层一一作为类的成员添加进来。这些网络层可以是Conv2d, MaxPool2d, Linear等torch.nn提供的基本模块，也可以是由这些基本模块组合成的自定义building blocks，如ResNet中的
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2021-08-11 16:52" pubdate>
+              2021-08-11
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/">工作技能</a>
+            
+              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">神经网络</a>
+            
+              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/pytorch%E4%BD%BF%E7%94%A8/">pytorch使用</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/python/">python</a>
             
               <a href="/tags/pytorch/">pytorch</a>
             
-              <a href="/tags/%E6%95%B0%E6%8D%AE%E9%9B%86/">数据集</a>
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2021/08/08/2-MobileNet/" target="_self">
+          MobileNet v2
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2021/08/08/2-MobileNet/" target="_self">
+          
+          
+            
+          
+          背景简介2018年Google团队在v1的基础上提出的改进版。核心思想仍然是DW卷积，但是这次借鉴了ResNet的残差结构，提高了性能。
+前置知识Inverted Residual所谓倒残差结构，其实就是在ResNet残差结构的基础上做了一些修改。首先看以下简图：
+
+
+对于残差结构而言，三个卷积层每一层卷积核的个数一般依次为[64, 64, 256]这样，先对具有256个通道的输入进行降维，然后3
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2021-08-08 22:22" pubdate>
+              2021-08-08
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/">工作技能</a>
+            
+              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">神经网络</a>
+            
+              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/%E7%BB%8F%E5%85%B8%E7%BD%91%E7%BB%9C/">经典网络</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a>
+            
+              <a href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">神经网络</a>
+            
+              <a href="/tags/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">卷积神经网络</a>
+            
+              <a href="/tags/CNN/">CNN</a>
+            
+              <a href="/tags/%E7%BB%8F%E5%85%B8%E7%BD%91%E7%BB%9C/">经典网络</a>
+            
+              <a href="/tags/MobileNet/">MobileNet</a>
+            
+              <a href="/tags/Residual%E7%BB%93%E6%9E%84/">Residual结构</a>
+            
+              <a href="/tags/Inverted-Residual%E7%BB%93%E6%9E%84/">Inverted Residual结构</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2021/08/08/ResNet/" target="_self">
+          ResNet
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2021/08/08/ResNet/" target="_self">
+          
+          
+            
+          
+          背景简介来自2015年的微软实验室，He Kaiming/Ren Shaoqing/Zhang Xiangyu等，啥啥啥都第一名…不用dropout了，引入BN，提出residual以应对退化问题，支持上千层的网络结构。
+网络结构整体结构网络由一种叫做residual的building block串行组建而成，整体结构见下表：
+
+
+常规的Residual单元如下图所示，常规的Residual有两种
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2021-08-08 15:30" pubdate>
+              2021-08-08
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/">工作技能</a>
+            
+              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">神经网络</a>
+            
+              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/%E7%BB%8F%E5%85%B8%E7%BD%91%E7%BB%9C/">经典网络</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a>
+            
+              <a href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">神经网络</a>
+            
+              <a href="/tags/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">卷积神经网络</a>
+            
+              <a href="/tags/CNN/">CNN</a>
+            
+              <a href="/tags/%E7%BB%8F%E5%85%B8%E7%BD%91%E7%BB%9C/">经典网络</a>
+            
+              <a href="/tags/Residual%E7%BB%93%E6%9E%84/">Residual结构</a>
+            
+              <a href="/tags/ResNet/">ResNet</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2021/08/06/argparse%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%94%A8%E6%B3%95/" target="_self">
+          argparse的基本用法
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2021/08/06/argparse%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%94%A8%E6%B3%95/" target="_self">
+          
+          
+            
+          
+          用途及原理为python脚本运行时所添加额外命令行参数提供解释。大致原理是为一个parser对象添加一些属性，然后这个parser对象在接受一系列参数（默认是命令行参数）之后，就拥有了一系列属性，然后程序就可以用这些属性来做事了。就是说，信息从命令行传递到了脚本内。
+示例12345678910111213141516171819202122# 创建对象import argparseparser =
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2021-08-06 16:35" pubdate>
+              2021-08-06
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/">工作技能</a>
+            
+              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/python%E7%AC%94%E8%AE%B0/">python笔记</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/python/">python</a>
+            
+              <a href="/tags/argparse/">argparse</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2021/08/03/GoogleNet/" target="_self">
+          GoogLeNet
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2021/08/03/GoogleNet/" target="_self">
+          
+          
+            
+          
+          背景简介2014年Google团队提出，当年的ImageNet分类任务第一名（第二名是VGG）。其中的Inception结构和辅助分类器的概念很有启发性和创造性。
+网络结构整体结构构建起整个网络的building blocks有5种：
+
+常规的卷积层，默认以RELU为激活函数，SAME padding
+常规的池化层，包括最大池化和平均池化
+Inception单元，共计3层9个，具体结构后面解释
+辅
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2021-08-03 10:31" pubdate>
+              2021-08-03
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/">工作技能</a>
+            
+              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">神经网络</a>
+            
+              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/%E7%BB%8F%E5%85%B8%E7%BD%91%E7%BB%9C/">经典网络</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a>
+            
+              <a href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">神经网络</a>
+            
+              <a href="/tags/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">卷积神经网络</a>
+            
+              <a href="/tags/CNN/">CNN</a>
+            
+              <a href="/tags/%E7%BB%8F%E5%85%B8%E7%BD%91%E7%BB%9C/">经典网络</a>
+            
+              <a href="/tags/GoogLeNet/">GoogLeNet</a>
+            
+              <a href="/tags/Inception%E7%BB%93%E6%9E%84/">Inception结构</a>
+            
+              <a href="/tags/%E8%BE%85%E5%8A%A9%E5%88%86%E7%B1%BB%E5%99%A8/">辅助分类器</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2021/08/01/VGGnet/" target="_self">
+          VGGnet
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2021/08/01/VGGnet/" target="_self">
+          
+          
+            
+          
+          背景简介牛津VGG团队2014年提出，ImageNet分类任务第二名，定位任务第一名。结构简单，配置丰富，被广泛用作backbone。
+网络结构原作有5种配置，分别为11层，13层，16层-1，16层-3，19层。统计层数时不统计池化层和softmax，只统计有weight的网络层。
+
+
+网络特点
+所有的卷积核尺寸一致，均采用3x3。
+引入感受野（receptive field）的概念，利用小卷积
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2021-08-01 23:00" pubdate>
+              2021-08-01
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/">工作技能</a>
+            
+              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">神经网络</a>
+            
+              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/%E7%BB%8F%E5%85%B8%E7%BD%91%E7%BB%9C/">经典网络</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a>
+            
+              <a href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">神经网络</a>
+            
+              <a href="/tags/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">卷积神经网络</a>
+            
+              <a href="/tags/CNN/">CNN</a>
+            
+              <a href="/tags/%E7%BB%8F%E5%85%B8%E7%BD%91%E7%BB%9C/">经典网络</a>
+            
+              <a href="/tags/VGGnet/">VGGnet</a>
+            
+              <a href="/tags/%E6%84%9F%E5%8F%97%E9%87%8E/">感受野</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2021/08/01/%E9%A2%84%E6%B5%8B%E7%BB%93%E6%9E%9C%E8%AF%84%E4%BB%B7%E7%9A%84%E9%87%8F%E5%8C%96%E6%8C%87%E6%A0%87/" target="_self">
+          预测结果评价的量化指标
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2021/08/01/%E9%A2%84%E6%B5%8B%E7%BB%93%E6%9E%9C%E8%AF%84%E4%BB%B7%E7%9A%84%E9%87%8F%E5%8C%96%E6%8C%87%E6%A0%87/" target="_self">
+          
+          
+            
+          
+          基本概念二分类情形下的P/N/T/F概念
+Positive/Negative：样本空间的原始分类;
+True/False，预测结果与样本原始属性的偏差情况，即P-&gt;P/N-&gt;N为T，P-&gt;N/N-&gt;P为F;因此，T和F需要再细分为：
+TP：P-&gt;P(正类被预测为正类，真正类)
+TN：N-&gt;N(负类被预测为负类，真负类)
+FP：N-&gt;P(负类被预测为正类，假
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2021-08-01 10:59" pubdate>
+              2021-08-01
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/">工作技能</a>
+            
+              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">神经网络</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/ROC%E6%9B%B2%E7%BA%BF/">ROC曲线</a>
+            
+              <a href="/tags/PR%E6%9B%B2%E7%BA%BF/">PR曲线</a>
+            
+              <a href="/tags/mAP/">mAP</a>
+            
+              <a href="/tags/mmAP/">mmAP</a>
+            
+              <a href="/tags/recall/">recall</a>
+            
+              <a href="/tags/precision/">precision</a>
+            
+              <a href="/tags/AUC/">AUC</a>
             
           </div>
         

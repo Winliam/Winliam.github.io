@@ -228,12 +228,6 @@
             <!-- SEO header -->
             <h1 style="display: none">python笔记</h1>
             
-              <p class="note note-info">
-                
-                  本文最后更新于：3 个月前
-                
-              </p>
-            
             <div class="markdown-body">
               <h3 id="python的zip函数"><a href="#python的zip函数" class="headerlink" title="python的zip函数"></a>python的zip函数</h3><p>输入若干个Iterable对象，将这些Iterable对象对应位置的元素打包为一个tuple，然后将所有tuple作为一个zip对象返回。</p>
 <p>当传入的Iterable对象长度不一致时取最短的。<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs stylus"><span class="hljs-selector-tag">a</span> = <span class="hljs-selector-attr">[[1,2]</span>,<span class="hljs-selector-attr">[3,4]</span>,<span class="hljs-selector-attr">[5,6]</span>]<br><span class="hljs-selector-tag">b</span> = zip(*a)<br>c = tuple(b)<br><br>&gt;&gt;&gt; <span class="hljs-selector-tag">a</span> = ((<span class="hljs-number">1</span>, <span class="hljs-number">3</span>, <span class="hljs-number">5</span>), (<span class="hljs-number">2</span>, <span class="hljs-number">4</span>, <span class="hljs-number">6</span>))<br></code></pre></td></tr></table></figure></p>

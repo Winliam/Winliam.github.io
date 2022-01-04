@@ -1,0 +1,577 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/time.jpg">
+  <link rel="icon" href="/img/time.jpg">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="王者之路，就在脚下">
+  <meta name="author" content="William Guo">
+  <meta name="keywords" content="">
+  
+  <title>关于交叉熵的易混淆概念 by 电竞大师小明</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"ApWFLRBvVptYicRhN7DQqrOa-gzGzoHsz","app_key":"ihFV8rR5s2zuqoKPXqW9sydt","server_url":"https://apwflrbv.lc-cn-n1-shared.com"}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>电竞大师小明</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/article.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.7)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="关于交叉熵的易混淆概念">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      810 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      10
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- LeanCloud 统计文章PV -->
+      <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="leancloud-page-views"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">关于交叉熵的易混淆概念</h1>
+            
+            <div class="markdown-body">
+              <h2 id="0-前言"><a href="#0-前言" class="headerlink" title="0. 前言"></a>0. 前言</h2><p>交叉熵，二值交叉熵，softmax，sigmoid等概念经常一起出现，这里结合pytorch的具体实现来捋清楚这几个概念。</p>
+<h2 id="1-概念"><a href="#1-概念" class="headerlink" title="1. 概念"></a>1. 概念</h2><h3 id="1-1-交叉熵"><a href="#1-1-交叉熵" class="headerlink" title="1.1 交叉熵"></a>1.1 交叉熵</h3><p>交叉熵用于描述两个概率分布的差异，也就是说处理的都是0-1之间的数值。</p>
+<script type="math/tex; mode=display">
+H(p,q) = -\sum p(x)\log q(x)</script><p>在实际应用中，一般用于计算分类损失。并且，为了避免对0取对数，会将GT的one-hot向量作为$p$，预测结果作为$q$。</p>
+<h3 id="1-2-二值交叉熵"><a href="#1-2-二值交叉熵" class="headerlink" title="1.2 二值交叉熵"></a>1.2 二值交叉熵</h3><p>二值交叉熵就是上述交叉熵公式在$x$只有两个取值时的特例。</p>
+<script type="math/tex; mode=display">
+H(p,q) = -[p \log q + (1-p) \log (1-q)]</script><h3 id="1-3-sigmoid函数"><a href="#1-3-sigmoid函数" class="headerlink" title="1.3 sigmoid函数"></a>1.3 sigmoid函数</h3><p>一般模型直接输出的结果向量不保证其中的标量元素的数值（pytorch等官方术语称logits）在0-1之间，因此要用到sigmoid这种值域在0-1之间的激活函数将<strong>每一个logit单独</strong>作映射，然后再进行交叉熵计算。</p>
+<div align=center><img title="" src="/img/article/sigmoid.png" srcset="/img/loading.gif" lazyload width="50%" height="50%" align=center></div>
+
+<h3 id="1-4-softmax函数"><a href="#1-4-softmax函数" class="headerlink" title="1.4 softmax函数"></a>1.4 softmax函数</h3><p>跟sigmoid一样，也是一个logit归一化的工具，但是需要所有logits一起做联合映射，而不是独立映射。</p>
+<script type="math/tex; mode=display">
+\sigma (\boldsymbol{\rm x}) = \frac{\rm exp(\boldsymbol{x})} {\boldsymbol{1}^T \rm exp(\boldsymbol{x})}</script><h2 id="2-pytorch实现"><a href="#2-pytorch实现" class="headerlink" title="2. pytorch实现"></a>2. pytorch实现</h2><p>pytorch中的nn模块和nn.funtional模块中都有交叉熵损失的实现，这里只介绍nn下的3个模块。</p>
+<h3 id="2-1-nn-CrossEntropyLoss"><a href="#2-1-nn-CrossEntropyLoss" class="headerlink" title="2.1 nn.CrossEntropyLoss"></a>2.1 <code>nn.CrossEntropyLoss</code></h3><p>主要的入参有input(N, C)和target(N,)两个，N是结果向量有几个，C是类别数量。</p>
+<p>input的每一行都是一个结果向量，包含C个类别的各自的logit，这是因为这个模块内部集成了softmax函数，在进行损失计算之前会先对input做0-1的映射。</p>
+<p>target每一行是一个真实标签序号，值在[0, C-1]之间。在进行算是计算之前会将target的每一行拓展成一个one-hot向量，hot的位置就是这个真实标签序号。</p>
+<p>然后用1.1中的公式逐行计算这N个结果向量与N个one-hot向量的交叉熵，最后求和或求算数平均值（默认求均值）。</p>
+<h3 id="2-2-nn-BCEWithLogitsLoss"><a href="#2-2-nn-BCEWithLogitsLoss" class="headerlink" title="2.2 nn.BCEWithLogitsLoss"></a>2.2 <code>nn.BCEWithLogitsLoss</code></h3><p>主要的入参还是input(N, C)和target(N, C)两个，但是target的形状不同，其每一行都直接是GT的one-hot向量。</p>
+<p>也同样集成了sigmoid函数，计算损失之前会先对input做0-1的映射。</p>
+<p>然后逐行选中一个C维的结果行向量和一个C维的GT one-hot行向量，按照1.2中的公式计算得到C个标量，求均值即可得到这一行的loss。</p>
+<p>最后求各行的loss均值即可得到最终的loss。</p>
+<h3 id="2-3-nn-BCELoss"><a href="#2-3-nn-BCELoss" class="headerlink" title="2.3 nn.BCELoss"></a>2.3 <code>nn.BCELoss</code></h3><p>未集成sigmoid的二值交叉熵计算模块，有要求入参input的标量元素值在0-1之间，所以一般不使用，直接使用2.2。</p>
+<h2 id="3-附录"><a href="#3-附录" class="headerlink" title="3. 附录"></a>3. 附录</h2><div align=center><img title="" src="/img/article/cross_entropy.png" srcset="/img/loading.gif" lazyload width="80%" height="80%" align=center></div>
+
+<p><br></p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs stylus">import torch<span class="hljs-selector-class">.nn</span> as nn<br>import torch<br><br>logits = torch<span class="hljs-selector-class">.tensor</span>(<span class="hljs-selector-attr">[[2, -3, 0.8, 1.2]</span>, <span class="hljs-selector-attr">[1.5, -0.1, 0.9, -1.3]</span>])<br><br>sigmoid = torch<span class="hljs-selector-class">.sigmoid</span>(logits)<br>softmax = torch<span class="hljs-selector-class">.softmax</span>(logits, <span class="hljs-number">1</span>)<br><br>GT4bce = torch<span class="hljs-selector-class">.tensor</span>(<span class="hljs-selector-attr">[[0, 0, 1, 0]</span>, <span class="hljs-selector-attr">[0, 1, 0, 0]</span>], dtype=torch.<span class="hljs-attribute">float</span>)<br>GT4ce = torch<span class="hljs-selector-class">.tensor</span>(<span class="hljs-selector-attr">[2, 1]</span>)<br><br>ce = nn<span class="hljs-selector-class">.CrossEntropyLoss</span>(reduction=<span class="hljs-string">&#x27;sum&#x27;</span>)<br>ce_loss = ce(logits, GT4ce)<br><br>bce = nn<span class="hljs-selector-class">.BCEWithLogitsLoss</span>(reduction=<span class="hljs-string">&#x27;sum&#x27;</span>)<br>bce_loss = bce(logits, GT4bce)<br><br><span class="hljs-function"><span class="hljs-title">print</span><span class="hljs-params">(<span class="hljs-string">&quot;CE loss is &#123;&#125; \nBCE loss is &#123;&#125;&quot;</span>.format(ce_loss, bce_loss)</span></span>)<br></code></pre></td></tr></table></figure>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/">工作技能</a>
+                    
+                      <a class="hover-with-bg" href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">神经网络</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/pytorch/">pytorch</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E4%BA%A4%E5%8F%89%E7%86%B5/">交叉熵</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E4%BA%8C%E5%80%BC%E4%BA%A4%E5%8F%89%E7%86%B5/">二值交叉熵</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0/">损失函数</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/11/12/%E5%AE%9A%E4%BD%8D%E8%AF%AF%E5%B7%AE%E5%B8%B8%E7%94%A8%E7%9A%84%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">定位误差常用的损失函数</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/09/10/TensorRT%E7%9A%84%E5%9F%BA%E7%A1%80%E4%BD%BF%E7%94%A8/">
+                        <span class="hidden-mobile">TensorRT C++ API使用方法</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="twikoo"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/twikoo@1.4.1/dist/twikoo.all.min.js', function() {
+        var options = Object.assign(
+          {"envId":"twikoo-5gimyzvb3631ef62","region":"ap-shanghai","path":"window.location.pathname"},
+          {
+            el: '#twikoo',
+            path: 'window.location.pathname'
+          }
+        )
+        twikoo.init(options)
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <small><span>——————————我是有底线的——————————</span></small> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- LeanCloud 统计PV -->
+        <span id="leancloud-site-pv-container" style="display: none">
+            总访问量 
+            <span id="leancloud-site-pv"></span>
+             次
+          </span>
+      
+      
+        <!-- LeanCloud 统计UV -->
+        <span id="leancloud-site-uv-container" style="display: none">
+            总访客数 
+            <span id="leancloud-site-uv"></span>
+             人
+          </span>
+      
+
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+  <script defer src="/js/leancloud.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.1.4/es5/tex-svg.js" ></script>
+
+  
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/shizuku.model.json"},"display":{"position":"left","width":270,"height":540},"mobile":{"show":false,"scale":0.5},"log":false});</script></body>
+</html>
