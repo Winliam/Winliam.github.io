@@ -185,7 +185,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      1.1k 字
+      1.5k 字
     </span>
   
 
@@ -195,7 +195,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      14
+      18
        分钟
     </span>
   
@@ -263,8 +263,14 @@
 <h3 id="unique-ptr的两种指针释放方式"><a href="#unique-ptr的两种指针释放方式" class="headerlink" title="unique_ptr的两种指针释放方式"></a>unique_ptr的两种指针释放方式</h3><ol>
 <li>release<br>release只是简单的将被unique_ptr封装的内置指针吐出来，被指向的对象的内存不会被释放，内置指针与该对象之间的指向关系也不会被破坏。</li>
 <li>reset<br>reset首先释放unique_ptr封装起来的那个内置指针所指向的内存，然后根据传入的参数对该内置指针进行赋值。<div align=center><img title="" src="/img/article/unique_ptr.png" srcset="/img/loading.gif" lazyload width="80%" height="80%" align=center></div>
+
 </li>
 </ol>
+<h3 id="结构体排序"><a href="#结构体排序" class="headerlink" title="结构体排序"></a>结构体排序</h3><p>对于一串结构体，想排序，在C中可以基于stdlib库中的qsort接口配合一个自定义的比较函数实现。在C++中，有更elegant的做法。</p>
+<p>首先，如果这个类重载了小于运算符，那么直接调用algorithm库中的sort函数即可进行升序排列;</p>
+<p>其次，如果没有重载小于运算符，也可传入一个函数指针，或者就地定义一个lambda表达式。</p>
+<p>最后说一下sort接口的语义：<br>在sort的过程，针对一对元素A和B，需要知道谁应该在前，谁应该在后。怎么判断呢？将A在前，B在后送入给到sort接口的函数（重载的小于运算符也好，函数指针也好，lambda表达式也好，都是），如果吐出来true，说明次序对，否则次序相反。<br><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs arduino">vector&lt;Point&gt; p = &#123;····&#125;;<br><br>方式一：结构体重载了<span class="hljs-keyword">operator</span>&lt;<br><span class="hljs-built_in">sort</span>(v.<span class="hljs-built_in">begin</span>(), v.<span class="hljs-built_in">end</span>()); <br><br>方式二：传入函数指针<br><span class="hljs-function"><span class="hljs-keyword">bool</span> <span class="hljs-title">compare</span><span class="hljs-params">(<span class="hljs-keyword">const</span> Point&amp; p1, <span class="hljs-keyword">const</span> Point&amp; p2)</span> </span>&#123;<span class="hljs-keyword">return</span> p1.x &lt; p2.x;&#125;<br><span class="hljs-built_in">sort</span>(v.<span class="hljs-built_in">begin</span>(), v.<span class="hljs-built_in">end</span>(), compare); <br><br>方式三：就地lambda表达式<br><span class="hljs-built_in">sort</span>(v.<span class="hljs-built_in">begin</span>(), v.<span class="hljs-built_in">end</span>(), [](<span class="hljs-keyword">const</span> Point&amp; p1, <span class="hljs-keyword">const</span> Point&amp; p2) &#123;<span class="hljs-keyword">return</span> p1.x &lt; p2.x;&#125;); <br></code></pre></td></tr></table></figure></p>
+<p>另外还要提一点，就是STL中list容器的sort。algorithm提供的sort接口需要待排序结构体所在的容器提供随机访问迭代器，而list是不具备的。因此，list容器自己实现了sort成员函数。这个成员函数也是接受一个函数指针或者lambda表达式来check先后次序。</p>
 
             </div>
             <hr>
@@ -295,6 +301,8 @@
                       <a class="hover-with-bg" href="/tags/%E5%AD%97%E7%AC%A6%E4%B8%B2/">字符串</a>
                     
                       <a class="hover-with-bg" href="/tags/unique-ptr/">unique_ptr</a>
+                    
+                      <a class="hover-with-bg" href="/tags/qsort/">qsort</a>
                     
                   </div>
                 
