@@ -185,7 +185,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      1.9k 字
+      1.5k 字
     </span>
   
 
@@ -195,7 +195,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      23
+      18
        分钟
     </span>
   
@@ -271,15 +271,6 @@
 <p>其次，如果没有重载小于运算符，也可传入一个函数指针，或者就地定义一个lambda表达式。</p>
 <p>最后说一下sort接口的语义：<br>在sort的过程，针对一对元素A和B，需要知道谁应该在前，谁应该在后。怎么判断呢？将A在前，B在后送入给到sort接口的函数（重载的小于运算符也好，函数指针也好，lambda表达式也好，都是），如果吐出来true，说明次序对，否则次序相反。<br><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs arduino">vector&lt;Point&gt; p = &#123;····&#125;;<br><br>方式一：结构体重载了<span class="hljs-keyword">operator</span>&lt;<br><span class="hljs-built_in">sort</span>(v.<span class="hljs-built_in">begin</span>(), v.<span class="hljs-built_in">end</span>()); <br><br>方式二：传入函数指针<br><span class="hljs-function"><span class="hljs-keyword">bool</span> <span class="hljs-title">compare</span><span class="hljs-params">(<span class="hljs-keyword">const</span> Point&amp; p1, <span class="hljs-keyword">const</span> Point&amp; p2)</span> </span>&#123;<span class="hljs-keyword">return</span> p1.x &lt; p2.x;&#125;<br><span class="hljs-built_in">sort</span>(v.<span class="hljs-built_in">begin</span>(), v.<span class="hljs-built_in">end</span>(), compare); <br><br>方式三：就地lambda表达式<br><span class="hljs-built_in">sort</span>(v.<span class="hljs-built_in">begin</span>(), v.<span class="hljs-built_in">end</span>(), [](<span class="hljs-keyword">const</span> Point&amp; p1, <span class="hljs-keyword">const</span> Point&amp; p2) &#123;<span class="hljs-keyword">return</span> p1.x &lt; p2.x;&#125;); <br></code></pre></td></tr></table></figure></p>
 <p>另外还要提一点，就是STL中list容器的sort。algorithm提供的sort接口需要待排序结构体所在的容器提供随机访问迭代器，而list是不具备的。因此，list容器自己实现了sort成员函数。这个成员函数也是接受一个函数指针或者lambda表达式来check先后次序。</p>
-<h3 id="C-中enum类型的一些注意点"><a href="#C-中enum类型的一些注意点" class="headerlink" title="C++中enum类型的一些注意点"></a>C++中enum类型的一些注意点</h3><p>在编程时，如果想让一个变量只在规定范围内取值，就会用到enum类型，尤其是在跟switch语句配合使用时。</p>
-<p>enum类型的概念不难理解，但值得注意的是：<strong>enum类型的大小如何，或者说占几个Bytes?</strong></p>
-<p>在C语言中，一个enum类型的大小由编译器自行确定。确定规则是，确保enum取值范围中任一元素对应的整型值都能被表达。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-class"><span class="hljs-keyword">enum</span> <span class="hljs-title">color1</span></span>&#123;<br>	YELLOW = <span class="hljs-number">0x1</span>,<br>	BLACK = <span class="hljs-number">0x2</span><br>&#125;;<br><span class="hljs-class"><span class="hljs-keyword">enum</span> <span class="hljs-title">color2</span></span>&#123;<br>	YELLOW = <span class="hljs-number">0x1122334455</span>,<br>	BLACK = <span class="hljs-number">0x2</span><br>&#125;;<br><span class="hljs-comment">// sizeof(color1) = 4;</span><br><span class="hljs-comment">// sizeof(color2) = 8;</span><br></code></pre></td></tr></table></figure><br>产生编译器依赖显然不是件好事，所以C++中增加了显式指定enum类型大小的语法：<br><figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs angelscript"><span class="hljs-keyword">enum</span> color1 : <span class="hljs-built_in">int</span>&#123;<br>	YELLOW,<br>	BLACK<br>&#125;;<br></code></pre></td></tr></table></figure><br>有了上述写法之后，又产生了这么一种写法：<br><figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs properties"><span class="hljs-attr">enum</span> : <span class="hljs-string">int&#123;</span><br>	<span class="hljs-attr">YELLOW</span> = <span class="hljs-string">1,</span><br>	<span class="hljs-attr">BLACK</span> = <span class="hljs-string">2</span><br><span class="hljs-attr">&#125;;</span><br></code></pre></td></tr></table></figure><br>这个写法其实是为了定义常数变量，直观理解上可以直接认为是宏定义即可。</p>
-<p>深究的话，需要知道常用的定义常数变量的方式有三种：</p>
-<ol>
-<li>const关键字，缺点是有可能要为该常量进行内存分配。因为其既然是一个显式定义的变量，那么就应当允许对其取址，这就意味着要占用内存。</li>
-<li>宏定义，内在逻辑是替换，所以没有了占内存的缺点，但是有同类信息没能聚合到一起的缺点。</li>
-<li>anonymous enum，似乎是种完美的做法。</li>
-</ol>
 
             </div>
             <hr>
