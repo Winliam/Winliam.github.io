@@ -182,6 +182,237 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
+        <a href="/2021/05/22/%E5%8D%A1%E5%B0%94%E6%9B%BC%E6%BB%A4%E6%B3%A2%E6%A6%82%E8%A6%81/" target="_self">
+          卡尔曼滤波概要
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2021/05/22/%E5%8D%A1%E5%B0%94%E6%9B%BC%E6%BB%A4%E6%B3%A2%E6%A6%82%E8%A6%81/" target="_self">
+          
+          
+            
+          
+          做啥用的我们想知道一个系统在某个时刻的真实状态，手段往往有多种，比如最常见的两种：
+
+用合适的传感器测量出来；
+根据上一时刻的状态用数学模型推算出来；
+
+那么，应该相信哪一种办法得到的值呢？
+怎么做的先把上述概念实例化一下，对于一个小车，我们想知道它在当前时刻$t$距离障碍物的真实距离$x_t$。我们用两种办法：
+
+测距雷达测得的测量值$m_t$
+根据上一时刻的车速$v_{t-1}$和上一时刻的最
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2021-05-22 16:22" pubdate>
+              2021-05-22
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/">工作技能</a>
+            
+              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/%E6%95%B0%E6%8D%AE%E8%9E%8D%E5%90%88/">数据融合</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E5%8D%A1%E5%B0%94%E6%9B%BC%E6%BB%A4%E6%B3%A2/">卡尔曼滤波</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2021/05/04/coredump%E6%96%87%E4%BB%B6%E7%9A%84%E4%BD%BF%E7%94%A8/" target="_self">
+          coredump文件的使用
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2021/05/04/coredump%E6%96%87%E4%BB%B6%E7%9A%84%E4%BD%BF%E7%94%A8/" target="_self">
+          
+          
+            
+          
+          简介程序崩溃之后，一般会生成一个coredump文件。
+跟可重定位目标文件和可执行目标文件一样，这个文件也是一个elf文件，是程序崩溃瞬间进程栈和寄存器状态的快照。
+可以使用gdb加载这个文件，查看崩溃瞬间的程序运行状态。
+coredump开关12345#查看允许生成的文件大小上限，coresize=0意味着不允许产生, unlimited表示无限制ulimit -a#设置权限ulimit -c 
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2021-05-04 10:36" pubdate>
+              2021-05-04
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/">工作技能</a>
+            
+              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/coredump/">coredump</a>
+            
+              <a href="/tags/gdb/">gdb</a>
+            
+              <a href="/tags/debug/">debug</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2021/04/15/D-S%E8%AF%81%E6%8D%AE%E5%90%88%E6%88%90%E7%90%86%E8%AE%BA/" target="_self">
+          D-S证据合成理论
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2021/04/15/D-S%E8%AF%81%E6%8D%AE%E5%90%88%E6%88%90%E7%90%86%E8%AE%BA/" target="_self">
+          
+          
+            
+          
+          写在前面一种较为特殊的概率累加理论框架，适用场景可以抽象为：
+存在一个事件Q，事件Q的真实情形有一系列可能的状态{A,B,C}。对于Q取A，还是B，还是C，多个独立的观测系统给出了不同的概率分布情况。如何平衡多个观测系统的概率分布，便是DS理论所要解决的问题。
+可以看出，该理论天然适用于多传感器信息融合。Apollo中即采用了该理论用于合成Lidar/Camera/Radar检出障碍物的Exist
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2021-04-15 15:23" pubdate>
+              2021-04-15
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/">工作技能</a>
+            
+              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/%E6%95%B0%E6%8D%AE%E8%9E%8D%E5%90%88/">数据融合</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/DS%E7%90%86%E8%AE%BA/">DS理论</a>
+            
+              <a href="/tags/%E8%AF%81%E6%8D%AE%E6%8E%A8%E7%90%86/">证据推理</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2021/04/01/protobuf%E5%9F%BA%E7%A4%8E%E7%94%A8%E6%B3%95/" target="_self">
+          protobuf基础用法
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2021/04/01/protobuf%E5%9F%BA%E7%A4%8E%E7%94%A8%E6%B3%95/" target="_self">
+          
+          
+            
+          
+          前言自动驾驶框架常用protobuf作为节点之间通讯的工具，出现频率很高，了解一下基本情况。
+我们知道，数据只要出内存就要进行序列化，进内存就要进行反序列化。
+这是因为，所有数据在内存中存放的形式都是一串0/1。比如，我们定义一个结构体，然后对其实例化，我们就在内存中的某个位置写入了这串0/1序列。当我们想把这一个结构体所表示的“信息”给到另外一个用户时，应该怎么做呢？
+我们可以把这一串0/1序列
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2021-04-01 12:18" pubdate>
+              2021-04-01
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/">工作技能</a>
+            
+              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/C-C-%E7%AC%94%E8%AE%B0/">C/C++笔记</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/protobuf/">protobuf</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
         <a href="/2021/03/29/python%E5%88%97%E8%A1%A8%E7%9A%84%E5%88%87%E7%89%87/" target="_self">
           python列表的切片
         </a>
@@ -605,257 +836,6 @@ Faster RCNN源码中，将图像预处理操作封装在一个类GeneralizedRCNN
               <a href="/tags/ONNX/">ONNX</a>
             
               <a href="/tags/inference/">inference</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2020/12/22/pytorch%E7%AC%94%E8%AE%B0/" target="_self">
-          pytorch笔记
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2020/12/22/pytorch%E7%AC%94%E8%AE%B0/" target="_self">
-          
-          
-            
-          
-          max() sum()等操作中指定dim的含义1a = [ [ [1, 2], [3, 4] ], [ [5, 6], [7, 8] ] ]
-
-对于这个[2, 2, 2]的三维矩阵，三维意味着[]有三层，三个2表示每一层[]内有两个元素
-对dim=0求max意味着
-将a_{000}与a_{100}比较得出最大值作为a_{00}
-将a_{010}与a_{110}比较得出最大值作为a_{10}…
-
-
-
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-12-22 17:13" pubdate>
-              2020-12-22
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/">工作技能</a>
-            
-              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">神经网络</a>
-            
-              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/pytorch%E4%BD%BF%E7%94%A8/">pytorch使用</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/pytorch/">pytorch</a>
-            
-              <a href="/tags/plt/">plt</a>
-            
-              <a href="/tags/AaptivePool/">AaptivePool</a>
-            
-              <a href="/tags/flatten/">flatten</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2020/12/13/%E5%9B%B0%E9%9A%BE%E6%A0%B7%E6%9C%AC%E4%B8%8EFocalLoss/" target="_self">
-          困难样本与FocalLoss
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2020/12/13/%E5%9B%B0%E9%9A%BE%E6%A0%B7%E6%9C%AC%E4%B8%8EFocalLoss/" target="_self">
-          
-          
-            
-          
-          前言one-stage的目标检测算法，一般都存在正负样本数量不均衡的问题。
-回忆一下，正样本指的是，对于一个anchor(记作A)，为其寻找最佳GTbox，也就是与其IOU最大的GTbox(记作B)。然后，计算A和B的IOU，如果超过某个阈值，则认为A和B之间的匹配关系为一个正样本(也就是说正负描述的都是一个match)，并将B的label赋予A。否则，视作负样本，A的label为背景。而且由于负
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-12-13 09:25" pubdate>
-              2020-12-13
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/">工作技能</a>
-            
-              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">神经网络</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0/">损失函数</a>
-            
-              <a href="/tags/Focal-Loss/">Focal Loss</a>
-            
-              <a href="/tags/%E5%9B%B0%E9%9A%BE%E6%A0%B7%E6%9C%AC/">困难样本</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2020/11/12/%E5%AE%9A%E4%BD%8D%E8%AF%AF%E5%B7%AE%E5%B8%B8%E7%94%A8%E7%9A%84%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0/" target="_self">
-          定位误差常用的损失函数
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2020/11/12/%E5%AE%9A%E4%BD%8D%E8%AF%AF%E5%B7%AE%E5%B8%B8%E7%94%A8%E7%9A%84%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0/" target="_self">
-          
-          
-            
-          
-          前言在目标检测任务中，为了更好的量化定位损失，各路大神想了很多办法。从最开始的针对xywh的均方误差，到IOU损失，再到后续的GIOU损失、DIOU损失、CIOU损失，越来越复杂。其中均方误差比较简单，不再介绍。重点讲一下IOU系列。
-
-
-IOU损失这里牵涉到两个概念，“IOU”和“IOU损失”，对于前者，已经很熟悉了，不再赘述。而对于后者，则是简单地令
-
-IOU loss = - \ln(\fr
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-11-12 17:36" pubdate>
-              2020-11-12
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/">工作技能</a>
-            
-              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">神经网络</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0/">损失函数</a>
-            
-              <a href="/tags/IOU/">IOU</a>
-            
-              <a href="/tags/GIOU/">GIOU</a>
-            
-              <a href="/tags/DIOU/">DIOU</a>
-            
-              <a href="/tags/CIOU/">CIOU</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2020/10/12/%E5%85%B3%E4%BA%8E%E4%BA%A4%E5%8F%89%E7%86%B5%E7%9A%84%E6%98%93%E6%B7%B7%E6%B7%86%E6%A6%82%E5%BF%B5/" target="_self">
-          关于交叉熵的易混淆概念
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2020/10/12/%E5%85%B3%E4%BA%8E%E4%BA%A4%E5%8F%89%E7%86%B5%E7%9A%84%E6%98%93%E6%B7%B7%E6%B7%86%E6%A6%82%E5%BF%B5/" target="_self">
-          
-          
-            
-          
-          0. 前言交叉熵，二值交叉熵，softmax，sigmoid等概念经常一起出现，这里结合pytorch的具体实现来捋清楚这几个概念。
-1. 概念1.1 交叉熵交叉熵用于描述两个概率分布的差异，也就是说处理的都是0-1之间的数值。
-
-H(p,q) = -\sum p(x)\log q(x)在实际应用中，一般用于计算分类损失。并且，为了避免对0取对数，会将GT的one-hot向量作为$p$，预测结果作
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-10-12 09:39" pubdate>
-              2020-10-12
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/">工作技能</a>
-            
-              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">神经网络</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/pytorch/">pytorch</a>
-            
-              <a href="/tags/%E4%BA%A4%E5%8F%89%E7%86%B5/">交叉熵</a>
-            
-              <a href="/tags/%E4%BA%8C%E5%80%BC%E4%BA%A4%E5%8F%89%E7%86%B5/">二值交叉熵</a>
-            
-              <a href="/tags/%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0/">损失函数</a>
             
           </div>
         

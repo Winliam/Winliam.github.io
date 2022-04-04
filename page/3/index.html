@@ -182,6 +182,257 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
+        <a href="/2020/12/22/pytorch%E7%AC%94%E8%AE%B0/" target="_self">
+          pytorch笔记
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/12/22/pytorch%E7%AC%94%E8%AE%B0/" target="_self">
+          
+          
+            
+          
+          max() sum()等操作中指定dim的含义1a = [ [ [1, 2], [3, 4] ], [ [5, 6], [7, 8] ] ]
+
+对于这个[2, 2, 2]的三维矩阵，三维意味着[]有三层，三个2表示每一层[]内有两个元素
+对dim=0求max意味着
+将a_{000}与a_{100}比较得出最大值作为a_{00}
+将a_{010}与a_{110}比较得出最大值作为a_{10}…
+
+
+
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-12-22 17:13" pubdate>
+              2020-12-22
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/">工作技能</a>
+            
+              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">神经网络</a>
+            
+              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/pytorch%E4%BD%BF%E7%94%A8/">pytorch使用</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/pytorch/">pytorch</a>
+            
+              <a href="/tags/plt/">plt</a>
+            
+              <a href="/tags/AaptivePool/">AaptivePool</a>
+            
+              <a href="/tags/flatten/">flatten</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2020/12/13/%E5%9B%B0%E9%9A%BE%E6%A0%B7%E6%9C%AC%E4%B8%8EFocalLoss/" target="_self">
+          困难样本与FocalLoss
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/12/13/%E5%9B%B0%E9%9A%BE%E6%A0%B7%E6%9C%AC%E4%B8%8EFocalLoss/" target="_self">
+          
+          
+            
+          
+          前言one-stage的目标检测算法，一般都存在正负样本数量不均衡的问题。
+回忆一下，正样本指的是，对于一个anchor(记作A)，为其寻找最佳GTbox，也就是与其IOU最大的GTbox(记作B)。然后，计算A和B的IOU，如果超过某个阈值，则认为A和B之间的匹配关系为一个正样本(也就是说正负描述的都是一个match)，并将B的label赋予A。否则，视作负样本，A的label为背景。而且由于负
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-12-13 09:25" pubdate>
+              2020-12-13
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/">工作技能</a>
+            
+              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">神经网络</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0/">损失函数</a>
+            
+              <a href="/tags/Focal-Loss/">Focal Loss</a>
+            
+              <a href="/tags/%E5%9B%B0%E9%9A%BE%E6%A0%B7%E6%9C%AC/">困难样本</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2020/11/12/%E5%AE%9A%E4%BD%8D%E8%AF%AF%E5%B7%AE%E5%B8%B8%E7%94%A8%E7%9A%84%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0/" target="_self">
+          定位误差常用的损失函数
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/11/12/%E5%AE%9A%E4%BD%8D%E8%AF%AF%E5%B7%AE%E5%B8%B8%E7%94%A8%E7%9A%84%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0/" target="_self">
+          
+          
+            
+          
+          前言在目标检测任务中，为了更好的量化定位损失，各路大神想了很多办法。从最开始的针对xywh的均方误差，到IOU损失，再到后续的GIOU损失、DIOU损失、CIOU损失，越来越复杂。其中均方误差比较简单，不再介绍。重点讲一下IOU系列。
+
+
+IOU损失这里牵涉到两个概念，“IOU”和“IOU损失”，对于前者，已经很熟悉了，不再赘述。而对于后者，则是简单地令
+
+IOU loss = - \ln(\fr
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-11-12 17:36" pubdate>
+              2020-11-12
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/">工作技能</a>
+            
+              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">神经网络</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0/">损失函数</a>
+            
+              <a href="/tags/IOU/">IOU</a>
+            
+              <a href="/tags/GIOU/">GIOU</a>
+            
+              <a href="/tags/DIOU/">DIOU</a>
+            
+              <a href="/tags/CIOU/">CIOU</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2020/10/12/%E5%85%B3%E4%BA%8E%E4%BA%A4%E5%8F%89%E7%86%B5%E7%9A%84%E6%98%93%E6%B7%B7%E6%B7%86%E6%A6%82%E5%BF%B5/" target="_self">
+          关于交叉熵的易混淆概念
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/10/12/%E5%85%B3%E4%BA%8E%E4%BA%A4%E5%8F%89%E7%86%B5%E7%9A%84%E6%98%93%E6%B7%B7%E6%B7%86%E6%A6%82%E5%BF%B5/" target="_self">
+          
+          
+            
+          
+          0. 前言交叉熵，二值交叉熵，softmax，sigmoid等概念经常一起出现，这里结合pytorch的具体实现来捋清楚这几个概念。
+1. 概念1.1 交叉熵交叉熵用于描述两个概率分布的差异，也就是说处理的都是0-1之间的数值。
+
+H(p,q) = -\sum p(x)\log q(x)在实际应用中，一般用于计算分类损失。并且，为了避免对0取对数，会将GT的one-hot向量作为$p$，预测结果作
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-10-12 09:39" pubdate>
+              2020-10-12
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/">工作技能</a>
+            
+              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">神经网络</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/pytorch/">pytorch</a>
+            
+              <a href="/tags/%E4%BA%A4%E5%8F%89%E7%86%B5/">交叉熵</a>
+            
+              <a href="/tags/%E4%BA%8C%E5%80%BC%E4%BA%A4%E5%8F%89%E7%86%B5/">二值交叉熵</a>
+            
+              <a href="/tags/%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0/">损失函数</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
         <a href="/2020/10/08/ResNet/" target="_self">
           ResNet
         </a>
@@ -569,263 +820,6 @@ Inception单元，共计3层9个，具体结构后面解释
             <i class="iconfont icon-tags"></i>
             
               <a href="/tags/pytorch/">pytorch</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2020/05/11/pytorch%E6%A0%B8%E5%BF%83%E7%94%A8%E6%B3%95-2/" target="_self">
-          pytorch基础用法-训练
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2020/05/11/pytorch%E6%A0%B8%E5%BF%83%E7%94%A8%E6%B3%95-2/" target="_self">
-          
-          
-            
-          
-          数据准备引入数据集12345678910111213141516171819202122232425262728293031323334# 图片在送入网络之前要进行一定的变化才能适应网络入口的要求，比如尺寸一致化，张量化，归一化等data_transform = &#123;        &quot;train&quot;: transforms.Compose([transforms.Rand
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-05-11 17:52" pubdate>
-              2020-05-11
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/">工作技能</a>
-            
-              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">神经网络</a>
-            
-              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/pytorch%E4%BD%BF%E7%94%A8/">pytorch使用</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/pytorch/">pytorch</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2020/05/11/pytorch%E6%A0%B8%E5%BF%83%E7%94%A8%E6%B3%95-1/" target="_self">
-          pytorch基础用法-模型
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2020/05/11/pytorch%E6%A0%B8%E5%BF%83%E7%94%A8%E6%B3%95-1/" target="_self">
-          
-          
-            
-          
-          搭建一个CNN模型用作图像分类的过程，整体而言还是比较清晰的，主要分为模型、训练、预测三项工作。
-第一项工作，模型搭建，套路也很清晰。新建一个继承于nn.Module的类，然后
-
-将网络层一一作为类的成员添加进来。这些网络层可以是Conv2d, MaxPool2d, Linear等torch.nn提供的基本模块，也可以是由这些基本模块组合成的自定义building blocks，如ResNet中的
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-05-11 16:52" pubdate>
-              2020-05-11
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/">工作技能</a>
-            
-              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">神经网络</a>
-            
-              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/pytorch%E4%BD%BF%E7%94%A8/">pytorch使用</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/python/">python</a>
-            
-              <a href="/tags/pytorch/">pytorch</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2020/04/20/VGGnet/" target="_self">
-          VGGnet
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2020/04/20/VGGnet/" target="_self">
-          
-          
-            
-          
-          背景简介牛津VGG团队2014年提出，ImageNet分类任务第二名，定位任务第一名。结构简单，配置丰富，被广泛用作backbone。
-网络结构原作有5种配置，分别为11层，13层，16层-1，16层-3，19层。统计层数时不统计池化层和softmax，只统计有weight的网络层。
-
-
-网络特点
-所有的卷积核尺寸一致，均采用3x3。
-引入感受野（receptive field）的概念，利用小卷积
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-04-20 23:00" pubdate>
-              2020-04-20
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/">工作技能</a>
-            
-              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">神经网络</a>
-            
-              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/%E7%BB%8F%E5%85%B8%E7%BD%91%E7%BB%9C/">经典网络</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a>
-            
-              <a href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">神经网络</a>
-            
-              <a href="/tags/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">卷积神经网络</a>
-            
-              <a href="/tags/CNN/">CNN</a>
-            
-              <a href="/tags/%E7%BB%8F%E5%85%B8%E7%BD%91%E7%BB%9C/">经典网络</a>
-            
-              <a href="/tags/VGGnet/">VGGnet</a>
-            
-              <a href="/tags/%E6%84%9F%E5%8F%97%E9%87%8E/">感受野</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2020/04/10/AlexNet/" target="_self">
-          AlexNet
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2020/04/10/AlexNet/" target="_self">
-          
-          
-            
-          
-          背景简介Hinton学生Alex之作，2012年的ISLVRC冠军，深度学习方法甩开传统图像算法的开端，GPU训练的开端。
-网络结构
-
-
-原始输入：尺寸为[224, 224, 3]的三通道RGB彩色图像
-
-特征提取层：上图中的第一行，(conv, relu, max_pool)经典三元结构x2 + (conv, relu)经典二元结构x3 + max_pool
-
-分类层：将特征提取层的结果flat
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-04-10 22:30" pubdate>
-              2020-04-10
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/">工作技能</a>
-            
-              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">神经网络</a>
-            
-              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/%E7%BB%8F%E5%85%B8%E7%BD%91%E7%BB%9C/">经典网络</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a>
-            
-              <a href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">神经网络</a>
-            
-              <a href="/tags/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">卷积神经网络</a>
-            
-              <a href="/tags/CNN/">CNN</a>
-            
-              <a href="/tags/%E7%BB%8F%E5%85%B8%E7%BD%91%E7%BB%9C/">经典网络</a>
-            
-              <a href="/tags/AlexNet/">AlexNet</a>
             
           </div>
         

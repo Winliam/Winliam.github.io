@@ -182,6 +182,249 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
+        <a href="/2019/11/25/note_of_cpp/" target="_self">
+          C/C++笔记
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2019/11/25/note_of_cpp/" target="_self">
+          
+          
+            
+          
+          数组指针&amp;指针的数组&amp;数组名故事从int (*)[10]开始，这是一种数据类型，具体点是一种“指向‘长度为10的int数组’这种类型的指针”类型。12345678910111213int a[5] = &#123;1,2,3,4,5&#125;;int (*)[5] p1;					//竟然是错误的用法。。。int (*p2)[5] = a;					//正不正确看编译器的种类和版
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2019-11-25 17:13" pubdate>
+              2019-11-25
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/">工作技能</a>
+            
+              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/C-C-%E7%AC%94%E8%AE%B0/">C/C++笔记</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/C%E8%AF%AD%E8%A8%80/">C语言</a>
+            
+              <a href="/tags/C/">C++</a>
+            
+              <a href="/tags/%E6%95%B0%E7%BB%84%E6%8C%87%E9%92%88/">数组指针</a>
+            
+              <a href="/tags/%E5%AD%97%E7%AC%A6%E6%95%B0%E7%BB%84/">字符数组</a>
+            
+              <a href="/tags/%E5%AD%97%E7%AC%A6%E4%B8%B2/">字符串</a>
+            
+              <a href="/tags/unique-ptr/">unique_ptr</a>
+            
+              <a href="/tags/qsort/">qsort</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2019/11/15/%E5%8F%8C%E7%BA%BF%E6%80%A7%E6%8F%92%E5%80%BC%E6%98%AF%E5%95%A5%EF%BC%9F/" target="_self">
+          双线性插值是啥？
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2019/11/15/%E5%8F%8C%E7%BA%BF%E6%80%A7%E6%8F%92%E5%80%BC%E6%98%AF%E5%95%A5%EF%BC%9F/" target="_self">
+          
+          
+            
+          
+          前言今天看FASTER RCNN的pytorch实现源码，进行图像缩放时用到了双线性插值算法，记录一下自己的理解。
+目的当将一幅图像从100x100的尺寸放大到200x200时，势必要新增30000个像素点。那么这些新增的像素点的灰度值如何得到呢？
+原理双线性插值的做法是这样：
+1. 建立坐标的对应关系将放大前的图像A和放大后的图形B的几何中心对齐，然后有
+\frac{x_A + 0.5}{x_B
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2019-11-15 19:19" pubdate>
+              2019-11-15
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/">工作技能</a>
+            
+              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">神经网络</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E5%9B%BE%E5%83%8F%E7%BC%A9%E6%94%BE/">图像缩放</a>
+            
+              <a href="/tags/%E5%8F%8C%E7%BA%BF%E6%80%A7%E6%8F%92%E5%80%BC/">双线性插值</a>
+            
+              <a href="/tags/bilinear-interpolation/">bilinear interpolation</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2019/07/29/python%E5%87%BD%E6%95%B0%E5%8F%82%E6%95%B0%E7%9A%84%E6%89%93%E5%8C%85%E4%B8%8E%E6%8B%86%E8%A7%A3/" target="_self">
+          python函数参数的打包与拆解
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2019/07/29/python%E5%87%BD%E6%95%B0%E5%8F%82%E6%95%B0%E7%9A%84%E6%89%93%E5%8C%85%E4%B8%8E%E6%8B%86%E8%A7%A3/" target="_self">
+          
+          
+            
+          
+          标志：单/双星号出现在入参或形参之前原则：
+
+入参前加星号代表拆解，形参前加星号代表打包
+list/tuple只有一种拆解方式，dictionary有两种
+
+打包情形1：单星号出现在形参前12345678def pack(a, *b):        print type(a), a        print type(b), b	pack(1, 2, 3, 4, 5)&gt;&gt; &lt;t
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2019-07-29 18:14" pubdate>
+              2019-07-29
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/">工作技能</a>
+            
+              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/python%E7%AC%94%E8%AE%B0/">python笔记</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/python/">python</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2019/07/22/python%E7%AC%94%E8%AE%B0/" target="_self">
+          python笔记
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2019/07/22/python%E7%AC%94%E8%AE%B0/" target="_self">
+          
+          
+            
+          
+          python的zip函数输入若干个Iterable对象，将这些Iterable对象对应位置的元素打包为一个tuple，然后将所有tuple作为一个zip对象返回。
+当传入的Iterable对象长度不一致时取最短的。12345a = [[1,2],[3,4],[5,6]]b = zip(*a)c = tuple(b)&gt;&gt;&gt; a = ((1, 3, 5), (2, 4, 6))
+py
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2019-07-22 17:13" pubdate>
+              2019-07-22
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/">工作技能</a>
+            
+              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/python%E7%AC%94%E8%AE%B0/">python笔记</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/python/">python</a>
+            
+              <a href="/tags/split/">split</a>
+            
+              <a href="/tags/%E5%87%BD%E6%95%B0%E8%A3%85%E9%A5%B0%E5%99%A8/">函数装饰器</a>
+            
+              <a href="/tags/%E6%B7%B1%E6%8B%B7%E8%B4%9D/">深拷贝</a>
+            
+              <a href="/tags/%E6%B5%85%E6%8B%B7%E8%B4%9D/">浅拷贝</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
         <a href="/2019/07/08/%E5%A6%82%E4%BD%95%E7%94%A8vim%E5%86%99markdown/" target="_self">
           如何用vim写markdown
         </a>
