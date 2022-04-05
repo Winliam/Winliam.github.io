@@ -4,6 +4,35 @@
   
   
   <entry>
+    <title>CMake笔记</title>
+    <link href="/2022/04/05/note-of-CMake/"/>
+    <url>/2022/04/05/note-of-CMake/</url>
+    
+    <content type="html"><![CDATA[<h2 id="CMake三大原则"><a href="#CMake三大原则" class="headerlink" title="CMake三大原则"></a>CMake三大原则</h2><ul><li><strong>Decalare a target</strong>;</li><li><strong>Decalare traits of the target</strong>;</li><li><strong>It is all about target</strong>.</li></ul><h2 id="PUBLIC-PRIVATE-INTERFACE关键字"><a href="#PUBLIC-PRIVATE-INTERFACE关键字" class="headerlink" title="PUBLIC PRIVATE INTERFACE关键字"></a>PUBLIC PRIVATE INTERFACE关键字</h2><h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>这三个关键字出现在<code>target_include_directories</code>和<code>target_link_libraries</code>两个命令中，如<br><figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">add<span class="hljs-constructor">_library(<span class="hljs-params">fruit</span> STATIC <span class="hljs-params">fruit</span>.<span class="hljs-params">cpp</span>)</span><br>target<span class="hljs-constructor">_include_directories(<span class="hljs-params">fruit</span> PUBLIC <span class="hljs-params">include</span><span class="hljs-operator">/</span><span class="hljs-params">fruit_h</span><span class="hljs-operator">/</span>)</span><br><br>add<span class="hljs-constructor">_library(<span class="hljs-params">apple</span> STATIC <span class="hljs-params">apple</span>.<span class="hljs-params">cpp</span>)</span><br>target<span class="hljs-constructor">_include_directories(<span class="hljs-params">apple</span> PUBLIC <span class="hljs-params">include</span><span class="hljs-operator">/</span><span class="hljs-params">apple_h</span><span class="hljs-operator">/</span>)</span><br>target<span class="hljs-constructor">_link_libraries(<span class="hljs-params">apple</span> INTERFACE <span class="hljs-params">fruit</span>)</span><br><br><br>add<span class="hljs-constructor">_library(<span class="hljs-params">eat_apple</span> STATIC <span class="hljs-params">apple</span>.<span class="hljs-params">cpp</span>)</span><br>target<span class="hljs-constructor">_include_directories(<span class="hljs-params">eat_apple</span> PUBLIC <span class="hljs-params">include</span><span class="hljs-operator">/</span><span class="hljs-params">eat_apple_h</span><span class="hljs-operator">/</span>)</span><br>target<span class="hljs-constructor">_link_libraries(<span class="hljs-params">eat_apple</span> PRIVATE <span class="hljs-params">apple</span>)</span><br></code></pre></td></tr></table></figure></p><h3 id="在头文件命令中的作用"><a href="#在头文件命令中的作用" class="headerlink" title="在头文件命令中的作用"></a>在头文件命令中的作用</h3><p>首先，借助两个预定义变量，或者说target默认拥有的两个traits<code>INCLUDE_DIRECTORIES</code>和<code>INTERFACE_INCLUDE_DIRECTORIES</code>来说明PRIVATE等关键字在<code>target_include_directories</code>命令中的作用。</p><ul><li><code>INCLUDE_DIRECTORIES</code>中存放的是当前target的头文件搜索路径</li><li><code>INTERFACE_INCLUDE_DIRECTORIES</code>用于存放的是另外一组头文件搜索路径，在编译本target（记作A）时不生效。当<code>target_link_libraries(B PUBLIC A)</code>命令执行时，会将A的<code>INTERFACE_INCLUDE_DIRECTORIES</code>中的内容append到B的<code>INCLUDE_DIRECTORIES</code>中。</li></ul><p>然后，在<code>target_include_directories</code>命令中的PRIVATE等关键字通过影响这两个traits来产生效果：</p><ul><li>PRIVATE会将其后的路径添加到当前target的<code>INCLUDE_DIRECTORIES</code>中；</li><li>INTERFACE会将其后的路径添加到当前target的<code>INTERFACE_INCLUDE_DIRECTORIES</code>中；</li><li>PUBLIC则同时添加；</li></ul><h3 id="在链接命令中的作用"><a href="#在链接命令中的作用" class="headerlink" title="在链接命令中的作用"></a>在链接命令中的作用</h3><p>链接命令中虽然没有（尚待确认）类似<code>INCLUDE_DIRECTORIES</code>和<code>INTERFACE_INCLUDE_DIRECTORIES</code>这两个显式的traits，但是最终效果是一样的，可以按照存在<code>LINKED_LIBRARIES</code>和<code>INTERFACE_LINKED_LIBRARIES</code>这么两个traits，然后结合上述机制来理解。</p><p>然后，分析<code>target_link_libraries(apple INTERFACE fruit)</code>的情况。此时apple并未真正的链接fruit库，也就是说如果apple中调用了一个实现在fruit中的函数size()，那么编译是会报错的，但是eat_apple中size()却是可以的。</p><p>最后分析<code>target_link_libraries(apple PRIVATE fruit)</code>的情况。此时apple中可以调用size()，但是eat_apple中却不行了，因为此时fruit被添加到了apple的<code>LINKED_LIBRARIES</code>中，但是没有被添加到apple的<code>INTERFACE_LINKED_LIBRARIES</code>中，自然也就不会被append到eat_apple的<code>LINKED_LIBRARIES</code>中。</p><h3 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h3><ul><li><strong>PRIVATE只关心本target</strong></li><li><strong>INTERFACE只关心依赖本target的target</strong></li><li><strong>PUBLIC同时关心</strong></li></ul><h3 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h3><ol><li><a href="https://leimao.github.io/blog/CMake-Public-Private-Interface/#:~:text=PRIVATE%20only%20cares%20about%20himself,about%20everyone%20and%20allows%20inheritance">https://leimao.github.io/blog/CMake-Public-Private-Interface/#:~:text=PRIVATE%20only%20cares%20about%20himself,about%20everyone%20and%20allows%20inheritance</a>.</li><li><a href="https://kubasejdak.com/modern-cmake-is-like-inheritance">https://kubasejdak.com/modern-cmake-is-like-inheritance</a></li></ol>]]></content>
+    
+    
+    <categories>
+      
+      <category>工作技能</category>
+      
+      <category>C/C++笔记</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>CMake</tag>
+      
+      <tag>INTERFACE</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>C++中的枚举类型及其与宏的关系</title>
     <link href="/2022/04/04/C-%E4%B8%AD%E7%9A%84%E6%9E%9A%E4%B8%BE%E7%B1%BB%E5%9E%8B%E5%8F%8A%E5%85%B6%E4%B8%8E%E5%AE%8F%E7%9A%84%E5%85%B3%E7%B3%BB/"/>
     <url>/2022/04/04/C-%E4%B8%AD%E7%9A%84%E6%9E%9A%E4%B8%BE%E7%B1%BB%E5%9E%8B%E5%8F%8A%E5%85%B6%E4%B8%8E%E5%AE%8F%E7%9A%84%E5%85%B3%E7%B3%BB/</url>
