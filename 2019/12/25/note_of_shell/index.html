@@ -185,7 +185,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      1k 字
+      1.6k 字
     </span>
   
 
@@ -195,7 +195,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      12
+      19
        分钟
     </span>
   
@@ -261,6 +261,20 @@
 <h4 id="防挂起"><a href="#防挂起" class="headerlink" title="防挂起"></a>防挂起</h4><p>nohup前缀产生的相关效果是独立于前/后台程序的另一个话题，其直接效果是使得程序免疫HUP信号。HUP信号一般会在关闭终端或用户注销时发出，接收到HUP信号的程序会终止执行。间接效果是将程序的stdout和stderr信息重定向到一个nohup.out文件。</p>
 <p>综上，用下面这个形式的命令可以实现一个程序的<strong>安全(终端关掉也不会停)</strong>、<strong>静默(启动了就跟没启动一样)</strong>执行。<br><figure class="highlight arcade"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs arcade">nohup cmd &amp;&gt;<span class="hljs-regexp">/dev/</span><span class="hljs-literal">null</span> &amp;<br></code></pre></td></tr></table></figure></p>
 <p><a target="_blank" rel="noopener" href="https://linuxhint.com/how_to_use_nohup_linux/">参考链接</a></p>
+<h3 id="命令选项结束符"><a href="#命令选项结束符" class="headerlink" title="命令选项结束符--"></a>命令选项结束符<code>--</code></h3><p>思考一个问题，如果想在readme.txt中查找字符串”-v”，应该怎么做？</p>
+<p>直接<code>grep -v readme.txt</code>是不对的，因为<code>-v</code>是<code>grep</code>命令用于反选的选项。因此，要用到<code>--</code>符号，表示command options结束，positional argument开始。</p>
+<p>即，<code>grep -- -v readme.txt</code>。</p>
+<h3 id="自动补全"><a href="#自动补全" class="headerlink" title="自动补全"></a>自动补全</h3><p>想必每个linux user对于TAB键有着特殊的感情，那么这种TAB自动补全是怎么实现的呢？以及对于自己写的一些可执行文件，又怎么给它安排上自动补全的功能呢？</p>
+<p>首先介绍以下关键字：</p>
+<ul>
+<li><code>complete</code><br>shell内置的一个命令，通过给入不同的flag，来给指定的可执行程序加上不同的自动补全内容。常用的有：<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta"># dothis <span class="hljs-meta-string">&lt;Tab&gt;</span><span class="hljs-meta-string">&lt;Tab&gt;</span>后，从Wordlist中选取合适的补全内容</span><br>complete -W <span class="hljs-string">&quot;now tomorrow never&quot;</span> dothis<br><br><span class="hljs-meta"># dothis <span class="hljs-meta-string">&lt;Tab&gt;</span><span class="hljs-meta-string">&lt;Tab&gt;</span>后，执行_dothis_completions函数，按照该函数的行为进行补全</span><br>complete -F _dothis_completions dothis<br></code></pre></td></tr></table></figure></li>
+<li><code>COMPREPLY</code><br>shell内置的一个变量，用来保存<code>&lt;TAB&gt;&lt;TAB&gt;</code>之后的提示内容，如果提示内容只有唯一一个值，那么将执行自动补全。一般跟<code>_dothis_completions</code>这样的函数配合使用，用后者来缩小前者作为集合的size，以方便补全。</li>
+<li><code>compgen</code><br>shell内置的一个命令，用来为<code>COMPREPLY</code>提供内容，一般是作为<code>_dothis_completions</code>函数的核心语句。用法类似<code>complete</code>，关键在于用不同的flag来产生用于提示或补全的内容。</li>
+<li><code>COMP_WORDS</code><br>shell内置的一个变量，用来保存<code>dothis</code>之后输入的wordlist。</li>
+<li><code>COMP_CWORD</code><br>shell内置的一个变量，用来表示<code>dothis</code>之后输入的last word的索引，或者说用户想要被补全的当前word在<code>COMP_WORDS</code>中的位置。</li>
+</ul>
+<p>最后，综合以上内容，看一个典型例子：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-function"><span class="hljs-title">_dothis_completions</span>(<span class="hljs-params"></span>)</span><br>&#123;<br>  COMPREPLY=($(compgen -W <span class="hljs-string">&quot;now tomorrow never&quot;</span> <span class="hljs-string">&quot;$&#123;COMP_WORDS[COMP_CWORD]&#125;&quot;</span>))<br>&#125;<br><br>complete -F _dothis_completions dothis<br></code></pre></td></tr></table></figure><br>其中核心语句的含义是，用待补全的word的已输入信息<code>$&#123;COMP_WORDS[COMP_CWORD]&#125;</code>去筛选wordlist<code>&quot;now tomorrow never&quot;</code>，筛选结果赋给<code>COMPREPLY</code>，用于提示（筛选结果不唯一）或自动补全（筛选结果唯一）。</p>
+<p>参考链接：<a target="_blank" rel="noopener" href="https://iridakos.com/programming/2018/03/01/bash-programmable-completion-tutorial#:~:text=What%20is%20bash%20completion%3F,key%20while%20typing%20a%20command">https://iridakos.com/programming/2018/03/01/bash-programmable-completion-tutorial#:~:text=What%20is%20bash%20completion%3F,key%20while%20typing%20a%20command</a>.</p>
 
             </div>
             <hr>
