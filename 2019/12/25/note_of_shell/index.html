@@ -185,7 +185,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      1.6k 字
+      1.7k 字
     </span>
   
 
@@ -195,7 +195,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      19
+      21
        分钟
     </span>
   
@@ -275,6 +275,8 @@
 </ul>
 <p>最后，综合以上内容，看一个典型例子：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-function"><span class="hljs-title">_dothis_completions</span>(<span class="hljs-params"></span>)</span><br>&#123;<br>  COMPREPLY=($(compgen -W <span class="hljs-string">&quot;now tomorrow never&quot;</span> <span class="hljs-string">&quot;$&#123;COMP_WORDS[COMP_CWORD]&#125;&quot;</span>))<br>&#125;<br><br>complete -F _dothis_completions dothis<br></code></pre></td></tr></table></figure><br>其中核心语句的含义是，用待补全的word的已输入信息<code>$&#123;COMP_WORDS[COMP_CWORD]&#125;</code>去筛选wordlist<code>&quot;now tomorrow never&quot;</code>，筛选结果赋给<code>COMPREPLY</code>，用于提示（筛选结果不唯一）或自动补全（筛选结果唯一）。</p>
 <p>参考链接：<a target="_blank" rel="noopener" href="https://iridakos.com/programming/2018/03/01/bash-programmable-completion-tutorial#:~:text=What%20is%20bash%20completion%3F,key%20while%20typing%20a%20command">https://iridakos.com/programming/2018/03/01/bash-programmable-completion-tutorial#:~:text=What%20is%20bash%20completion%3F,key%20while%20typing%20a%20command</a>.</p>
+<h3 id="basename命令"><a href="#basename命令" class="headerlink" title="basename命令"></a><code>basename</code>命令</h3><p>用于提取一个路径，或者一个字符串中最想要的子串，比如<br><figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs awk"><span class="hljs-comment"># 不指定后缀，输出最后一个&#x27;/&#x27;之后的内容，这里是gcc-8</span><br>basename <span class="hljs-regexp">/usr/</span>bin/gcc-<span class="hljs-number">8</span><br><br><span class="hljs-comment"># 指定后缀，输出最后一个&#x27;/&#x27;之后，后缀之前的内容，这里是gcc</span><br>basename <span class="hljs-regexp">/usr/</span>bin/gcc-<span class="hljs-number">8</span> -<span class="hljs-number">8</span><br></code></pre></td></tr></table></figure></p>
+<h3 id="tr命令"><a href="#tr命令" class="headerlink" title="tr命令"></a><code>tr</code>命令</h3><p>用于字符串转换，比如将一个字符序列中的全部小写字符转换为大写字符：<br><figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs less"><span class="hljs-selector-tag">cat</span> <span class="hljs-selector-tag">readme</span><span class="hljs-selector-class">.txt</span> | <span class="hljs-selector-tag">tr</span> <span class="hljs-selector-attr">[:lower:]</span> <span class="hljs-selector-attr">[:upper:]</span><br></code></pre></td></tr></table></figure></p>
 
             </div>
             <hr>
