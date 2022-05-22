@@ -5,3 +5,6 @@ db.json
 node_modules/
 public/
 .deploy*/
+
+!node_modules/hexo-theme-fluid/languages/*
+
