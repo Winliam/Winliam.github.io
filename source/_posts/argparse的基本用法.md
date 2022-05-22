@@ -12,7 +12,7 @@ tags:
 为python脚本运行时所添加额外命令行参数提供解释。大致原理是为一个parser对象添加一些属性，然后这个parser对象在接受一系列参数（默认是命令行参数）之后，就拥有了一系列属性，然后程序就可以用这些属性来做事了。就是说，信息从命令行传递到了脚本内。
 
 ### 示例
-```
+```python
 # 创建对象
 import argparse
 parser = argparse.ArgumentParser()

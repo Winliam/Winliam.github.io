@@ -13,7 +13,7 @@ tags:
 2. list/tuple只有一种拆解方式，dictionary有两种
 
 ## 打包情形1：单星号出现在形参前
-```
+```python
 def pack(a, *b):
         print type(a), a
         print type(b), b
@@ -26,7 +26,7 @@ pack(1, 2, 3, 4, 5)
 单星号打包，按照匹配顺序认领多个非关键字入参，打包称一个tuple。
 
 ## 打包情形2：双星号出现在形参前
-```
+```python
 def pack(a, **b):
         print type(a), a
         print type(b), b
@@ -39,7 +39,7 @@ pack(1, a1=2, a2=3)
 双星号打包，按照匹配顺序认领多个关键字入参，打包成一个dictionary
 
 ## 拆解情形1：单星号出现在入参前
-```
+```python
 def pack(a, b, *c):
         print type(a), a
         print type(b), b
@@ -55,7 +55,7 @@ pack(*score)
 单星号拆解，将list/tuple/dictionary的内容当做独立非关键字的入参列表，其中dictionary只保留key
 
 ## 拆解情形2：双星号出现在入参前
-```
+```python
 def pack(*a, **b):
         print type(a), a
         print type(b), b

@@ -16,7 +16,7 @@ math: true
 输入若干个Iterable对象，将这些Iterable对象对应位置的元素打包为一个tuple，然后将所有tuple作为一个zip对象返回。
 
 当传入的Iterable对象长度不一致时取最短的。
-```
+```python
 a = [[1,2],[3,4],[5,6]]
 b = zip(*a)
 c = tuple(b)
@@ -25,7 +25,7 @@ c = tuple(b)
 ```
 
 ### python string的split方法
-```
+```python
 a = ", my, name, is, ming"
 b = a.split(',')
 
@@ -35,7 +35,7 @@ b = a.split(',')
 
 ### pyhton 函数装饰器
 对被修饰的函数增加一层封装，被修饰的函数仍然正常被调用，被执行，但是增加了一些“私货”，比如打log。这么做的好处是在不修改原函数代码以及调用原函数的代码的前提下改变其行为。
-```
+```python
 import logging
 
 def use_logging(func):
@@ -73,7 +73,7 @@ bar()
 
 在import一个包时，实际上是在执行这个包的__init__.py中的代码。看一个例子，
 
-```
+```python
 .
 ├── main.py
 └── mypackage
@@ -94,7 +94,7 @@ bar()
 本例中，在当前工作目录下即可找到`mypackage`，然后会执行其下__init__.py中的代码。
 
 对于mypackage的__init__.py，值得注意的是：
-```
+```python
 import subpackage_1			# 错误，因为在main的当前目录找不到subpackage_1
 import subpackage_2			# 错误
 import mypackage.subpackage_1		# 正确，先找到mypackage再找到subpackage_1
@@ -113,7 +113,7 @@ from .subpackage_2 import test21
 ```
 
 ### `itertools`库
-```
+```python
 v1 = [(i, j) for i, j in itertools.product(range(2), repeat=2)]
 v2 = [(i, j) for i, j in itertools.product(range(2), repeat=3)]
 

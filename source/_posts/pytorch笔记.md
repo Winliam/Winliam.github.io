@@ -13,7 +13,7 @@ tags:
 math: true
 ---
 ### `max() sum()`等操作中指定dim的含义
-```
+```python
 a = [ [ [1, 2], [3, 4] ], [ [5, 6], [7, 8] ] ]
 ```
 1. 对于这个[2, 2, 2]的三维矩阵，三维意味着[]有三层，三个2表示每一层[]内有两个元素
@@ -26,7 +26,7 @@ a = [ [ [1, 2], [3, 4] ], [ [5, 6], [7, 8] ] ]
 3. 而$a_{010}$对应于，第一层[]中的第一个元素的，第二个元素的，第一个元素
 
 ### `torch.flatten()`中指定dim的含义
-```
+```python
 # 默认情况，消除x第1层[]内的所有[]
 torch.flatten(x)
 
@@ -51,7 +51,7 @@ torch.flatten(x, 0, 1)
 前者用指定的kernel_size和stride定义池化操作，后者则通过指定输出tensor的尺寸来定义池化操作，stride和kernel_size会自动算出来。
 > In average-pooling or max-pooling, you essentially set the stride and kernel-size by your own, setting them as hyper-parameters. You will have to re-configure them if you happen to change your input size.
 > In Adaptive Pooling on the other hand, we specify the output size instead. And the stride and kernel-size are automatically selected to adapt to the needs. The following equations are used to calculate the value in the source code.
-```
+```python
 Stride = (input_size//output_size)  
 Kernel size = input_size - (output_size-1)*stride  
 Padding = 0

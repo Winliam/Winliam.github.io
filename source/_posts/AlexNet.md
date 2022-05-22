@@ -33,7 +33,7 @@ Hinton学生Alex之作，2012年的ISLVRC冠军，深度学习方法甩开传统
 - 首用RELU代替以往的sigmoid和tanh(后面补充上各种激活函数的详情文章链接)
 - 首用LRN局部相应归一化（有时间这里展开讲一下，目前看不是很重要。。）
 - 首用DROPOUT机制进行正则，具体的实现原理如下：
-```
+```python
 d = np.random.rand( a.shape[1], a.shape[1] ) < keep_prob
 a = a * d / keep_prob
 ```

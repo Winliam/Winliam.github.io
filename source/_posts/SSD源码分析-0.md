@@ -126,7 +126,7 @@ PIL image格式转成tensor，换言之，之前的操作都是以PIL image格�
 
 ## 5. Predictor
 得到6个feature map之后，将其分别送入一个Predictor。每个Predictor包含两个卷积结构，一个用来生成objectness，一个用来生成box_reg。具体的结构也比较简单：
-```
+```python
 # box_extractor
 ModuleList(
   (0): Conv2d(1024, 16, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))

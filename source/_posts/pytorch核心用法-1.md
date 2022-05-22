@@ -21,7 +21,7 @@ hide: false
 
 BN, Dropout, Relu都可以作为一个网络层存在和连接。
 
-```
+```python
 import torch.nn as nn
 import torch.nn.functional as F
 

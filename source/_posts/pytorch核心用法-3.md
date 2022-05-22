@@ -9,7 +9,7 @@ tags:
   - pytorch
 ---
 ## 数据准备
-```
+```python
 transform = transforms.Compose(
         [transforms.Resize((32, 32)),
          transforms.ToTensor(),
@@ -21,19 +21,19 @@ im = torch.unsqueeze(im, dim=0)  # [N, C, H, W]
 ```
 
 ## 模型定义
-```
+```python
 # 不需要to(device)吗？mark
 net = LeNet()
 ```
 
 ## 参数加载
-```
+```python
 # 优化器也有同样的操作，可用于恢复训练
 net.load_state_dict(torch.load('Lenet.pth'))
 ```
 
 ## 前向计算
-```
+```python
 with torch.no_grad():
     outputs = net(im)
     predict = torch.max(outputs, dim=1)[1].data.numpy()

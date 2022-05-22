@@ -46,7 +46,7 @@ date: 2021-03-01 18:22:23
 
 **本阶段数据转化结果:**
 - **image**: [tensor(3x350x450), tensor(3x375x500)] -> ImageList，ImageList是一个同时保存预处理之后的图像数据以及padding前缩放后图像尺寸的类。如
-  ```
+  ```python
   {image_sizes = [(800,1028), (800, 1066)]
   tensors = tensor(2x3x800x1088)}
   ```
@@ -59,7 +59,7 @@ date: 2021-03-01 18:22:23
 
 **本阶段数据转化结果:**
 - **image**: ImageList -> **features**: dict，dict的结构如下，
-```
+```python
 features = {
 0 : tensor(2x256x200x272),
 1 : tensor(2x256x100x136),

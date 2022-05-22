@@ -13,7 +13,7 @@ tags:
 
 ## 在`.gitignore`中排除忽略
 忽略一个文件或者目录很容易，加到`.gitignore`文件中即可，匹配模式啥的也不难，百度一下就能上手。但是如何做到在忽略某个目录的同时，又不忽略该目录下的某个子目录呢？
-```
+```shell
 # 先忽略node_modules目录下的所有内容，但是不忽略node_modules目录本身，否则下面咋搞都不行了
 node_modules/*
 # 取消对node_modules目录下hexo-theme-fluid的忽略

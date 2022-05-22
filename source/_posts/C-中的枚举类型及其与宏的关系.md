@@ -16,7 +16,7 @@ tags:
 enum类型的概念不难理解，但值得注意的是：**enum类型的大小如何，或者说占几个Bytes?**
 
 在C语言中，一个enum类型的大小由编译器自行确定。确定规则是，确保enum取值范围中任一元素对应的整型值都能被表达。
-```
+```cpp
 enum color1{
         YELLOW = 0x1,
         BLACK = 0x2
@@ -29,7 +29,7 @@ enum color2{
 // sizeof(color2) = 8;
 ```
 产生编译器依赖显然不是件好事，所以C++中增加了显式指定enum类型大小的语法：
-```
+```cpp
 enum color1 : int{
         YELLOW,
         BLACK
@@ -38,7 +38,7 @@ enum color1 : int{
 
 ## enum hack
 C++有了上述写法之后，又产生了这么一种off label的用法：
-```
+```cpp
 enum : int{
         YELLOW = 1,
         BLACK = 2

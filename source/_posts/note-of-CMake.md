@@ -16,7 +16,7 @@ tags:
 ## PUBLIC PRIVATE INTERFACE关键字
 ### 前言
 这三个关键字出现在`target_include_directories`和`target_link_libraries`两个命令中，如
-```
+```cmake
 add_library(fruit STATIC fruit.cpp)
 target_include_directories(fruit PUBLIC include/fruit_h/)
 

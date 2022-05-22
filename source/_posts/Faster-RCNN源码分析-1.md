@@ -22,7 +22,7 @@ date: 2021-03-02 22:04:39
 Faster RCNN源码中，将图像预处理操作封装在一个类`GeneralizedRCNNTransform`中，下面针对这个类进行介绍。
 
 ## 初始化
-```
+```python
 # 接受4个初始化参数，用于初始化4个对应成员
 # min_size : 指定允许的最小尺寸
 # max_size : 指定允许的最大尺寸

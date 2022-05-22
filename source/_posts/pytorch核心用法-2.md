@@ -10,7 +10,7 @@ tags:
 ---
 ## 数据准备
 ### 引入数据集
-```
+```python
 # 图片在送入网络之前要进行一定的变化才能适应网络入口的要求，比如尺寸一致化，张量化，归一化等
 data_transform = {
         "train": transforms.Compose([transforms.RandomResizedCrop(224),
@@ -47,7 +47,7 @@ validate_dataset = datasets.ImageFolder(root=os.path.join(image_path, "val"), tr
 # 最后得到的是一个torch定义的class，按[]索引得到的是一个tuple，tuple元素是(tensor,id)，每个tensor对应一个张量化后的图片。
 ```
 ### 加载数据
-```
+```python
 # 用num_workers个线程，将train_set打乱顺序，分成36个一份的batch
 train_loader = torch.utils.data.DataLoader(train_set, batch_size=36, shuffle=True, num_workers=0)
 
@@ -60,7 +60,7 @@ img, label = train_data_iter.next()
 ```
 
 ## 工具定义
-```
+```python
 from model import LeNet
 import torch.optim as optim
 
@@ -93,7 +93,7 @@ lr_scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=3, gamma=0.3
 ```
 
 ## 核心循环
-```
+```python
 for epoch in range(epochs):
 # 训练循环
         # 设置train模式，以打开BN，Dropout等训练专用的运算

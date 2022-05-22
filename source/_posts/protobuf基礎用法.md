@@ -26,7 +26,7 @@ tags:
 - API
 
 ## `.proto`文件
-```
+```protobuf
 // protobuf有2和3两个版本，语法不同，所以要声明版本
 syntax = "proto3";
 // package名称经过compile之后成为生成类所在的namespace
@@ -61,7 +61,7 @@ message AddressBook {
 }
 ```
 ## compile
-```
+```shell
 # 编译.proto文件，生成类的头文件和源文件
 protoc protoc --cpp_out=. addressbook.proto
 
@@ -74,7 +74,7 @@ c++ -std=c++11 add_person.cc addressbook.pb.cc -o add_person_cpp `pkg-config --c
   - `bool SerializeToString(string* output) const;`
   - `bool SerializeToOstream(ostream* output) const;`
 一个生成类的实例调用这两种方法，将会把自身的内容以二进制串的形式写入string或ostream中，如
-```
+```cpp
 fstream output(argv[1], ios::out | ios::trunc | ios::binary);
 if (!address_book.SerializeToOstream(&output)) {
     cerr << "Failed to write address book." << endl;
@@ -86,7 +86,7 @@ if (!address_book.SerializeToOstream(&output)) {
   - `bool ParseFromString(const string& data);`
   - `bool ParseFromIstream(istream* input);`
 从一个istream或string读取一个二进制串，然后这个生成类的实例中的内容便得到了填充。如，
-```
+```cpp
 tutorial::AddressBook address_book;
 fstream input(argv[1], ios::in | ios::binary);
 if (!address_book.ParseFromIstream(&input)) {
@@ -97,7 +97,7 @@ if (!address_book.ParseFromIstream(&input)) {
 ```
 
 ### 元素获取与操作API
-```
+```cpp
 // id
 inline bool has_id() const;
 inline void clear_id();

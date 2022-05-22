@@ -63,7 +63,7 @@ date: 2020-09-03 10:31:42
 
 第一层FC有1024个神经元，第二层为输出层，神经元数量取决于class_num。另外值得注意的是，两个辅助分类器的输入tensor的形状是相同的，只有深度不同，都是[batch, d, 4, 4]。经过相同的池化层处理后，形状继续保持一致。再经过相同的1x1卷积层处理后，深度也变为一致的。因此可以看出这里的1x1卷积层是为了rectify辅助分类器的输入，使其适配性更强。
 #### 对应的损失函数
-```
+```python
 loss0 = loss_function(logits, labels.to(device))
 loss1 = loss_function(aux_logits1, labels.to(device))
 loss2 = loss_function(aux_logits2, labels.to(device)

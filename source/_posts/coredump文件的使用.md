@@ -17,7 +17,7 @@ tags:
 可以使用gdb加载这个文件，查看崩溃瞬间的程序运行状态。
 
 ## coredump开关
-```
+```shell
 #查看允许生成的文件大小上限，coresize=0意味着不允许产生, unlimited表示无限制
 ulimit -a
 
@@ -26,7 +26,7 @@ ulimit -c unlimited
 ```
 
 ## coredump文件路径
-```
+```shell
 #查看路径
 cat /proc/sys/kernel/core_pattern
 
@@ -39,13 +39,13 @@ echo ‘/var/log/%e.core.%p’ > /proc/sys/kernel/core_pattern
 ```
 
 ## gdb加载方式
-```
+```shell
 gdb [exe] [core_file]
 gdb mainboard /apollo/data/core/core_mainboard.5852
 ```
 
 ## gdb常用命令
-```
+```shell
 bt			#查看调用栈
 where			#同上
 frame stk_num		#切换函数栈
