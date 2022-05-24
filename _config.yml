@@ -106,7 +106,8 @@ language: zh-CN
 ## Docs: https://hexo.io/docs/one-command-deployment
 deploy:
   type: git
-  repo: git@github.com:Winliam/Winliam.github.io.git
+  # repo: git@github.com:Winliam/Winliam.github.io.git
+  repo: https://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@github.com/Winliam/Winliam.github.io.git
   branch: main
 
 # Live2D
