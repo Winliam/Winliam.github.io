@@ -1,5 +1,5 @@
 ---
-title: note_of_git
+title: git笔记
 categories:
   - - 工作技能
     - git笔记
