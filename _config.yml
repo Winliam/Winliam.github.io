@@ -13,7 +13,7 @@ timezone: ''
 
 # URL
 ## Set your site url here. For example, if you use GitHub Page, set url as 'https://username.github.io/project'
-url: http://example.com
+url: http://www.guohongming.xyz
 permalink: :year/:month/:day/:title/
 permalink_defaults:
 pretty_urls:
@@ -107,7 +107,8 @@ language: zh-CN
 deploy:
   type: git
   # repo: git@github.com:Winliam/Winliam.github.io.git
-  repo: https://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@github.com/Winliam/Winliam.github.io.git
+  repo: https://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@github.com/Winliam/Winliam.github.io.git
+  # repo: https://winliam@github.com/Winliam/Winliam.github.io.git
   branch: main
 
 # Live2D
@@ -137,7 +138,10 @@ live2d:
     show: false
     scale: 0.5
 
-
+baidusitemap:
+    path: baidusitemap.xml
+sitemap:
+    path: sitemap.xml
 
 
 
