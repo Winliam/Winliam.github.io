@@ -107,7 +107,7 @@ language: zh-CN
 deploy:
   type: git
   # repo: git@github.com:Winliam/Winliam.github.io.git
-  repo: https://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@github.com/Winliam/Winliam.github.io.git
+  repo: https://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@github.com/Winliam/Winliam.github.io.git
   # repo: https://winliam@github.com/Winliam/Winliam.github.io.git
   branch: main
 
