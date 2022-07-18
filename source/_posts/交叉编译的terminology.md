@@ -2,7 +2,7 @@
 title: 交叉编译的terminology
 categories:
   - - 工作技能
-    - 神经网络/操作系统/python笔记
+    - C/C++笔记
 date: 2022-04-19 14:35:50
 tags:
   - 交叉编译
