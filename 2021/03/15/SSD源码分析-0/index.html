@@ -56,7 +56,7 @@
 
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
-    var CONFIG = {"hostname":"www.guohongming.xyz","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"ApWFLRBvVptYicRhN7DQqrOa-gzGzoHsz","app_key":"ihFV8rR5s2zuqoKPXqW9sydt","server_url":"https://apwflrbv.lc-cn-n1-shared.com"}},"search_path":"/local-search.xml"};
+    var CONFIG = {"hostname":"www.guohongming.cn","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"ApWFLRBvVptYicRhN7DQqrOa-gzGzoHsz","app_key":"ihFV8rR5s2zuqoKPXqW9sydt","server_url":"https://apwflrbv.lc-cn-n1-shared.com"}},"search_path":"/local-search.xml"};
   </script>
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
@@ -255,11 +255,11 @@
 <p><br>第一步还是从dataset中加载图像，然后经过图像预处理，再通过以ResNet50为蓝本的feature extractor处理，结果再送到5个additional layer中，最终连同feature extractor的输出合计得到6个feature map，每个feature map再各自通过一个predictor进而得到预测结果(box_reg和objectness)。</p>
 <p>其中box_reg为相对于anchor的边界框回归参数，objectness经过softmax之后就是对应类别的置信度。如果是训练模式，就用这两个信息去求模型损失；如果是预测模式则对所有的边界框进行筛选得到最终的预测结果。</p>
 <p>其中anchor还是老样子，从6个feature map每一个的HW cell上面长出来2-3个，不同feature map上anchor的scale和ratio都不同，以达到金字塔的效果。</p>
-<h2 id="1-从dataset加载图像"><a href="#1-从dataset加载图像" class="headerlink" title="1. 从dataset加载图像"></a>1. 从dataset加载图像</h2><p>首先要从把标注好的图像文件以及标注xml文件读取进来，经过一系列图像预处理操作转化为tensor格式，大致流程跟<a target="_blank" rel="noopener" href="https://guohongming.xyz/2021/09/01/Faster-RCNN%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90-0/">之前</a>Faster RCNN差不多。</p>
+<h2 id="1-从dataset加载图像"><a href="#1-从dataset加载图像" class="headerlink" title="1. 从dataset加载图像"></a>1. 从dataset加载图像</h2><p>首先要从把标注好的图像文件以及标注xml文件读取进来，经过一系列图像预处理操作转化为tensor格式，大致流程跟<a target="_blank" rel="noopener" href="https://guohongming.cn/2021/09/01/Faster-RCNN%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90-0/">之前</a>Faster RCNN差不多。</p>
 <p>但是，FasterRCNN的图像预处理有两次：</p>
 <ul>
 <li>第一次是在创建dataset类实例的时候，就是说从dataset类<code>__getitem__</code>方法返回的图像数据先经过了一次transform。这一次主要是to_tensor和随机水平翻转（预测模式无）。</li>
-<li>然后在送入模型之前又通过单独的GeneralizedRCNNTransform类，再transform一次。这一次的细节看<a target="_blank" rel="noopener" href="https://guohongming.xyz/2021/08/15/Faster-RCNN%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90-1/">这里</a></li>
+<li>然后在送入模型之前又通过单独的GeneralizedRCNNTransform类，再transform一次。这一次的细节看<a target="_blank" rel="noopener" href="https://guohongming.cn/2021/08/15/Faster-RCNN%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90-1/">这里</a></li>
 </ul>
 <p>回到SSD，预处理只有一次，全部集中在dataset类中实现，而且花样比较多(加*项为训练模式独有)：</p>
 <h3 id="1-1-SSDcrop"><a href="#1-1-SSDcrop" class="headerlink" title="1.1 SSDcrop*"></a>1.1 SSDcrop*</h3><p>顾名思义，这是SSD的特点之一。目的是为了在一张原始图片上截取一个子区域作为模型的输入，而不是整图送进去。而且很明显，不是在原图上随便截就可以，截出来的子区域要符合一定条件：</p>
@@ -306,7 +306,7 @@
 <li><p><strong>GTbox</strong>: tensor(1x4) -&gt; tensor(8732x4)</p>
 </li>
 </ul>
-<h2 id="2-FeatureExtractor"><a href="#2-FeatureExtractor" class="headerlink" title="2. FeatureExtractor"></a>2. FeatureExtractor</h2><p>其实还是一个Backbone的概念，目的是为了从原始图像中提取出Feature map。这里还是以<a target="_blank" rel="noopener" href="https://guohongming.xyz/2021/08/08/ResNet/">ResNet50</a>为例，取其第一个卷积层conv1以及后续的3组Residual结构作为Backbone。</p>
+<h2 id="2-FeatureExtractor"><a href="#2-FeatureExtractor" class="headerlink" title="2. FeatureExtractor"></a>2. FeatureExtractor</h2><p>其实还是一个Backbone的概念，目的是为了从原始图像中提取出Feature map。这里还是以<a target="_blank" rel="noopener" href="https://guohongming.cn/2021/08/08/ResNet/">ResNet50</a>为例，取其第一个卷积层conv1以及后续的3组Residual结构作为Backbone。</p>
 <p>其中值得注意的是，第3组Residual结构conv4_x不是照搬过来的，而是将其这一组的6个Residual结构中的第一个的步距由2调整为1。原理这一个Residual结构因为身处组内第一的位置，因此要承担调整HW尺寸不断折半的任务，但是这里调整了stride，不用折半了。</p>
 <div align=center><img title="" src="/img/article/resnet50_ssd.png" srcset="/img/loading.gif" lazyload width="80%" height="80%" align=center></div>
 

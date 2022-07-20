@@ -56,7 +56,7 @@
 
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
-    var CONFIG = {"hostname":"www.guohongming.xyz","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"ApWFLRBvVptYicRhN7DQqrOa-gzGzoHsz","app_key":"ihFV8rR5s2zuqoKPXqW9sydt","server_url":"https://apwflrbv.lc-cn-n1-shared.com"}},"search_path":"/local-search.xml"};
+    var CONFIG = {"hostname":"www.guohongming.cn","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"ApWFLRBvVptYicRhN7DQqrOa-gzGzoHsz","app_key":"ihFV8rR5s2zuqoKPXqW9sydt","server_url":"https://apwflrbv.lc-cn-n1-shared.com"}},"search_path":"/local-search.xml"};
   </script>
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
@@ -254,14 +254,14 @@
 <div align=center><img title="" src="/img/article/fr-rcnn-frame.jpg" srcset="/img/loading.gif" lazyload width="100%" height="100%" align=center></div>
 
 <h2 id="1-从dataset加载图像"><a href="#1-从dataset加载图像" class="headerlink" title="1. 从dataset加载图像"></a>1. 从dataset加载图像</h2><p>首先要从把标注好的图像文件以及标注xml文件读取进来。</p>
-<p>参考<a target="_blank" rel="noopener" href="https://guohongming.xyz/2021/08/12/%E8%87%AA%E5%AE%9A%E4%B9%89%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B%E6%95%B0%E6%8D%AE%E9%9B%86/">这里</a>自定义的dataset类，可以知道，dataloader每次迭代返回的是，dataset类<code>__getitem__</code>方法的返回值经过自定义的collate_fn包装过的结果，也就是image tensor的tuple，targets dict的tuple。</p>
+<p>参考<a target="_blank" rel="noopener" href="https://guohongming.cn/2021/08/12/%E8%87%AA%E5%AE%9A%E4%B9%89%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B%E6%95%B0%E6%8D%AE%E9%9B%86/">这里</a>自定义的dataset类，可以知道，dataloader每次迭代返回的是，dataset类<code>__getitem__</code>方法的返回值经过自定义的collate_fn包装过的结果，也就是image tensor的tuple，targets dict的tuple。</p>
 <p>而后在送入模型之前，还将tuple转为list，便于cat/stack之类的操作。</p>
 <p>另外图像的BN、增广等操作也在这里进行。</p>
 <p><strong>本阶段数据转化结果:</strong></p>
 <ul>
 <li><p><strong>image</strong>: jpg -&gt; [tensor(3x350x450), tensor(3x375x500)]，3x375x450指图像的原始尺寸</p>
 </li>
-<li><p><strong>target</strong>: xml -&gt; [dict1, dict2]，dict的结构详见<a target="_blank" rel="noopener" href="https://guohongming.xyz/2021/08/12/%E8%87%AA%E5%AE%9A%E4%B9%89%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B%E6%95%B0%E6%8D%AE%E9%9B%86/">这里</a></p>
+<li><p><strong>target</strong>: xml -&gt; [dict1, dict2]，dict的结构详见<a target="_blank" rel="noopener" href="https://guohongming.cn/2021/08/12/%E8%87%AA%E5%AE%9A%E4%B9%89%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B%E6%95%B0%E6%8D%AE%E9%9B%86/">这里</a></p>
 </li>
 </ul>
 <h2 id="2-图像预处理"><a href="#2-图像预处理" class="headerlink" title="2. 图像预处理"></a>2. 图像预处理</h2><p>原始图像的尺寸是不保证一致的，因此送入模型的图像都要先进行尺寸缩放、padding等操作。</p>

@@ -56,7 +56,7 @@
 
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
-    var CONFIG = {"hostname":"www.guohongming.xyz","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"ApWFLRBvVptYicRhN7DQqrOa-gzGzoHsz","app_key":"ihFV8rR5s2zuqoKPXqW9sydt","server_url":"https://apwflrbv.lc-cn-n1-shared.com"}},"search_path":"/local-search.xml"};
+    var CONFIG = {"hostname":"www.guohongming.cn","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"ApWFLRBvVptYicRhN7DQqrOa-gzGzoHsz","app_key":"ihFV8rR5s2zuqoKPXqW9sydt","server_url":"https://apwflrbv.lc-cn-n1-shared.com"}},"search_path":"/local-search.xml"};
   </script>
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
@@ -248,7 +248,7 @@
             <h1 style="display: none">自定义目标检测数据集</h1>
             
             <div class="markdown-body">
-              <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>目标检测的数据集跟分类数据集不同，不仅仅包含图片和图片的类别信息，还要包括bounding box等一些额外的信息。因此，使用<a target="_blank" rel="noopener" href="https://guohongming.xyz/2021/08/11/pytorch%E6%A0%B8%E5%BF%83%E7%94%A8%E6%B3%95-2/">之前</a>建立目录结构 + <code>datasets.ImageFolder()</code>的方法是不行的。</p>
+              <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>目标检测的数据集跟分类数据集不同，不仅仅包含图片和图片的类别信息，还要包括bounding box等一些额外的信息。因此，使用<a target="_blank" rel="noopener" href="https://guohongming.cn/2021/08/11/pytorch%E6%A0%B8%E5%BF%83%E7%94%A8%E6%B3%95-2/">之前</a>建立目录结构 + <code>datasets.ImageFolder()</code>的方法是不行的。</p>
 <p>总的来看，自定义目标检测数据集要围绕<strong>原始图像</strong>、<strong>标注文件</strong>、<strong>入选名单</strong>三个要素，完成<strong>图像标注</strong>和<strong>自定义dataset类</strong>两项工作。</p>
 <h2 id="三个要素"><a href="#三个要素" class="headerlink" title="三个要素"></a>三个要素</h2><ol>
 <li>原始图像，统统存放在一个目录下</li>
