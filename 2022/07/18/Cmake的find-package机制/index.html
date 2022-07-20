@@ -197,7 +197,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      546 字
+      541 字
     </span>
   
 
@@ -248,7 +248,7 @@
             <h1 style="display: none">Cmake的find_package机制</h1>
             
             <div class="markdown-body">
-              <h2 id="相关文章-mark"><a href="#相关文章-mark" class="headerlink" title="相关文章(mark)"></a>相关文章(mark)</h2><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>本文是<a href="mark">Linux下C++的编译、链接以及包管理</a>一文的支线，最好先去看下前文。</p>
+              <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>本文是<a target="_blank" rel="noopener" href="http://guohongming.cn/2022/07/17/Linux%E4%B8%8BC-%E7%9A%84%E7%BC%96%E8%AF%91%E3%80%81%E9%93%BE%E6%8E%A5%E4%BB%A5%E5%8F%8A%E5%8C%85%E7%AE%A1%E7%90%86/">Linux下C++的编译、链接以及包管理</a>一文的支线，最好先去看下前文。</p>
 <p>不看也没关系，Cmake的find_package机制也算是一个比较独立的话题。简单说就是，你从别的地方搞到自己机器上一个包之后，怎么通过Cmake来用它，或者说让它参与编译和链接？</p>
 <p>先说结论，在CMakeLists.txt中find_package(XXX)被调用之后，后台程序去<strong>一些路径</strong>下查找名称中包含XXX，而且后缀为<code>.cmake</code>的文件。这个文件中定义了类似<code>$&#123;XXX_FOUND&#125;</code>，<code>$&#123;XXX_INCLUDE_DIRS&#125;</code>，<code>$&#123;XXX_LIB_DIRS&#125;</code>这样的变量，用来指定XXX这个包是否被找到，包的头文件、库文件在本机上的绝对路径。这样，在CMakeLists.txt中又可以直接使用这些变量来进行头文件搜索和库的链接，elegant？！</p>
 <p>大概的原理就是这样，不希望很深入的话了解到这里就可以了。想深入的话，就要聚焦于上面这段话中的两个模糊的地方：</p>

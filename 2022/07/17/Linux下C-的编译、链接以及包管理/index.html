@@ -266,7 +266,7 @@
 </ul>
 <h2 id="如何使用包？"><a href="#如何使用包？" class="headerlink" title="如何使用包？"></a>如何使用包？</h2><p>安装好之后，马上面临另外一个问题，就是咋用？</p>
 <ol>
-<li>其实Linux系统以及gcc编译器的开发者早就商量好了，（一定程度上）已经给你安排明白了。具体怎么安排的，<a href="mark">看这里</a></li>
+<li>其实Linux系统以及gcc编译器的开发者早就商量好了，（一定程度上）已经给你安排明白了。具体怎么安排的，<a target="_blank" rel="noopener" href="http://guohongming.cn/2022/07/18/gcc%E7%BC%96%E8%AF%91%E9%9A%90%E8%97%8F%E8%A7%84%E5%88%99/">看这里</a></li>
 <li>或者你不放心、不想被安排，想主动地、明明白白地用它。那也简单，头文件和库安装的路径你都知道了，编译和链接的时候把这些路径指定好就可以了。<ul>
 <li>如果你的程序是直接在命令行调用gcc进行编译的，那么用<code>-I</code>和<code>-l</code>就可以进行头文件和库文件路径的指定。</li>
 <li>如果你是用CMake来管理编译过程，那么把头文件路径加到CMakeLists.txt中的<code>target_include_directories</code>命令中，把库的路径加到<code>find_library</code>命令中，其实就可以了。</li>
@@ -274,7 +274,7 @@
 </li>
 <li>但是这样需要包的使用者安装之后先找到安装的位置，然后处理一串长长的路径，不够elegant，所以懒惰的程序员又搞了自动生成这些路径的机制：<ul>
 <li>命令行中调用gcc进行编译时，可以像这样<code>gcc -o main showPhoto.c &#39;pkg-config opencv4 --cflags --libs&#39;</code>把路径的生成交给pkg-config。其背后的逻辑是原作者在封装包时同时准备了一个<code>opencv4.pc</code>文件，pkg-cofig命令会到<code>usr/lib/</code>和<code>$&#123;PKG_CONFIG_PATH&#125;</code>指定的路径下找这个文件，然后通过解析它来生成gcc要的东西。</li>
-<li>如果你是用CMake，可以用CMake提供的配套解决方案，就是<code>find_package</code>机制。具体用法三两句说不清楚，详情<a href="mark">看这里</a></li>
+<li>如果你是用CMake，可以用CMake提供的配套解决方案，就是<code>find_package</code>机制。具体用法三两句说不清楚，详情<a target="_blank" rel="noopener" href="http://guohongming.cn/2022/07/18/Cmake%E7%9A%84find-package%E6%9C%BA%E5%88%B6/">看这里</a></li>
 </ul>
 </li>
 </ol>
@@ -285,7 +285,7 @@
 <h2 id="如何管理包？"><a href="#如何管理包？" class="headerlink" title="如何管理包？"></a>如何管理包？</h2><p>首先定义什么叫做<strong>管理</strong>包？或者说为什么存在这样一个问题？</p>
 <p>举两个可能不太严谨的例子，原作者选择将自己的源码用gcc8编译一下，然后再发布给别人用。但是你这边用的是gcc9编译器，这样链接的时候就有可能不兼容。</p>
 <p>这还是小问题，更麻烦的是<strong>依赖！！！</strong>可以说谁搞谁头大，分分钟高血压。具体来讲，一位作者借助库A1.0写了个库B1.0，那么你想用库B1.0就得先把库A1.0准备好，版本还不能错。递归嵌套下来，你需要面对的就是一棵树，每个节点的版本，编译器信息什么的都要严丝合缝才行。</p>
-<p>因此，就有了conan这样的包管理工具。具体怎么用，<a href="mark">看这里</a></p>
+<p>因此，就有了conan这样的包管理工具。具体怎么用，<a target="_blank" rel="noopener" href="http://guohongming.cn/2022/07/18/conan%E5%8C%85%E7%AE%A1%E7%90%86%E7%9A%84%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8/">看这里</a></p>
 
             </div>
             <hr>

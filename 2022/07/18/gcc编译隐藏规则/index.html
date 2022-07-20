@@ -248,7 +248,7 @@
             <h1 style="display: none">gcc编译隐藏规则</h1>
             
             <div class="markdown-body">
-              <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p><a href="mark">Linux下C++的编译、链接以及包管理</a>一文中提到，Linux系统本身和GCC编译器在针对包的管理上存在一定的配合。</p>
+              <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p><a target="_blank" rel="noopener" href="http://guohongming.cn/2022/07/17/Linux%E4%B8%8BC-%E7%9A%84%E7%BC%96%E8%AF%91%E3%80%81%E9%93%BE%E6%8E%A5%E4%BB%A5%E5%8F%8A%E5%8C%85%E7%AE%A1%E7%90%86/">Linux下C++的编译、链接以及包管理</a>一文中提到，Linux系统本身和GCC编译器在针对包的管理上存在一定的配合。</p>
 <p>具体来说体现在，GCC在进行编译时会默认在特定的系统目录下去寻找头文件和库文件，而这些特定的系统目录恰恰是包安装的位置。</p>
 <p>本文就展开说说这些默认规则。</p>
 <h2 id="基本规则"><a href="#基本规则" class="headerlink" title="基本规则"></a>基本规则</h2><p>在介绍默认规则之前，先来回忆一下gcc命令行的基础规则有哪些：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">gcc main.c function/head.c -I../header -L. -lvector -o main <br></code></pre></td></tr></table></figure><br>上面是一个非常典型的gcc使用场景，什么CMakelists.txt，makefile，catkin_make，bazel之类的编译管理工具无论搞得再花里胡哨，最后还是要落到这样的gcc调用上来。</p>
