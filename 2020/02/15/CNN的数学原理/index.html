@@ -1,0 +1,652 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/time.jpg">
+  <link rel="icon" href="/img/time.jpg">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="王者之路，就在脚下">
+  <meta name="author" content="William Guo">
+  <meta name="keywords" content="">
+  
+  <title>CNN的数学原理 by 电竞大师小明</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"www.guohongming.xyz","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"ApWFLRBvVptYicRhN7DQqrOa-gzGzoHsz","app_key":"ihFV8rR5s2zuqoKPXqW9sydt","server_url":"https://apwflrbv.lc-cn-n1-shared.com"}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>电竞大师小明</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/talking/">
+                <i class="iconfont icon-speakernotes"></i>
+                说说
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/article.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.7)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="CNN的数学原理">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-02-15 17:35" pubdate>
+        2020年2月15日 下午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.9k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      20
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- LeanCloud 统计文章PV -->
+      <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="leancloud-page-views"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">CNN的数学原理</h1>
+            
+            <div class="markdown-body">
+              <h2 id="二维卷积的数学原理"><a href="#二维卷积的数学原理" class="headerlink" title="二维卷积的数学原理"></a>二维卷积的数学原理</h2><p>不管信号处理中“卷积”和“相关”的定义如何，至少在CNN中卷积的含义是明确的。就是</p>
+<ol>
+<li>将卷积核(一个尺寸较小的方阵)与矩阵$\boldsymbol{A}$左上角对齐</li>
+<li>两个矩阵逐元素相乘后求和，作为结果矩阵$\boldsymbol{B}$的左上角第一个元素</li>
+<li>向右/下移动卷积核的位置，重复2，直到卷积核到达矩阵$\boldsymbol{A}$的右下角<div align=center><img title="CNN中卷积的数学含义" src="/img/article/juanji.gif" srcset="/img/loading.gif" lazyload width="60%" height="60%" align=center></div>
+
+</li>
+</ol>
+<p>由此带来了<strong>padding</strong>和<strong>stride</strong>的概念：</p>
+<ul>
+<li><strong>padding</strong>：为了解决卷积带来的尺寸缩减，在卷积之前在$\boldsymbol{A}$周围补上p圈0。</li>
+<li><strong>stride</strong>：卷积核每次向右/下移动s个元素。</li>
+</ul>
+<p>综上，有以下公式计算卷积前后的尺寸变化：</p>
+<blockquote>
+<p>$(n,n) and (f,f) \Longrightarrow \lfloor \frac{n+2p-f}{s}+1 \rfloor$</p>
+</blockquote>
+<h2 id="多维度卷积的数学原理"><a href="#多维度卷积的数学原理" class="headerlink" title="多维度卷积的数学原理"></a>多维度卷积的数学原理</h2><p><strong>关键字</strong>：<strong>卷积</strong>-&gt;<strong>偏移</strong>-&gt;<strong>激活</strong></p>
+<p>CNN模型的输入——RGB三通道图像可以看做一个三层的2D矩阵，对其卷积的含义是：</p>
+<ol>
+<li>将一个层数相同的卷积核与这个3层的2D矩阵左上角对齐，然后做逐元素的乘积求和，并不断移动到右下角为止</li>
+<li>由于求和是跨通道的，因此卷积的结果是一个单层的2D矩阵。</li>
+<li>然后，仿照DNN对这个单层的2D矩阵中的每一个元素进行偏移和激活，得到作为输出的单层的2D矩阵。</li>
+<li>选取另一个同尺寸的卷积核重复1-3，得到另一个单层的2D矩阵</li>
+<li>将输入量与本层所有卷积核的卷积结果堆叠后，得到一个新的多层2D矩阵，作为本层的输出。</li>
+<li>经过若干个卷积层处理后，将最后一个卷积层输出的多层2D矩阵看做一个列向量，将这个列向量作为$\boldsymbol{a}^{[l-1]}$，送入输出层处理。</li>
+<li>若是二分类，则输出层是一个DNN神经元；若是多分类，则输出层是一个以$softmax$为激活函数的DNN网络层。此处DNN的含义指，通过矩阵乘法产生$\boldsymbol{z}^{[l]}$，而不是卷积操作。</li>
+</ol>
+<blockquote>
+<ul>
+<li>显然输出的层数等于本层卷积核的数量，而输出的每一层的尺寸则由前文提及的公式计算得到。</li>
+<li>与DNN不同这里的权重矩阵$\boldsymbol{W}$的维度，都是人为指定的。这也正式CNN存在的理由，减少参数。</li>
+</ul>
+</blockquote>
+<h2 id="池化的数学原理"><a href="#池化的数学原理" class="headerlink" title="池化的数学原理"></a>池化的数学原理</h2><p>与卷积操作的过程相同，但是每个核与输入矩阵进行的不是卷积操作，而是选取区域最大值的操作（最大池化）或者计算区域平均值的操作（平均池化）。一般用于降维。最大池化比较常用，并且一般伴随着0 padding。</p>
+<h2 id="CNN目标检测的基本原理"><a href="#CNN目标检测的基本原理" class="headerlink" title="CNN目标检测的基本原理"></a>CNN目标检测的基本原理</h2><h3 id="单图片，单目标"><a href="#单图片，单目标" class="headerlink" title="单图片，单目标"></a>单图片，单目标</h3><p>先说最简单的情形，即判断一张图片中有没有猫的问题。只需要将图片送入CNN，然后将模型输出向量定义为如下形式即可（假设待检测目标有3类）</p>
+<blockquote>
+<p>$\hat{\boldsymbol{y}} = (p,x,y,w,h,c_1,c_2,c_3)^T$</p>
+</blockquote>
+<p>其中</p>
+<ul>
+<li>$p$为这个result向量，或者说这个检测框存在目标的概率</li>
+<li>$x,y,w,h$为这个检测框的在输入图片中的位置</li>
+<li>$c_1, c_2, c_3$为该检测框属于各个类别的概率</li>
+</ul>
+<h3 id="单图片，多目标"><a href="#单图片，多目标" class="headerlink" title="单图片，多目标"></a>单图片，多目标</h3><p>如果一张图片存在多个目标——这也是实际情况中更可能发生的情况，事情就变得复杂起来。最直观并且容易理解的思路是<strong>滑动窗口搜索法</strong>：<br></p>
+<ol>
+<li>定义一个尺寸的框，将输入图片的左上角与这个框对齐</li>
+<li>将被框框住的部分作为“单图片，单目标”的情形处理，问题解决</li>
+<li>然后移动框的位置，不断向右，向下遍历整张输入图片</li>
+<li>完成遍历之后，换一个尺寸，重复1-3</li>
+<li>所有尺寸都尝试过之后，输入图片中的所有目标自然被检测出来</li>
+</ol>
+<p>很明显，上述做法计算量非常大，症结主要有</p>
+<ol>
+<li>每一个框都要不断移动，遍历整张图</li>
+<li>两个要穷举所有尺寸的框</li>
+</ol>
+<p>对于第1个问题，可以通过<strong>滑动窗口的卷积实现</strong>来规避。而对于第二个问题，目前有两种主流思路：</p>
+<ol>
+<li>感兴趣区域预提取的思路<ol>
+<li>通过图像分割，提取感兴趣区域，然后将所有感兴趣区域依次送入CNN进行预测——RCNN</li>
+<li>用滑动窗口的卷积实现，代替RCNN中依次进行的CNN处理——Fast RCNN</li>
+<li>用一个CNN代替图像分割进行感兴趣区域提取——Faster RCNN</li>
+</ol>
+</li>
+<li>YOLO思路<br>将输入图片分割为19x19个区域，然后结合<strong>滑动窗口卷积实现</strong>的思路将整张图片送入CNN网络，得到19x19个$(p,x,y,w,h,c_1,c_2,c_3)^T$，每一个$(p,x,y,w,h,c_1,c_2,c_3)^T$表示对应区域中的目标检测结果。特别的，存在区域认领目标的概念，意思是说，当一个目标的检测框的中心在某个区域之内时，这个区域对应的result向量才会生成有效信息。基于这个概念，产生了以下两个问题：<ol>
+<li>一个区域内就是有多个目标的检测框的中心点怎么办？</li>
+<li>相邻的几个区域都声称同一个目标的中心点在它那里，然后都生成了几乎相同的有效的result向量怎么办？<br>对于问题1，采用anchor box应对，问题2则采用NMS应对。</li>
+</ol>
+</li>
+</ol>
+<h2 id="滑动窗口的卷积实现原理"><a href="#滑动窗口的卷积实现原理" class="headerlink" title="滑动窗口的卷积实现原理"></a>滑动窗口的卷积实现原理</h2><p>将CNN网络模型中最后的几个全连接层看作卷积层。因为从数学角度看，卷积层和全连接层是一样的，因为这400个节点中每个节点的$\boldsymbol{w}$向量都可以看作一个5×5×16的过滤器，所以不论是把最后这几层看作全连接层还是卷积层，他们的输出都是上一层输出经过某个任意线性函数处理后的结果。所以本质上就是一个如何看的问题，计算的本质过程是不变的。这么做的好处是，可以把输入的19x19个区域与输出的19x19个result做有意义的关联了。</p>
+<div align=center><img title="滑动窗口的卷积实现" src="/img/article/hdck.png" srcset="/img/loading.gif" lazyload width="60%" height="60%" align=center></div>
+
+<h2 id="anchor-box的工作原理"><a href="#anchor-box的工作原理" class="headerlink" title="anchor box的工作原理"></a>anchor box的工作原理</h2><p>将某个区域认领某个目标的对应关系再细分一级，变成某个区域的某个anchor box认领某个目标。这样，当一个区域内有多个中心点时，再额外的计算一下每个目标与每个预设的anchor box之间的交并比之后，即可将目标细分到anchor box。这时，每个区域便可以认领多个不同种类的目标。一般通过聚类训练集中的目标进行anchor box的尺寸设定。</p>
+<h2 id="NMS的工作原理"><a href="#NMS的工作原理" class="headerlink" title="NMS的工作原理"></a>NMS的工作原理</h2><p>对于所有19x19个result向量，一类一类的来看，比如先看归属于vehicle类的box：</p>
+<ol>
+<li>选取这类box中scores最大的哪一个，记为box_best，并保留它</li>
+<li>计算box_best与其余的box的IOU</li>
+<li>如果其IOU&gt;0.5了，那么就舍弃这个box（由于可能这两个box表示同一目标，所以保留分数高的哪一个）</li>
+<li>从最后剩余的boxes中，再找出最大scores的哪一个，如此循环往复</li>
+</ol>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/">工作技能</a>
+                    
+                      <a class="hover-with-bg" href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">神经网络</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">卷积神经网络</a>
+                    
+                      <a class="hover-with-bg" href="/tags/CNN/">CNN</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/03/12/%E8%87%AA%E5%AE%9A%E4%B9%89%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B%E6%95%B0%E6%8D%AE%E9%9B%86/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">自定义目标检测数据集</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/01/12/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84%E6%95%B0%E5%AD%A6%E5%8E%9F%E7%90%86/">
+                        <span class="hidden-mobile">DNN的数学原理</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="twikoo"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/twikoo@1.4.1/dist/twikoo.all.min.js', function() {
+        var options = Object.assign(
+          {"envId":"twikoo-5gimyzvb3631ef62","region":"ap-shanghai","path":"window.location.pathname"},
+          {
+            el: '#twikoo',
+            path: 'window.location.pathname'
+          }
+        )
+        twikoo.init(options)
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <small><span>——————————我是有底线的——————————</span></small> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- LeanCloud 统计PV -->
+        <span id="leancloud-site-pv-container" style="display: none">
+            总访问量 
+            <span id="leancloud-site-pv"></span>
+             次
+          </span>
+      
+      
+        <!-- LeanCloud 统计UV -->
+        <span id="leancloud-site-uv-container" style="display: none">
+            总访客数 
+            <span id="leancloud-site-uv"></span>
+             人
+          </span>
+      
+
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+  <script defer src="/js/leancloud.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.1.4/es5/tex-svg.js" ></script>
+
+  
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/shizuku.model.json"},"display":{"position":"left","width":200,"height":400},"mobile":{"show":false,"scale":0.5},"log":false});</script></body>
+</html>

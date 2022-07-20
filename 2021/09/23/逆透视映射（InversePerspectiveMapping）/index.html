@@ -1,0 +1,734 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/time.jpg">
+  <link rel="icon" href="/img/time.jpg">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="王者之路，就在脚下">
+  <meta name="author" content="William Guo">
+  <meta name="keywords" content="">
+  
+  <title>逆透视映射（InversePerspectiveMapping） by 电竞大师小明</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"www.guohongming.xyz","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"ApWFLRBvVptYicRhN7DQqrOa-gzGzoHsz","app_key":"ihFV8rR5s2zuqoKPXqW9sydt","server_url":"https://apwflrbv.lc-cn-n1-shared.com"}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>电竞大师小明</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/talking/">
+                <i class="iconfont icon-speakernotes"></i>
+                说说
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/article.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.7)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="逆透视映射（InversePerspectiveMapping）">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2021-09-23 21:38" pubdate>
+        2021年9月23日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      13
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- LeanCloud 统计文章PV -->
+      <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="leancloud-page-views"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">逆透视映射（InversePerspectiveMapping）</h1>
+            
+            <div class="markdown-body">
+              <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>众所周知，真实世界的三维坐标在向相机的成像平面上投影时，会损失深度信息，使得整个过程不可逆。也就是说，已知图像中一个点的坐标$(u,v)$是无法求得该点在真实世界的三维坐标$(X_w, Y_w, Z_w)$的。</p>
+<p>那么，如果额外多给一项信息，即现在关心的所有三维世界的点都是同在一个平面(比如路面上的车道线)上呢？此时图像像素坐标系和世界坐标系之间的坐标转换就变成了可逆关系。</p>
+<p>这种情形下，从像素坐标系坐标得到世界坐标系坐标的做法称作<strong>逆透视映射</strong>。</p>
+<h2 id="应用一：同一物理平面在两幅图像之间的转换"><a href="#应用一：同一物理平面在两幅图像之间的转换" class="headerlink" title="应用一：同一物理平面在两幅图像之间的转换"></a>应用一：同一物理平面在两幅图像之间的转换</h2><p>现有：</p>
+<ul>
+<li>一个物理世界的平面，称作$P$</li>
+<li>两个不同位置的相机，称作$A$和$B$</li>
+<li>$P$在$A$的成像平面上的投影，称作$P_A$，其上一点在$A$的像素坐标系上的坐标记作$(u_A,v_A)$</li>
+<li>$P$在$B$的成像平面上的投影，称作$P_B$，其上一点在$B$的像素坐标系上的坐标记作$(u_B,v_B)$</li>
+</ul>
+<p><div align=center><img title="" src="/img/article/homo1.jpg" srcset="/img/loading.gif" lazyload width="129%" height="129%" align=center></div><br></p>
+<p>那么，$P_A$和$P_B$之间互为投影变换（单应性变换），这意味着存在一个3x3的可逆矩阵$\boldsymbol{H}$，使得：</p>
+<script type="math/tex; mode=display">
+\left[
+\begin{array}{c} 
+ u_A      \\
+ v_A      \\
+ 1      \\
+\end{array}
+\right]
+ =
+\boldsymbol{H}
+\left[
+\begin{array}{c} 
+ u_B      \\
+ v_B      \\
+ 1      \\
+\end{array}
+\right]</script><p>矩阵$\boldsymbol{H}$中的9个元素的取值可以通过在两幅图像中取4组不共线的对应点解方程得到，也可以通过两个相机内外参矩阵之间的关系得到。</p>
+<h2 id="应用二：车道线物理坐标的求解"><a href="#应用二：车道线物理坐标的求解" class="headerlink" title="应用二：车道线物理坐标的求解"></a>应用二：车道线物理坐标的求解</h2><p>道路平面上的车道线上的点在世界坐标系中的坐标，与对应点在前视相机像素坐标系中的坐标之间，同样存在上述单应性变换关系。这一点可以从下面的公式推导过程中得到：</p>
+<p><div align=center><img title="" src="/img/article/homo2.png" srcset="/img/loading.gif" lazyload width="80%" height="80%" align=center></div><br></p>
+<p>首先，图像像素坐标系和世界坐标系之间的坐标转换关系如下：</p>
+<script type="math/tex; mode=display">
+\left[
+\begin{array}{c} 
+ u      \\
+ v      \\
+ 1      \\
+\end{array}
+\right]
+=
+\frac{1}{Z_c}
+\boldsymbol{K}
+\boldsymbol{E}
+\left[
+\begin{array}{c} 
+ X_w      \\
+ Y_w      \\
+ Z_w      \\
+ 1      \\
+\end{array}
+\right]
+=
+\frac{1}{Z_c}
+\left[
+\begin{array}{ccc} 
+ \frac{f}{d_x} & 0 &fu_0   \\
+ 0 & \frac{f}{d_y} &fv_0   \\
+ 0 & 0 &1   \\
+\end{array}
+\right]
+\left[
+\begin{array}{cccc} 
+ r_{11} & r_{12} &r_{12} &t_{1}      \\
+ r_{21} & r_{22} &r_{23} &t_{2}      \\
+ r_{31} & r_{32} &r_{33} &t_{3}      \\
+\end{array}
+\right]
+\left[
+\begin{array}{c} 
+ X_w      \\
+ Y_w      \\
+ Z_w      \\
+ 1      \\
+\end{array}
+\right]</script><p>在这个应用场景下有，$Z_w=0$，因此有：</p>
+<script type="math/tex; mode=display">
+\left[
+\begin{array}{c} 
+ u      \\
+ v      \\
+ 1      \\
+\end{array}
+\right]
+=
+\frac{1}{r_{31}X_w+r_{32}Y_w+t_3}
+\left[
+\begin{array}{ccc} 
+ \frac{f}{d_x} & 0 &fu_0   \\
+ 0 & \frac{f}{d_y} &fv_0   \\
+ 0 & 0 &1   \\
+\end{array}
+\right]
+\left[
+\begin{array}{cccc} 
+ r_{11} & r_{12} &r_{12} &t_{1}      \\
+ r_{21} & r_{22} &r_{23} &t_{2}      \\
+ r_{31} & r_{32} &r_{33} &t_{3}      \\
+\end{array}
+\right]
+\left[
+\begin{array}{c} 
+ X_w      \\
+ Y_w      \\
+ 0      \\
+ 1      \\
+\end{array}
+\right]</script><p>合并内外参矩阵得：</p>
+<script type="math/tex; mode=display">
+\left[
+\begin{array}{c} 
+ u      \\
+ v      \\
+ 1      \\
+\end{array}
+\right]
+=
+\frac{1}{r_{31}X_w+r_{32}Y_w+t_3}
+\left[
+\begin{array}{cccc} 
+ h_{11} & h_{12} &h_{12} &h_{13}      \\
+ h_{21} & h_{22} &h_{23} &h_{23}      \\
+ r_{31} & r_{32} &r_{33} &t_{3}      \\
+\end{array}
+\right]
+\left[
+\begin{array}{c} 
+ X_w      \\
+ Y_w      \\
+ 0      \\
+ 1      \\
+\end{array}
+\right]</script><p>注意到，$\boldsymbol{H}$矩阵中的第三列元素其实是无效的，因此有：</p>
+<script type="math/tex; mode=display">
+\left[
+\begin{array}{c} 
+ u      \\
+ v      \\
+ 1      \\
+\end{array}
+\right]
+=
+\frac{1}{r_{31}X_w+r_{32}Y_w+t_3}
+\left[
+\begin{array}{ccc} 
+ h_{11} & h_{12}  &h_{13}      \\
+ h_{21} & h_{22}  &h_{23}      \\
+ r_{31} & r_{32}  &t_{3}      \\
+\end{array}
+\right]
+\left[
+\begin{array}{c} 
+ X_w      \\
+ Y_w      \\
+ 1      \\
+\end{array}
+\right]</script><p>上式中，可以看到$\boldsymbol{H}$矩阵的前两列由内参矩阵和旋转矩阵相乘得到，第三列由内参矩阵和平移向量相乘得到。这也是apollo代码中，用conceptual方式求取透视投影矩阵所基于的原理。</p>
+<p>这样，用$\boldsymbol{H}$的逆矩阵与像素坐标点相乘，然后归一化Z坐标，即可得到像素坐标点在世界坐标系中的XY坐标。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ol>
+<li><a target="_blank" rel="noopener" href="https://towardsdatascience.com/a-hands-on-application-of-homography-ipm-18d9e47c152f">https://towardsdatascience.com/a-hands-on-application-of-homography-ipm-18d9e47c152f</a></li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/74597564">https://zhuanlan.zhihu.com/p/74597564</a></li>
+<li><a target="_blank" rel="noopener" href="https://leijiezhang001.github.io/lane-det-from-BEV/">https://leijiezhang001.github.io/lane-det-from-BEV/</a></li>
+</ol>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/">工作技能</a>
+                    
+                      <a class="hover-with-bg" href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/%E6%97%A0%E4%BA%BA%E9%A9%BE%E9%A9%B6/">无人驾驶</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E8%BD%A6%E9%81%93%E7%BA%BF%E6%A3%80%E6%B5%8B/">车道线检测</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Inverse-Perspective-Mapping/">Inverse Perspective Mapping</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E5%8D%95%E5%BA%94%E6%80%A7%E7%9F%A9%E9%98%B5/">单应性矩阵</a>
+                    
+                      <a class="hover-with-bg" href="/tags/homography/">homography</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2021/11/08/C-%E7%B1%BB%E7%BB%A7%E6%89%BF%E6%9C%BA%E5%88%B6%E4%B8%AD%E7%9A%84%E4%BD%9C%E7%94%A8%E5%9F%9F%E5%B5%8C%E5%A5%97%E9%97%AE%E9%A2%98/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">C++类继承机制中的作用域嵌套问题</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/08/21/camera%E7%9B%B8%E5%85%B3%E7%9A%84%E5%9D%90%E6%A0%87%E7%B3%BB/">
+                        <span class="hidden-mobile">相机成像原理</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="twikoo"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/twikoo@1.4.1/dist/twikoo.all.min.js', function() {
+        var options = Object.assign(
+          {"envId":"twikoo-5gimyzvb3631ef62","region":"ap-shanghai","path":"window.location.pathname"},
+          {
+            el: '#twikoo',
+            path: 'window.location.pathname'
+          }
+        )
+        twikoo.init(options)
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <small><span>——————————我是有底线的——————————</span></small> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- LeanCloud 统计PV -->
+        <span id="leancloud-site-pv-container" style="display: none">
+            总访问量 
+            <span id="leancloud-site-pv"></span>
+             次
+          </span>
+      
+      
+        <!-- LeanCloud 统计UV -->
+        <span id="leancloud-site-uv-container" style="display: none">
+            总访客数 
+            <span id="leancloud-site-uv"></span>
+             人
+          </span>
+      
+
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+  <script defer src="/js/leancloud.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.1.4/es5/tex-svg.js" ></script>
+
+  
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/shizuku.model.json"},"display":{"position":"left","width":200,"height":400},"mobile":{"show":false,"scale":0.5},"log":false});</script></body>
+</html>

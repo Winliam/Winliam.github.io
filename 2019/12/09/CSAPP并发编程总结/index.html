@@ -1,0 +1,607 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/time.jpg">
+  <link rel="icon" href="/img/time.jpg">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="王者之路，就在脚下">
+  <meta name="author" content="William Guo">
+  <meta name="keywords" content="">
+  
+  <title>CSAPP并发编程总结 by 电竞大师小明</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"www.guohongming.xyz","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"ApWFLRBvVptYicRhN7DQqrOa-gzGzoHsz","app_key":"ihFV8rR5s2zuqoKPXqW9sydt","server_url":"https://apwflrbv.lc-cn-n1-shared.com"}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>电竞大师小明</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/talking/">
+                <i class="iconfont icon-speakernotes"></i>
+                说说
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/article.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.7)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="CSAPP并发编程总结">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2019-12-09 14:24" pubdate>
+        2019年12月9日 下午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.7k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      18
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- LeanCloud 统计文章PV -->
+      <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="leancloud-page-views"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">CSAPP并发编程总结</h1>
+            
+            <div class="markdown-body">
+              <h2 id="并发编程基本概念"><a href="#并发编程基本概念" class="headerlink" title="并发编程基本概念"></a>并发编程基本概念</h2><ul>
+<li><strong>并发</strong>：多个逻辑控制流的生命周期有重叠，即称为<strong>并发现象</strong>(concurrency)</li>
+<li><strong>并行</strong>：发生在多核/多计算机上的并发现象（在一个时刻上存在多个逻辑控制流），称为<strong>并行现象</strong>（parallel），是并发现象的真子集；</li>
+</ul>
+<h2 id="并发程序的三种构造方式："><a href="#并发程序的三种构造方式：" class="headerlink" title="并发程序的三种构造方式："></a>并发程序的三种构造方式：</h2><ul>
+<li><strong>进程</strong>：每个逻辑控制流实现为一个进程<ul>
+<li>特点：独立的虚拟地址空间</li>
+<li>优点：独立则不易混淆</li>
+<li>缺点：<ul>
+<li>独立则难以共享数据</li>
+<li>进程context切换和IPC开销高，所以往往比较慢（ 进程间通信机制）</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>I/O多路复用</strong>：状态机化，逻辑控制流的切换实现为状态机的状态切换。具体原理看<a target="_blank" rel="noopener" href="https://www.zhihu.com/question/32163005/answer/55772739">这个</a><ul>
+<li>优点：共享数据容易，并且没有进程context切换的开销</li>
+<li>缺点：编码复杂，不能充分利用多核处理器</li>
+</ul>
+</li>
+<li><strong>线程</strong>：重点，下面展开讲。</li>
+</ul>
+<h2 id="线程基本概念："><a href="#线程基本概念：" class="headerlink" title="线程基本概念："></a>线程基本概念：</h2><ul>
+<li><strong>主线程</strong>：进程中第一个运行的线程</li>
+<li><strong>对等线程</strong>：进程中后来运行的线程</li>
+<li><strong>与进程的区别</strong>：<ul>
+<li>上下文内容少，切换更快，开销更少，具体包括：线程ID、栈和栈指针、PC、条件码、register value</li>
+<li>一个进程的所有线程（对等线程池）彼此之间没有层次结构，都是对等的；</li>
+<li>对等线程之间共享进程的虚拟地址空间，可以等待另外一个对等线程终止或主动杀死它</li>
+</ul>
+</li>
+<li><strong>共享变量</strong>：一个变量的一个实例被不止一个线程引用，那么这个变量称为共享变量</li>
+<li><strong>线程安全的函数</strong>：被多个并发线程反复调用时能够一直产生正确结果的函数称为线程安全函数</li>
+<li><strong>可重入函数</strong>：线程安全函数的一个真子集，指不会引入任何共享数据的函数<ul>
+<li><strong>显式可重入</strong>：传参均为值传递（且非指针值传递），而且所有数据引用的都是本地自动栈变量</li>
+<li><strong>隐式可重入</strong>：在显式的基础上取消“值传递（且非指针值传递）”的限制，允许指针值传递和引用传递，但是传递的变量都是非共享变量时，该函数是隐式可重入的</li>
+</ul>
+</li>
+<li><strong>竞争</strong>：程序的正确性依赖于某条/某些特定的轨迹线，或者说不是全部的轨迹线都能让程序正确执行，哪怕是那些绕过了互斥锁禁止区的全部轨迹线也不行。（具体例子见CSAPP P719）</li>
+</ul>
+<h2 id="Posix线程模型："><a href="#Posix线程模型：" class="headerlink" title="Posix线程模型："></a>Posix线程模型：</h2><p>管理Linux线程的C语言接口包<pthread.h>，包含大约60个函数。</p>
+<ul>
+<li><strong>线程例程概念</strong>：接受和返回一个void指针的函数类型，其内容为线程真正要做的事。若输入输出的参数较多，应封装为一个结构体。</li>
+<li><strong>常用的pthread函数</strong>：<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">/*创建线程*/</span><br><span class="hljs-type">int</span> <span class="hljs-title function_">pthread_creat</span><span class="hljs-params">(&amp;tid, <span class="hljs-literal">NULL</span>, thread, <span class="hljs-literal">NULL</span>)</span><br><span class="hljs-comment">//(返回线程ID，设置线程属性(高阶内容)，线程例程函数名，线程例程函数的传参)，成功返回0，否则非0</span><br><br><span class="hljs-comment">/*终止线程*/</span><br><span class="hljs-comment">//方式1：某个对等线程的例程函数执行完毕，该线程会隐式终止</span><br><span class="hljs-comment">//方式2：某个对等线程调用pthread_exit函数，线程会显式终止，而且如果是主线程调用，它会等待所有其他对等线程终止后再终止（进程也被终止了）</span><br><span class="hljs-type">void</span> <span class="hljs-title function_">pthread_exit</span><span class="hljs-params">(<span class="hljs-type">void</span> *thread_return)</span> <span class="hljs-comment">//函数不返回（因为逻辑控制流都结束了啊），会将一些信息写到thread_return中</span><br><span class="hljs-comment">//方式3：某个对等线程调用系统exit函数，终止其所属进程及该进程所有的线程</span><br><span class="hljs-comment">//方式4：某个对等线程调用pthread_cancel函数，终止另一个对等线程</span><br><span class="hljs-type">int</span> <span class="hljs-title function_">pthread_cancel</span><span class="hljs-params">(<span class="hljs-type">pthread_t</span> tid)</span>  <span class="hljs-comment">//终止线程ID为tid的对等线程，成功返回0，否则非0</span><br><br><span class="hljs-comment">/*回收已终止线程的资源*/</span><br><span class="hljs-type">int</span> <span class="hljs-title function_">pthread_join</span><span class="hljs-params">(<span class="hljs-type">pthread_t</span> tid, <span class="hljs-type">void</span>**thread_return)</span> <span class="hljs-comment">//调用该函数的对等线程阻塞，等待线程ID为tid的对等线程结束，然后回收其资源后返回</span><br><br><span class="hljs-comment">/*分离线程*/</span><br><span class="hljs-comment">//一个线程的状态要么是detached要么是joinable，处于后者时意味着可以被其他线程杀死和回收资源，前者不可（自行终止，系统回收资源）</span><br><span class="hljs-type">int</span> <span class="hljs-title function_">pthread_detach</span><span class="hljs-params">(<span class="hljs-type">pthread_t</span> tid)</span>  <span class="hljs-comment">//调用该函数的对等线程将线程ID为tid的线程分离</span><br><br><span class="hljs-comment">/*获取自身ID*/</span><br><span class="hljs-type">pthread_t</span> <span class="hljs-title function_">pthread_self</span><span class="hljs-params">()</span>;<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="线程的内存模型（两个关键问题）"><a href="#线程的内存模型（两个关键问题）" class="headerlink" title="线程的内存模型（两个关键问题）"></a>线程的内存模型（两个关键问题）</h2><ul>
+<li><strong>线程的内存模型是怎样的？</strong>——不是整齐清楚的。。。</li>
+<li><strong>变量的实例如何映射到线程的内存模型中？</strong><ul>
+<li>全局变量+局部的静态变量：一个进程中只有一个实例，任何线程均可引用；</li>
+<li>局部的自动变量：多个实例，由各个线程栈自行管理。</li>
+</ul>
+</li>
+</ul>
+<h2 id="线程共享变量的冲突问题"><a href="#线程共享变量的冲突问题" class="headerlink" title="线程共享变量的冲突问题"></a>线程共享变量的冲突问题</h2><p>关键字：进度图-&gt;信号量-&gt;PV操作-&gt;互斥锁-&gt;互斥锁加/解锁-&gt;死锁</p>
+<ul>
+<li><strong>进度图</strong>：注意把P/V操作放到线段上，状态放到端点上，这样端点的状态即可解释为执行P/V操作前或者P/V操作后</li>
+<li><strong>信号量</strong>s：一个非负整数全局变量</li>
+<li><strong>PV操作</strong>（原子操作）：<ul>
+<li>P(s)操作：检查s是否为0；<ul>
+<li>是，则调用该函数的线程在此处阻塞；</li>
+<li>否，则将s减1后继续向下执行；</li>
+</ul>
+</li>
+<li>V(s)操作：先将s加1，然后检查有么有因为P(s)阻塞的线程，如有则将完成其P操作，然后置为就绪状态（等待调度），若没有那就没有。。若有不止一个，就随机选择一个，反正只能一个（因为要完成P操作啊）</li>
+</ul>
+</li>
+<li><strong>互斥锁</strong>：二元的信号量</li>
+<li><strong>互斥锁加/解锁</strong>：针对二元信号量的P/V操作</li>
+<li><strong>死锁</strong>：<br>禁止区外存在这样一些状态点，既不能向右，也不能向上，因为向上会进入线程A的禁止区，向右会进入线程B的禁止区。<br><br>通过以下原则来防止死锁：<br>给定所有互斥操作的一个全序( 全序概念)，如果每个线程都是以该全序获得互斥锁并以相反的顺序（不是说全序的逆序，而是线程A和线程B释放的顺序相反）释放，那么这个程序就不会出现死锁。（但是该原则现在看下来只适用于两个线程，更多的线程就要用到更复杂的银行家算法了）<br><br>例如：<br><ul>
+<li>线程1： P(s) -&gt; P(t) -&gt; V(t) -&gt; V(s);</li>
+<li>线程2： P(s) -&gt; P(t) -&gt; V(s) -&gt; V(t);</li>
+</ul>
+</li>
+</ul>
+<h2 id="并行程序的性能量化（暂时略过）"><a href="#并行程序的性能量化（暂时略过）" class="headerlink" title="并行程序的性能量化（暂时略过）"></a>并行程序的性能量化（暂时略过）</h2><h2 id="信号量用于共享资源调度（暂时略过）"><a href="#信号量用于共享资源调度（暂时略过）" class="headerlink" title="信号量用于共享资源调度（暂时略过）"></a>信号量用于共享资源调度（暂时略过）</h2>
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/">工作技能</a>
+                    
+                      <a class="hover-with-bg" href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/">并发编程</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E7%BA%BF%E7%A8%8B/">线程</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E4%BF%A1%E5%8F%B7%E9%87%8F/">信号量</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E9%94%81/">锁</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2019/12/25/note_of_shell/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Shell笔记</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2019/11/25/note_of_cpp/">
+                        <span class="hidden-mobile">C/C++笔记</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="twikoo"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/twikoo@1.4.1/dist/twikoo.all.min.js', function() {
+        var options = Object.assign(
+          {"envId":"twikoo-5gimyzvb3631ef62","region":"ap-shanghai","path":"window.location.pathname"},
+          {
+            el: '#twikoo',
+            path: 'window.location.pathname'
+          }
+        )
+        twikoo.init(options)
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <small><span>——————————我是有底线的——————————</span></small> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- LeanCloud 统计PV -->
+        <span id="leancloud-site-pv-container" style="display: none">
+            总访问量 
+            <span id="leancloud-site-pv"></span>
+             次
+          </span>
+      
+      
+        <!-- LeanCloud 统计UV -->
+        <span id="leancloud-site-uv-container" style="display: none">
+            总访客数 
+            <span id="leancloud-site-uv"></span>
+             人
+          </span>
+      
+
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+  <script defer src="/js/leancloud.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/shizuku.model.json"},"display":{"position":"left","width":200,"height":400},"mobile":{"show":false,"scale":0.5},"log":false});</script></body>
+</html>

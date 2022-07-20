@@ -1,0 +1,681 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/time.jpg">
+  <link rel="icon" href="/img/time.jpg">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="王者之路，就在脚下">
+  <meta name="author" content="William Guo">
+  <meta name="keywords" content="">
+  
+  <title>预测结果评价的量化指标 by 电竞大师小明</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"www.guohongming.xyz","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"ApWFLRBvVptYicRhN7DQqrOa-gzGzoHsz","app_key":"ihFV8rR5s2zuqoKPXqW9sydt","server_url":"https://apwflrbv.lc-cn-n1-shared.com"}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>电竞大师小明</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/talking/">
+                <i class="iconfont icon-speakernotes"></i>
+                说说
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/article.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.7)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="预测结果评价的量化指标">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-04-01 10:59" pubdate>
+        2020年4月1日 上午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.8k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      20
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- LeanCloud 统计文章PV -->
+      <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="leancloud-page-views"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">预测结果评价的量化指标</h1>
+            
+            <div class="markdown-body">
+              <h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h2><h3 id="二分类情形下的P-N-T-F概念"><a href="#二分类情形下的P-N-T-F概念" class="headerlink" title="二分类情形下的P/N/T/F概念"></a>二分类情形下的P/N/T/F概念</h3><ol>
+<li>Positive/Negative：样本空间的原始分类;</li>
+<li>True/False，预测结果与样本原始属性的偏差情况，即P-&gt;P/N-&gt;N为T，P-&gt;N/N-&gt;P为F;因此，T和F需要再细分为：<ul>
+<li>TP：P-&gt;P(正类被预测为正类，真正类)</li>
+<li>TN：N-&gt;N(负类被预测为负类，真负类)</li>
+<li>FP：N-&gt;P(负类被预测为正类，假正类)</li>
+<li>FN：P-&gt;N(正类被预测为负类，假负类）</li>
+</ul>
+</li>
+</ol>
+<h3 id="多分类情形下的P-N-T-F概念"><a href="#多分类情形下的P-N-T-F概念" class="headerlink" title="多分类情形下的P/N/T/F概念"></a>多分类情形下的P/N/T/F概念</h3><p>多分类时需要针对单独每一个类别进行分析，然后再综合分析。比如，对于一个三分类情形，先分析类别A，则A类为Positive，B类和C类为Negative。然后得到A的混淆矩阵：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">原始\预测</th>
+<th style="text-align:center">a</th>
+<th style="text-align:center">非a</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><strong>A</strong></td>
+<td style="text-align:center">$TP_A$</td>
+<td style="text-align:center">$FN_A$</td>
+</tr>
+<tr>
+<td style="text-align:center"><strong>非A</strong></td>
+<td style="text-align:center">$FP_A$</td>
+<td style="text-align:center">$TN_A$</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="变量命名-personal"><a href="#变量命名-personal" class="headerlink" title="变量命名(personal)"></a>变量命名(personal)</h2><p>若以X为样本中X类数量，M为样本总数，x为预测结果中的X类数量，T为正确预测数量，F为错误预测数量，综上有：</p>
+<ul>
+<li>$M = A+B+C = a+b+c = T + F$（不解释）</li>
+<li>$T = TP_A+TP_B+TP_C$（不解释）</li>
+<li>$F = FP_A+FP_B+FP_C = FN_A+FN_B+FN_C$（不解释） </li>
+<li>$A = TP_A+FN_A$（样本中的A类数量=真A类数量+假非A类数量）</li>
+<li>$a = TP_A+FP_A$（预测中的A类数量=真A类数量+假A类数量）</li>
+</ul>
+<p>综合来看还是比较复杂的，实操时最好先把混淆矩阵算出来，然后再进行下面基本指标和高级指标的计算。</p>
+<h2 id="基本指标"><a href="#基本指标" class="headerlink" title="基本指标"></a>基本指标</h2><ul>
+<li><strong>accuracy</strong>: 模型做正确预测的能力 <script type="math/tex; mode=display">\frac{T}{M}</script></li>
+<li><strong>recall/hit-rate/TruePositiveRate/sensitivity</strong>: 原始样本中的A类有多少被正确预测出来 <script type="math/tex; mode=display">\frac{TP_A}{A}</script></li>
+<li><strong>precision</strong>: 找到的A类中有多少是真正的A类 <script type="math/tex; mode=display">\frac{TP_A}{a}</script></li>
+<li><strong>fall-out/FalsePositiveRate</strong>: 原始样本中的非A类有多少被错误地预测成了A类 <script type="math/tex; mode=display">\frac{FN_A}{B+C}</script></li>
+<li><strong>F1 score</strong>: precision和recall的调和平均数<script type="math/tex; mode=display">\frac{2}{\frac{1}{precision}+\frac{1}{recall}}</script></li>
+</ul>
+<p>综上可以看出，除了accuracy之外，其他4个指标都与类别强相关，这意味着对于每一类别都有这4个指标。那么如何综合不同类别的基本指标，从而得到对于一个模型而言的全局指标呢？常用以下三种方式：</p>
+<ol>
+<li>Macro-Average : 求各个类别指标的算数平均值作为全局指标。举个例子<script type="math/tex; mode=display">
+presicion = \frac{precision_A+precision_B+precision_C}{3}
+= \frac{1}{3}(\frac{TP_A}{a}+\frac{TP_B}{b}+\frac{TP_C}{c})</script></li>
+<li>Micro-Average : 看下面例子就明白，此时全局precision和recall是相同的。<script type="math/tex; mode=display">
+precision = \frac{TP_A+TP_B+TP_C}{a+b+c} = \frac{TP_A+TP_B+TP_C}{M}</script></li>
+<li>Weighted-Average : 求各个类别指标的加权平均值作为全局指标，权重为该类别在样本空间中的比例。<script type="math/tex; mode=display">
+precision = precision_A * \frac{A}{M} + precision_B * \frac{B}{M} +precision_C * \frac{C}{M}</script></li>
+</ol>
+<h2 id="高级指标"><a href="#高级指标" class="headerlink" title="高级指标"></a>高级指标</h2><h3 id="ROC曲线"><a href="#ROC曲线" class="headerlink" title="ROC曲线"></a><strong>ROC曲线</strong></h3><ul>
+<li>横轴为FPR，样本中非A类多少被错误预测成了A类</li>
+<li>纵轴为TPR，样本中A类多少被正确预测成了A类（也就是recalll）</li>
+<li>0-1之间选择不同的分类阈值，从而得到同一分类器的不同subversion，因此ROC曲线上一个点(x,y)的含义为：对于某个特定的分类阈值，有y%的A类被成功预测成了A类，但代价是x%的非A类也被预测成了A类。</li>
+<li>我们肯定希望x越小越好，y越大越好（所有的飞机都被找到，大雁及其他鸟类还不被当成飞机），从图形上来看就是尽量靠近左上角。</li>
+<li><strong>ROC-AUC值</strong>，ROC曲线对x轴的积分，对于同样的x值，y值越大，面积越大，越符合我们的期望，也就是分类效果越好。</li>
+</ul>
+<h3 id="P-R曲线"><a href="#P-R曲线" class="headerlink" title="P-R曲线"></a><strong>P-R曲线</strong></h3><ul>
+<li>横轴为recall（真A类占全体样本A类的比例）</li>
+<li>纵轴为precision（真A类占全体预测A类的比例）</li>
+<li>0-1之间选择不同的分类阈值，从而得到同一分类器的不同subversion，因此P-R曲线上一个点(x,y)的含义为：对于某个特定的分类阈值，有x%的A类被成功预测成了A类(被召回)，并且这些真A类占a的比例为y%。</li>
+<li>我们希望x和y都越大越好，因为这意味着所有的飞机都被找到的同时，被认为是飞机的还真就都是飞机。从图形上来看就是尽量靠近右上角。</li>
+<li><strong>PR-AUC值</strong>，即所谓的<strong>AP</strong>值，P-R曲线对x轴的积分，也是越大越好。</li>
+<li><strong>mAP</strong>，计算出所有类别的<strong>AP</strong>值，然后计算算数平均数，即为整个模型的mAP值。</li>
+</ul>
+<h2 id="其他话题"><a href="#其他话题" class="headerlink" title="其他话题"></a>其他话题</h2><h3 id="mAP计算步骤"><a href="#mAP计算步骤" class="headerlink" title="mAP计算步骤"></a>mAP计算步骤</h3><ol>
+<li>取得模型预测结果，一般为一个prediction score</li>
+<li>选取一个threshold，将prediction score转化为PNTF</li>
+<li>依次统计每个类别的混淆矩阵</li>
+<li>根据每个类别的混淆矩阵计算出对应的precision和recall</li>
+<li>更换threshold，重复2-4</li>
+<li>所有的threshold完成后，即可得到每个类别各自的PR曲线，求AUC面积得到各个类别的AP值</li>
+<li>求所有类别AP值的算数平均数，即可得到mAP</li>
+</ol>
+<h3 id="目标检测中的mAP计算"><a href="#目标检测中的mAP计算" class="headerlink" title="目标检测中的mAP计算"></a>目标检测中的mAP计算</h3><p>目标检测中不仅要对比原始标签和预测结果标签的偏离情况，还要计算Bounding Box的IOU值。在预测前后标签相同的前提下，将IOU值代替分类任务中的prediction score来进行后续计算。</p>
+<h3 id="ROC曲线和PR曲线对比"><a href="#ROC曲线和PR曲线对比" class="headerlink" title="ROC曲线和PR曲线对比"></a><strong>ROC曲线和PR曲线对比</strong></h3><ol>
+<li>选定一个分类阈值，那么此时的recall是相同的，那么对于达到这个recall效果:<ul>
+<li>ROC曲线中衡量的是FPR（FP/N），也就是样本中的这么多大雁有多少被错当成了飞机</li>
+<li>PR曲线中衡量的是precision，也就是预测中的这么多飞机有多少真的是飞机（或者说有多少其实是大雁）</li>
+</ul>
+</li>
+<li>如果非A类样本增加：<ul>
+<li>预测结果中，由于分类模型没有变，所以将B/C类错误地预测为A类的数量和B/C类正确地预测为B/C必然会同时增加，因此FPR的分子分母同时变大，总体变化不会很大</li>
+<li>预测结果中，真A类数量不会变化，但是假A类数量必然增加，precision总体会变小</li>
+</ul>
+</li>
+<li>如果A类样本增加：<ul>
+<li>B/C类数量不会发生变化，假A类数量也不会发生变化，因此FPR不变 假A类数量不变，真A类数量必然增加，precision总体会变大</li>
+<li>综上所述，我们说，样本的分布情况会影响PR曲线形状，但（基本）不会影响ROC曲线形状；也因此，样本分布极不均匀时，优先选择PR曲线评估分类模型的性能（ROC曲线特喵的不受样本分布影响啊）</li>
+<li>归根结底，还是因为precision这个指标受样本分布影响太大，如果样本中A类占巨大多数，那么对A类进行预测的precision很容易显得很高，vice versa。</li>
+</ul>
+</li>
+</ol>
+<h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><p>[1] <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/147663370">https://zhuanlan.zhihu.com/p/147663370</a><br>[2] <a target="_blank" rel="noopener" href="https://blog.paperspace.com/mean-average-precision/">https://blog.paperspace.com/mean-average-precision/</a></p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/">工作技能</a>
+                    
+                      <a class="hover-with-bg" href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">神经网络</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/ROC%E6%9B%B2%E7%BA%BF/">ROC曲线</a>
+                    
+                      <a class="hover-with-bg" href="/tags/PR%E6%9B%B2%E7%BA%BF/">PR曲线</a>
+                    
+                      <a class="hover-with-bg" href="/tags/mAP/">mAP</a>
+                    
+                      <a class="hover-with-bg" href="/tags/mmAP/">mmAP</a>
+                    
+                      <a class="hover-with-bg" href="/tags/recall/">recall</a>
+                    
+                      <a class="hover-with-bg" href="/tags/precision/">precision</a>
+                    
+                      <a class="hover-with-bg" href="/tags/AUC/">AUC</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/04/10/AlexNet/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">AlexNet</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/03/12/%E8%87%AA%E5%AE%9A%E4%B9%89%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B%E6%95%B0%E6%8D%AE%E9%9B%86/">
+                        <span class="hidden-mobile">自定义目标检测数据集</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="twikoo"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/twikoo@1.4.1/dist/twikoo.all.min.js', function() {
+        var options = Object.assign(
+          {"envId":"twikoo-5gimyzvb3631ef62","region":"ap-shanghai","path":"window.location.pathname"},
+          {
+            el: '#twikoo',
+            path: 'window.location.pathname'
+          }
+        )
+        twikoo.init(options)
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <small><span>——————————我是有底线的——————————</span></small> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- LeanCloud 统计PV -->
+        <span id="leancloud-site-pv-container" style="display: none">
+            总访问量 
+            <span id="leancloud-site-pv"></span>
+             次
+          </span>
+      
+      
+        <!-- LeanCloud 统计UV -->
+        <span id="leancloud-site-uv-container" style="display: none">
+            总访客数 
+            <span id="leancloud-site-uv"></span>
+             人
+          </span>
+      
+
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+  <script defer src="/js/leancloud.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.1.4/es5/tex-svg.js" ></script>
+
+  
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/shizuku.model.json"},"display":{"position":"left","width":200,"height":400},"mobile":{"show":false,"scale":0.5},"log":false});</script></body>
+</html>

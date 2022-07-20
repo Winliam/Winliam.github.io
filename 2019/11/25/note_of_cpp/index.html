@@ -1,0 +1,621 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/time.jpg">
+  <link rel="icon" href="/img/time.jpg">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="王者之路，就在脚下">
+  <meta name="author" content="William Guo">
+  <meta name="keywords" content="">
+  
+  <title>C/C++笔记 by 电竞大师小明</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"www.guohongming.xyz","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"ApWFLRBvVptYicRhN7DQqrOa-gzGzoHsz","app_key":"ihFV8rR5s2zuqoKPXqW9sydt","server_url":"https://apwflrbv.lc-cn-n1-shared.com"}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>电竞大师小明</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/talking/">
+                <i class="iconfont icon-speakernotes"></i>
+                说说
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/article.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.7)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="C/C++笔记">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2019-11-25 17:13" pubdate>
+        2019年11月25日 下午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.6k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      20
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- LeanCloud 统计文章PV -->
+      <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="leancloud-page-views"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">C/C++笔记</h1>
+            
+            <div class="markdown-body">
+              <h3 id="数组指针-amp-指针的数组-amp-数组名"><a href="#数组指针-amp-指针的数组-amp-数组名" class="headerlink" title="数组指针&amp;指针的数组&amp;数组名"></a>数组指针&amp;指针的数组&amp;数组名</h3><p>故事从<code>int (*)[10]</code>开始，这是一种数据类型，具体点是一种<strong>“指向‘长度为10的int数组’这种类型的指针”</strong>类型。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-type">int</span> a[<span class="hljs-number">5</span>] = &#123;<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>&#125;;<br><br><span class="hljs-built_in">int</span> (*)[<span class="hljs-number">5</span>] p1;					<span class="hljs-comment">//竟然是错误的用法。。。</span><br><span class="hljs-built_in">int</span> (*p2)[<span class="hljs-number">5</span>] = a;					<span class="hljs-comment">//正不正确看编译器的种类和版本，不建议这么用</span><br><span class="hljs-built_in">int</span> (*p3)[<span class="hljs-number">5</span>] = &amp;a;					<span class="hljs-comment">//最正确的用法，注意，这里对a取地址得到的不是a的地址，而是将a的值直接赋过去，看起来就像没有取地址</span><br><br><span class="hljs-comment">/* 推荐用法 */</span><br><span class="hljs-keyword">typedef</span> uint8 Dt_ARRAY_700_uint8[<span class="hljs-number">700</span>]; 		<span class="hljs-comment">//先将数组定义成数据类型</span><br>Dt_ARRAY_700_uint8 uss_raw_data;<br><br>Dt_ARRAY_700_uint8 *ptr = &amp;uss_raw_data;		<span class="hljs-comment">//正确用法</span><br>Dt_ARRAY_700_uint8 *ptr = uss_raw_data;		<span class="hljs-comment">//等价于上面p2那个不建议使用的用法，在qnx平台上编译时就报错了。</span><br><br></code></pre></td></tr></table></figure></p>
+<h3 id="终结字符串、字符的数组、字符数组名"><a href="#终结字符串、字符的数组、字符数组名" class="headerlink" title="终结字符串、字符的数组、字符数组名"></a>终结字符串、字符的数组、字符数组名</h3><ol>
+<li><strong>常规的char的数组</strong><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-comment">/* 基于C99标准 */</span><br><span class="hljs-type">char</span> s1[<span class="hljs-number">5</span>] = &#123;<span class="hljs-string">&#x27;1&#x27;</span>, <span class="hljs-string">&#x27;2&#x27;</span>, <span class="hljs-string">&#x27;3&#x27;</span>, <span class="hljs-string">&#x27;4&#x27;</span>, <span class="hljs-string">&#x27;5&#x27;</span>&#125;;			<span class="hljs-comment">//常规的数组，只不过数组的元素是char</span><br><span class="hljs-type">char</span> s2[ ] = &#123;<span class="hljs-string">&#x27;1&#x27;</span>, <span class="hljs-string">&#x27;2&#x27;</span>, <span class="hljs-string">&#x27;3&#x27;</span>, <span class="hljs-string">&#x27;4&#x27;</span>, <span class="hljs-string">&#x27;5&#x27;</span>&#125;;			<span class="hljs-comment">//效果同s1，生成一个长度为5的数组</span><br><span class="hljs-type">char</span> s3[<span class="hljs-number">6</span>] = &#123;<span class="hljs-string">&#x27;1&#x27;</span>, <span class="hljs-string">&#x27;2&#x27;</span>, <span class="hljs-string">&#x27;3&#x27;</span>, <span class="hljs-string">&#x27;4&#x27;</span>, <span class="hljs-string">&#x27;5&#x27;</span>&#125;;			<span class="hljs-comment">//s[6]未提供初始值，默认初始化为&#x27;\0&#x27;</span><br><span class="hljs-type">char</span> s4[<span class="hljs-number">7</span>] = &#123;<span class="hljs-string">&#x27;1&#x27;</span>, <span class="hljs-string">&#x27;2&#x27;</span>, <span class="hljs-string">&#x27;3&#x27;</span>, <span class="hljs-string">&#x27;4&#x27;</span>, <span class="hljs-string">&#x27;5&#x27;</span>&#125;;			<span class="hljs-comment">//原理同s3，s[6]和s[7]都被初始化为&#x27;\0&#x27;</span><br></code></pre></td></tr></table></figure></li>
+<li><p><strong>基于”char的数组”实现的字符串语法糖</strong></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-comment">/* 基于C99标准 */</span><br><span class="hljs-type">char</span> s5[ ] = <span class="hljs-string">&quot;12345&quot;</span>;					<span class="hljs-comment">//自动开辟6个Byte而不是5个，s[5]默认初始化为&#x27;\0&#x27;，最终效果同s3</span><br><span class="hljs-type">char</span> s6[<span class="hljs-number">6</span>] = <span class="hljs-string">&quot;12345&quot;</span>;					<span class="hljs-comment">//效果同s3和s5</span><br><span class="hljs-type">char</span> s7[<span class="hljs-number">5</span>] = <span class="hljs-string">&quot;12345&quot;</span>;					<span class="hljs-comment">//效果同s1和s2</span><br><span class="hljs-type">char</span> s8[<span class="hljs-number">7</span>] = <span class="hljs-string">&quot;12345&quot;</span>;					<span class="hljs-comment">//效果同s4</span><br></code></pre></td></tr></table></figure>
+</li>
+<li><p><strong>基于”char的指针”实现的字符串语法糖</strong></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-comment">/* 基于C99标准 */</span><br><span class="hljs-type">char</span>* s9 = <span class="hljs-string">&quot;12345&quot;</span>;					<span class="hljs-comment">//自动开辟6个Byte而不是5个，s[5]默认初始化为&#x27;\0&#x27;，最终效果同s3。但是，是在全局的只读数据区开辟，数组内容无法被修改。</span><br></code></pre></td></tr></table></figure>
+</li>
+<li><p><strong>总结</strong><br>当你想创建一个内存内容为<code>&#123;&#39;1&#39;, &#39;2&#39;, &#39;3&#39;, &#39;4&#39;, &#39;5&#39;,&#39;\0&#39;&#125;</code>的对象时，以下4种做法等价，正规来讲应该用s3，但最省事的肯定是s5和s9（所以说是两个语法糖）。然后再视是否需要修改对象内容来决定s5还是s9。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-type">char</span> s3[<span class="hljs-number">6</span>] = &#123;<span class="hljs-string">&#x27;1&#x27;</span>, <span class="hljs-string">&#x27;2&#x27;</span>, <span class="hljs-string">&#x27;3&#x27;</span>, <span class="hljs-string">&#x27;4&#x27;</span>, <span class="hljs-string">&#x27;5&#x27;</span>&#125;;<br><span class="hljs-type">char</span> s5[ ] = <span class="hljs-string">&quot;12345&quot;</span>;<br><span class="hljs-type">char</span> s6[<span class="hljs-number">6</span>] = <span class="hljs-string">&quot;12345&quot;</span>;<br><span class="hljs-type">char</span>* s9 = <span class="hljs-string">&quot;12345&quot;</span>;<br></code></pre></td></tr></table></figure>
+<p>不过，在C99下发现s1，s2，s7这三个不以<code>&#39;\0&#39;</code>结尾的也可以用<code>printf(&quot;%s&quot;, s)</code>打印。。。不过，为了防止混淆，还是不要这么用。</p>
+</li>
+</ol>
+<h3 id="cin的控制流转移逻辑"><a href="#cin的控制流转移逻辑" class="headerlink" title="cin的控制流转移逻辑"></a>cin的控制流转移逻辑</h3><ol>
+<li>运行到<code>cin &gt;&gt; x</code>时，控制转移到终端，等待输入；</li>
+<li>此时可以向cin流写入多个值（以空格或者tab切分），直到输入回车，从终端向cin流写入的过程停止，控制返回给程序。</li>
+<li>cin以分隔符将流内的内容喂给<code>&gt;&gt;</code>右侧的变量</li>
+<li>再&gt;&gt;时，会先检查流是否为空，不为空则无需变更控制流，按照上一条的逻辑继续写目标变量。</li>
+</ol>
+<h3 id="未命名的命名空间与静态声明"><a href="#未命名的命名空间与静态声明" class="headerlink" title="未命名的命名空间与静态声明"></a>未命名的命名空间与静态声明</h3><div align=center><img title="" src="/img/article/cpp_static.png" srcset="/img/loading.gif" lazyload width="99%" height="99%" align=center></div>
+
+<p><br>静态声明的使用方法分两大类，其中面向过程的使用方法已经被C++标准取消，相应的符号隔离机制通过未命名的命名空间来实现。</p>
+<h3 id="define的特殊符号"><a href="#define的特殊符号" class="headerlink" title="define的特殊符号"></a>define的特殊符号</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">define</span> Conn(x,y)  x##y</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ToChar(x)  #@x</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> ToString(x) #x</span><br><br><span class="hljs-comment">// ## 表示拼接</span><br><span class="hljs-type">int</span> n = <span class="hljs-built_in">Conn</span>(<span class="hljs-number">123</span>, <span class="hljs-number">456</span>);<br><span class="hljs-type">int</span> n = <span class="hljs-number">123456</span>;<br><br><span class="hljs-comment">// #@ 表示为后面的符号x增加单引号</span><br><span class="hljs-type">char</span> a = <span class="hljs-built_in">ToChar</span>(<span class="hljs-number">1</span>);<br><span class="hljs-type">char</span> a = <span class="hljs-string">&#x27;1&#x27;</span>;<br><br><span class="hljs-comment">// # 表示为后面的符号x增加双引号</span><br><span class="hljs-type">char</span>* s = <span class="hljs-built_in">ToString</span>(<span class="hljs-number">123</span>);<br><span class="hljs-type">char</span>* s = <span class="hljs-string">&quot;123&quot;</span>;<br></code></pre></td></tr></table></figure>
+<h3 id="unique-ptr的两种指针释放方式"><a href="#unique-ptr的两种指针释放方式" class="headerlink" title="unique_ptr的两种指针释放方式"></a>unique_ptr的两种指针释放方式</h3><ol>
+<li>release<br>release只是简单的将被unique_ptr封装的内置指针吐出来，被指向的对象的内存不会被释放，内置指针与该对象之间的指向关系也不会被破坏。</li>
+<li>reset<br>reset首先释放unique_ptr封装起来的那个内置指针所指向的内存，然后根据传入的参数对该内置指针进行赋值。<div align=center><img title="" src="/img/article/unique_ptr.png" srcset="/img/loading.gif" lazyload width="80%" height="80%" align=center></div>
+
+</li>
+</ol>
+<h3 id="结构体排序"><a href="#结构体排序" class="headerlink" title="结构体排序"></a>结构体排序</h3><p>对于一串结构体，想排序，在C中可以基于stdlib库中的qsort接口配合一个自定义的比较函数实现。在C++中，有更elegant的做法。</p>
+<p>首先，如果这个类重载了小于运算符，那么直接调用algorithm库中的sort函数即可进行升序排列;</p>
+<p>其次，如果没有重载小于运算符，也可传入一个函数指针，或者就地定义一个lambda表达式。</p>
+<p>最后说一下sort接口的语义：<br>在sort的过程，针对一对元素A和B，需要知道谁应该在前，谁应该在后。怎么判断呢？将A在前，B在后送入给到sort接口的函数（重载的小于运算符也好，函数指针也好，lambda表达式也好，都是），如果吐出来true，说明次序对，否则次序相反。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs cpp">vector&lt;Point&gt; p = &#123;····&#125;;<br><br>方式一：结构体重载了<span class="hljs-keyword">operator</span>&lt;<br><span class="hljs-built_in">sort</span>(v.<span class="hljs-built_in">begin</span>(), v.<span class="hljs-built_in">end</span>()); <br><br>方式二：传入函数指针<br><span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">compare</span><span class="hljs-params">(<span class="hljs-type">const</span> Point&amp; p1, <span class="hljs-type">const</span> Point&amp; p2)</span> </span>&#123;<span class="hljs-keyword">return</span> p1.x &lt; p2.x;&#125;<br><span class="hljs-built_in">sort</span>(v.<span class="hljs-built_in">begin</span>(), v.<span class="hljs-built_in">end</span>(), compare); <br><br>方式三：就地lambda表达式<br><span class="hljs-built_in">sort</span>(v.<span class="hljs-built_in">begin</span>(), v.<span class="hljs-built_in">end</span>(), [](<span class="hljs-type">const</span> Point&amp; p1, <span class="hljs-type">const</span> Point&amp; p2) &#123;<span class="hljs-keyword">return</span> p1.x &lt; p2.x;&#125;); <br></code></pre></td></tr></table></figure></p>
+<p>另外还要提一点，就是STL中list容器的sort。algorithm提供的sort接口需要待排序结构体所在的容器提供随机访问迭代器，而list是不具备的。因此，list容器自己实现了sort成员函数。这个成员函数也是接受一个函数指针或者lambda表达式来check先后次序。</p>
+<h3 id="自定义数据结构如何使用范围for"><a href="#自定义数据结构如何使用范围for" class="headerlink" title="自定义数据结构如何使用范围for"></a>自定义数据结构如何使用范围for</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs cpp">MyClass mc;<br><span class="hljs-keyword">for</span>(<span class="hljs-keyword">auto</span> ele : mc)&#123;<br>&#125;;<br></code></pre></td></tr></table></figure>
+<p>自定义的数据结构需要同时满足以下五个条件，就可以对其使用上述范围for语句对容器进行遍历：</p>
+<ol>
+<li>定义了迭代器，指针也算；——用来迭代</li>
+<li>定义了<code>begin()</code>和<code>end()</code>方法；——用来启动和终止迭代</li>
+<li>针对迭代器定义了<code>!=</code>运算符；——用来进行终止条件判定</li>
+<li>针对迭代器定义了<code>++</code>前置自增运算符；——用来递增迭代器</li>
+<li>针对迭代器定义了<code>*</code>解引用操作符；——用来访问容器元素</li>
+</ol>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/">工作技能</a>
+                    
+                      <a class="hover-with-bg" href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/C-C-%E7%AC%94%E8%AE%B0/">C/C++笔记</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/C%E8%AF%AD%E8%A8%80/">C语言</a>
+                    
+                      <a class="hover-with-bg" href="/tags/C/">C++</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E6%95%B0%E7%BB%84%E6%8C%87%E9%92%88/">数组指针</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E5%AD%97%E7%AC%A6%E6%95%B0%E7%BB%84/">字符数组</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E5%AD%97%E7%AC%A6%E4%B8%B2/">字符串</a>
+                    
+                      <a class="hover-with-bg" href="/tags/unique-ptr/">unique_ptr</a>
+                    
+                      <a class="hover-with-bg" href="/tags/qsort/">qsort</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2019/12/09/CSAPP%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E6%80%BB%E7%BB%93/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">CSAPP并发编程总结</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2019/11/15/%E5%8F%8C%E7%BA%BF%E6%80%A7%E6%8F%92%E5%80%BC%E6%98%AF%E5%95%A5%EF%BC%9F/">
+                        <span class="hidden-mobile">双线性插值是啥？</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="twikoo"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/twikoo@1.4.1/dist/twikoo.all.min.js', function() {
+        var options = Object.assign(
+          {"envId":"twikoo-5gimyzvb3631ef62","region":"ap-shanghai","path":"window.location.pathname"},
+          {
+            el: '#twikoo',
+            path: 'window.location.pathname'
+          }
+        )
+        twikoo.init(options)
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <small><span>——————————我是有底线的——————————</span></small> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- LeanCloud 统计PV -->
+        <span id="leancloud-site-pv-container" style="display: none">
+            总访问量 
+            <span id="leancloud-site-pv"></span>
+             次
+          </span>
+      
+      
+        <!-- LeanCloud 统计UV -->
+        <span id="leancloud-site-uv-container" style="display: none">
+            总访客数 
+            <span id="leancloud-site-uv"></span>
+             人
+          </span>
+      
+
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+  <script defer src="/js/leancloud.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.1.4/es5/tex-svg.js" ></script>
+
+  
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/shizuku.model.json"},"display":{"position":"left","width":200,"height":400},"mobile":{"show":false,"scale":0.5},"log":false});</script></body>
+</html>

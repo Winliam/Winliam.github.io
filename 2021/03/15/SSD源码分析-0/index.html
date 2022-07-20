@@ -1,0 +1,727 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/time.jpg">
+  <link rel="icon" href="/img/time.jpg">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="王者之路，就在脚下">
+  <meta name="author" content="William Guo">
+  <meta name="keywords" content="">
+  
+  <title>SSD源码分析 —— 整体框架 by 电竞大师小明</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"www.guohongming.xyz","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"ApWFLRBvVptYicRhN7DQqrOa-gzGzoHsz","app_key":"ihFV8rR5s2zuqoKPXqW9sydt","server_url":"https://apwflrbv.lc-cn-n1-shared.com"}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>电竞大师小明</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/talking/">
+                <i class="iconfont icon-speakernotes"></i>
+                说说
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/article.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.7)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="SSD源码分析 —— 整体框架">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2021-03-15 18:22" pubdate>
+        2021年3月15日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      3.3k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      38
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- LeanCloud 统计文章PV -->
+      <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="leancloud-page-views"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">SSD源码分析 —— 整体框架</h1>
+            
+            <div class="markdown-body">
+              <h2 id="0-前言"><a href="#0-前言" class="headerlink" title="0. 前言"></a>0. 前言</h2><p>最近忙着搞超声波，SSD的源码分析拖得有点久了。不过鉴于SSD的模型结构比较简单，而且较为复杂的gtbox匹配、损失计算等机制在Faster RCNN业已理解，所以前后也没用多长时间。</p>
+<p>首先，还是算法的总体流程图，可以看出比Faster RCNN那是简单太多了。</p>
+<div align=center><img title="" src="/img/article/ssd_overview.png" srcset="/img/loading.gif" lazyload width="90%" height="90%" align=center></div>
+
+<p><br>第一步还是从dataset中加载图像，然后经过图像预处理，再通过以ResNet50为蓝本的feature extractor处理，结果再送到5个additional layer中，最终连同feature extractor的输出合计得到6个feature map，每个feature map再各自通过一个predictor进而得到预测结果(box_reg和objectness)。</p>
+<p>其中box_reg为相对于anchor的边界框回归参数，objectness经过softmax之后就是对应类别的置信度。如果是训练模式，就用这两个信息去求模型损失；如果是预测模式则对所有的边界框进行筛选得到最终的预测结果。</p>
+<p>其中anchor还是老样子，从6个feature map每一个的HW cell上面长出来2-3个，不同feature map上anchor的scale和ratio都不同，以达到金字塔的效果。</p>
+<h2 id="1-从dataset加载图像"><a href="#1-从dataset加载图像" class="headerlink" title="1. 从dataset加载图像"></a>1. 从dataset加载图像</h2><p>首先要从把标注好的图像文件以及标注xml文件读取进来，经过一系列图像预处理操作转化为tensor格式，大致流程跟<a target="_blank" rel="noopener" href="https://guohongming.xyz/2021/09/01/Faster-RCNN%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90-0/">之前</a>Faster RCNN差不多。</p>
+<p>但是，FasterRCNN的图像预处理有两次：</p>
+<ul>
+<li>第一次是在创建dataset类实例的时候，就是说从dataset类<code>__getitem__</code>方法返回的图像数据先经过了一次transform。这一次主要是to_tensor和随机水平翻转（预测模式无）。</li>
+<li>然后在送入模型之前又通过单独的GeneralizedRCNNTransform类，再transform一次。这一次的细节看<a target="_blank" rel="noopener" href="https://guohongming.xyz/2021/08/15/Faster-RCNN%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90-1/">这里</a></li>
+</ul>
+<p>回到SSD，预处理只有一次，全部集中在dataset类中实现，而且花样比较多(加*项为训练模式独有)：</p>
+<h3 id="1-1-SSDcrop"><a href="#1-1-SSDcrop" class="headerlink" title="1.1 SSDcrop*"></a>1.1 SSDcrop*</h3><p>顾名思义，这是SSD的特点之一。目的是为了在一张原始图片上截取一个子区域作为模型的输入，而不是整图送进去。而且很明显，不是在原图上随便截就可以，截出来的子区域要符合一定条件：</p>
+<ol>
+<li>HW比例不能太夸张，要在1:2以内；</li>
+<li>跟所有GTbox的IOU都要在一个合理范围内，这个合理范围在[0.1, inf], [0.3, inf], [0.5, inf], [0.7, inf], [0.9, inf], [-inf, inf]中随机选取。</li>
+<li>至少有一个GTbox的中心点在这个子区域内。</li>
+</ol>
+<p>得到一个满足全部3个条件的子区域后，进行下一步。这意味着，对于一个epoch，这张图片只有一个子区域得到了有效使用，而且下一个epoch对于这张图片很有可能又换了一个子区域。</p>
+<p><strong>相同，又不完全相同；重复，又不完全重复。艺术啊！</strong></p>
+<p><strong>本阶段数据转化结果:</strong></p>
+<ul>
+<li><strong>image</strong>: jpg(375x500) -&gt; jpg(252x438)<blockquote>
+<p>这一步的目的目测是为了扩充训练集的样本数量，但是这样不保持原图比例的裁剪然后再缩放，相比于预测时只是缩放不裁剪，真的可以吗？而且预测时这种不考虑原图HW大小和比例，直接硬缩放为300x300，直觉上也感觉不太对。mark</p>
+</blockquote>
+</li>
+</ul>
+<h3 id="1-2-Resize"><a href="#1-2-Resize" class="headerlink" title="1.2 Resize"></a>1.2 Resize</h3><p>简单粗暴调用官方库<code>torchvision.transforms.Resize()</code>，利用双线性插值原理将裁剪后的图像/原始图像，缩放到300x300。</p>
+<p><strong>本阶段数据转化结果:</strong></p>
+<ul>
+<li><strong>image</strong>: jpg(252x438) -&gt; jpg(300x300)<blockquote>
+<p>SSD使用了一个简单而高效的机制来处理图像缩放过程中的GTbox坐标变化，就是将GTbox的坐标以图像比例坐标的方式存储，这样不管图像缩放多少，用这个比例坐标乘以新的尺寸即可得到正确的GTbox坐标。</p>
+</blockquote>
+</li>
+</ul>
+<h3 id="1-3-ColorJitter"><a href="#1-3-ColorJitter" class="headerlink" title="1.3 ColorJitter*"></a>1.3 ColorJitter*</h3><p>调用官方库<code>torchvision.transforms.ColorJitter()</code>，在HSV空间将图像数据随机抖动一下。</p>
+<p><strong>本阶段数据转化结果:略</strong></p>
+<h3 id="1-4-ToTensor"><a href="#1-4-ToTensor" class="headerlink" title="1.4 ToTensor"></a>1.4 ToTensor</h3><p>PIL image格式转成tensor，换言之，之前的操作都是以PIL image格式进行的。</p>
+<p><strong>本阶段数据转化结果:</strong></p>
+<ul>
+<li><strong>image</strong>: jpg(300x300) -&gt; tensor(3x300x300)</li>
+</ul>
+<h3 id="1-5-RandomHorizontalFlip"><a href="#1-5-RandomHorizontalFlip" class="headerlink" title="1.5 RandomHorizontalFlip*"></a>1.5 RandomHorizontalFlip*</h3><p>随机水平翻转，不解释了。</p>
+<p><strong>本阶段数据转化结果:略</strong></p>
+<h3 id="1-6-Normalization"><a href="#1-6-Normalization" class="headerlink" title="1.6 Normalization"></a>1.6 Normalization</h3><p>数据归一化，三通道的均值和方差还是取自ImageNet，<code>mean = [0.485, 0.456, 0.406]</code>，<code>std = [0.229, 0.224, 0.225]</code>。</p>
+<p><strong>本阶段数据转化结果:略</strong></p>
+<h3 id="1-7-AssignGTbox2Anchor"><a href="#1-7-AssignGTbox2Anchor" class="headerlink" title="1.7 AssignGTbox2Anchor*"></a>1.7 AssignGTbox2Anchor*</h3><p>又来了，Anchor与GTbox匹配的概念并不新奇，但这个实现方式却是SSD的鲜明特点。</p>
+<p>为什么？因为在SSD的One-Stage理念下，不存在proposal概念，或者说anchor就是最终的proposal，而这个proposal又是预先按照既定参数生成的，不是来源于图像数据本身的。也就是说，对于SSD而言从一开始就知道proposal框的坐标，因此在预处理的时候就把Anchor与GTbox的匹配给做了。</p>
+<p>这一步实际产生的效果是，按照anchor的排列顺序产生与之匹配的GTbox的序列以及label的序列，用以替换target中来自xml文件中的box和label信息。这样在后面计算损失时用到GT信息时，可以直接decode target中的box得到GT_box_reg，然后直接与预测的box_reg进行smooth L1损失计算。</p>
+<p><strong>本阶段数据转化结果:</strong></p>
+<ul>
+<li><p><strong>image</strong>: 无变化</p>
+</li>
+<li><p><strong>GTbox</strong>: tensor(1x4) -&gt; tensor(8732x4)</p>
+</li>
+</ul>
+<h2 id="2-FeatureExtractor"><a href="#2-FeatureExtractor" class="headerlink" title="2. FeatureExtractor"></a>2. FeatureExtractor</h2><p>其实还是一个Backbone的概念，目的是为了从原始图像中提取出Feature map。这里还是以<a target="_blank" rel="noopener" href="https://guohongming.xyz/2021/08/08/ResNet/">ResNet50</a>为例，取其第一个卷积层conv1以及后续的3组Residual结构作为Backbone。</p>
+<p>其中值得注意的是，第3组Residual结构conv4_x不是照搬过来的，而是将其这一组的6个Residual结构中的第一个的步距由2调整为1。原理这一个Residual结构因为身处组内第一的位置，因此要承担调整HW尺寸不断折半的任务，但是这里调整了stride，不用折半了。</p>
+<div align=center><img title="" src="/img/article/resnet50_ssd.png" srcset="/img/loading.gif" lazyload width="80%" height="80%" align=center></div>
+
+<p><br><strong>本阶段数据转化结果:</strong></p>
+<ul>
+<li><strong>image</strong>: tensor(3x300x300) -&gt; tensor(64x150x150) -&gt; tensor(256x75x75) -&gt; tensor(512x38x38) -&gt; tensor(1024x38x38)</li>
+</ul>
+<blockquote>
+<p>如果不调整conv4_x，那么最后一个tensor应该是1024x38x38x19</p>
+</blockquote>
+<h2 id="3-AdditionalLayer"><a href="#3-AdditionalLayer" class="headerlink" title="3. AdditionalLayer"></a>3. AdditionalLayer</h2><p>为了在不同尺度上得到更加准确的预测结果，这里又额外构造了5个AdditionalLayer结构，在Backbone输出的基础上继续进行卷积运算。</p>
+<p>每一个AdditionalLayer结构都是由两个串联的ConvBNRelu单元组成，不断的缩小feature map的HW尺寸，以使得越往后的HW cell对应更大的原图感受野。</p>
+<div align=center><img title="" src="/img/article/ssd_additional.png" srcset="/img/loading.gif" lazyload width="100%" height="100%" align=center></div>
+
+<p><br><strong>本阶段数据转化结果: 详见上图</strong></p>
+<h2 id="4-AnchorGenerator"><a href="#4-AnchorGenerator" class="headerlink" title="4. AnchorGenerator"></a>4. AnchorGenerator</h2><p>未在总流程图体现的一点是AnchorGenerator，因为anchor是基于规则生成的。老样子，还是为每一个feature map上的每一个HW cell生成一套anchor，并且总体上还是遵循在不同的feature map上生成不同scale的anchor。但是相比于用了FPN的Faster RCNN，SSD的AnchorGenerator的规则有一些自己的特点。</p>
+<div align=center><img title="" src="/img/article/ssd_anchor.png" srcset="/img/loading.gif" lazyload width="80%" height="80%" align=center></div>
+
+<p><br>按照上表的规则生成的这些anchor都直接用在300x300图像上的比例坐标表示，而不是向FasterRCNN一样，用相对于某个中心点的相对坐标。</p>
+<p><strong>本阶段数据转化结果</strong></p>
+<ul>
+<li><strong>anchor参数</strong> -&gt; <strong>anchor</strong> : tensor(8732x4)</li>
+</ul>
+<h2 id="5-Predictor"><a href="#5-Predictor" class="headerlink" title="5. Predictor"></a>5. Predictor</h2><p>得到6个feature map之后，将其分别送入一个Predictor。每个Predictor包含两个卷积结构，一个用来生成objectness，一个用来生成box_reg。具体的结构也比较简单：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># box_extractor</span><br>ModuleList(<br>  (<span class="hljs-number">0</span>): Conv2d(<span class="hljs-number">1024</span>, <span class="hljs-number">16</span>, kernel_size=(<span class="hljs-number">3</span>, <span class="hljs-number">3</span>), stride=(<span class="hljs-number">1</span>, <span class="hljs-number">1</span>), padding=(<span class="hljs-number">1</span>, <span class="hljs-number">1</span>))<br>  (<span class="hljs-number">1</span>): Conv2d(<span class="hljs-number">512</span>, <span class="hljs-number">24</span>, kernel_size=(<span class="hljs-number">3</span>, <span class="hljs-number">3</span>), stride=(<span class="hljs-number">1</span>, <span class="hljs-number">1</span>), padding=(<span class="hljs-number">1</span>, <span class="hljs-number">1</span>))<br>  (<span class="hljs-number">2</span>): Conv2d(<span class="hljs-number">512</span>, <span class="hljs-number">24</span>, kernel_size=(<span class="hljs-number">3</span>, <span class="hljs-number">3</span>), stride=(<span class="hljs-number">1</span>, <span class="hljs-number">1</span>), padding=(<span class="hljs-number">1</span>, <span class="hljs-number">1</span>))<br>  (<span class="hljs-number">3</span>): Conv2d(<span class="hljs-number">256</span>, <span class="hljs-number">24</span>, kernel_size=(<span class="hljs-number">3</span>, <span class="hljs-number">3</span>), stride=(<span class="hljs-number">1</span>, <span class="hljs-number">1</span>), padding=(<span class="hljs-number">1</span>, <span class="hljs-number">1</span>))<br>  (<span class="hljs-number">4</span>): Conv2d(<span class="hljs-number">256</span>, <span class="hljs-number">16</span>, kernel_size=(<span class="hljs-number">3</span>, <span class="hljs-number">3</span>), stride=(<span class="hljs-number">1</span>, <span class="hljs-number">1</span>), padding=(<span class="hljs-number">1</span>, <span class="hljs-number">1</span>))<br>  (<span class="hljs-number">5</span>): Conv2d(<span class="hljs-number">256</span>, <span class="hljs-number">16</span>, kernel_size=(<span class="hljs-number">3</span>, <span class="hljs-number">3</span>), stride=(<span class="hljs-number">1</span>, <span class="hljs-number">1</span>), padding=(<span class="hljs-number">1</span>, <span class="hljs-number">1</span>))<br>)<br><br><span class="hljs-comment"># objectness_extractor</span><br>ModuleList(<br>  (<span class="hljs-number">0</span>): Conv2d(<span class="hljs-number">1024</span>, <span class="hljs-number">84</span>, kernel_size=(<span class="hljs-number">3</span>, <span class="hljs-number">3</span>), stride=(<span class="hljs-number">1</span>, <span class="hljs-number">1</span>), padding=(<span class="hljs-number">1</span>, <span class="hljs-number">1</span>))<br>  (<span class="hljs-number">1</span>): Conv2d(<span class="hljs-number">512</span>, <span class="hljs-number">126</span>, kernel_size=(<span class="hljs-number">3</span>, <span class="hljs-number">3</span>), stride=(<span class="hljs-number">1</span>, <span class="hljs-number">1</span>), padding=(<span class="hljs-number">1</span>, <span class="hljs-number">1</span>))<br>  (<span class="hljs-number">2</span>): Conv2d(<span class="hljs-number">512</span>, <span class="hljs-number">126</span>, kernel_size=(<span class="hljs-number">3</span>, <span class="hljs-number">3</span>), stride=(<span class="hljs-number">1</span>, <span class="hljs-number">1</span>), padding=(<span class="hljs-number">1</span>, <span class="hljs-number">1</span>))<br>  (<span class="hljs-number">3</span>): Conv2d(<span class="hljs-number">256</span>, <span class="hljs-number">126</span>, kernel_size=(<span class="hljs-number">3</span>, <span class="hljs-number">3</span>), stride=(<span class="hljs-number">1</span>, <span class="hljs-number">1</span>), padding=(<span class="hljs-number">1</span>, <span class="hljs-number">1</span>))<br>  (<span class="hljs-number">4</span>): Conv2d(<span class="hljs-number">256</span>, <span class="hljs-number">84</span>, kernel_size=(<span class="hljs-number">3</span>, <span class="hljs-number">3</span>), stride=(<span class="hljs-number">1</span>, <span class="hljs-number">1</span>), padding=(<span class="hljs-number">1</span>, <span class="hljs-number">1</span>))<br>  (<span class="hljs-number">5</span>): Conv2d(<span class="hljs-number">256</span>, <span class="hljs-number">84</span>, kernel_size=(<span class="hljs-number">3</span>, <span class="hljs-number">3</span>), stride=(<span class="hljs-number">1</span>, <span class="hljs-number">1</span>), padding=(<span class="hljs-number">1</span>, <span class="hljs-number">1</span>))<br>)<br></code></pre></td></tr></table></figure></p>
+<p>可以看到，3x3的卷积，SAME PADDING，1 STRIDE，就是不改变卷积前后的HW尺寸，只调整深度：</p>
+<ul>
+<li>对于box_extractor，深度调整为4 x anchor_num；</li>
+<li>对于objectness_extractor，深度调整为21 x anchor_num。</li>
+</ul>
+<p>例如，1024x38x38的feature map在经过box_extractor处理之后，得到一个16x38x38的tensor。16的来由是这一层feature map上的每个cell生成4个anchor，而每个anchor有4个坐标值。就是说，1个HW cell的每4个通道组成一组完整的box_reg参数。然后再将这个16x38x38的tensor reshape成5776x4，即可得到第一个feature map生成的5776组box_reg参数，同理可以得到其余的box_reg参数，最后拼成一个8732x4的box_reg。</p>
+<p>类似地，1024x38x38的feature map在经过objectness_extractor处理之后，得到一个84x38x38的tensor，将其reshape为5774x21然后再去拼接,最终得到8732x21的objectness。</p>
+<blockquote>
+<p>这里出现了取消proposal的另外一个优势，因为没有了proposal，所以300x300的图像上所有数据或者说一个feature map上的所有数据，都会被拿来使用，所以不存在需要使用ROIalign的场景。</p>
+</blockquote>
+<p>然后，来回忆一下FasterRCNN中的detection概念。由于未做过滤和采样，因此8732个anchor全部参与后续计算，这意味这最终将产生8732个detection。而且因为box_extractor的结构跟FasterRCNN不同，SSD每个detection的结构跟FasterRCNN也略有不同，SSD的一个detection只有1组box_reg参数，而FasterRCNN是21组，也就是每个类一组。</p>
+<p>FasterRCNN的detection结构如下：</p>
+<div align=center><img title="" src="/img/article/faster-rcnn-0-0.png" srcset="/img/loading.gif" lazyload width="90%" height="90%" align=center></div>
+
+<p><br>SSD的detection结构如下：</p>
+<div align=center><img title="" src="/img/article/ssd_preditor.png" srcset="/img/loading.gif" lazyload width="90%" height="90%" align=center></div>
+
+<p><br><strong>本阶段数据转化结果</strong></p>
+<ul>
+<li><strong>feature map1</strong>: tensor(1024x38x38) -&gt; <strong>objectness1</strong>: tensor(84x38x38) + <strong>box_reg1</strong>: tensor(16x38x38) -&gt; <strong>objectness1</strong>: tensor(5776x21) +<strong>box_reg1</strong>: tensor(5776x4)</li>
+<li><strong>objectness1</strong> + … + <strong>objectness6</strong> -&gt; <strong>objectness</strong>: tensor(8732x21)</li>
+<li><strong>box_reg1</strong> + … + <strong>box_reg6</strong> -&gt; <strong>box_reg</strong>: tensor(8732x4)</li>
+</ul>
+<h2 id="6A-预测结果后处理"><a href="#6A-预测结果后处理" class="headerlink" title="6A. 预测结果后处理"></a>6A. 预测结果后处理</h2><p>上一步完成后，实质意义上的模型预测就已经完成了。如果是在预测模式下工作，接下来需要将objectness和box_reg解释到缩放前的原始图像上。</p>
+<h3 id="6A-1-FilterDetection"><a href="#6A-1-FilterDetection" class="headerlink" title="6A.1 FilterDetection"></a>6A.1 FilterDetection</h3><p>对于每一张图像，具体工作如下：</p>
+<ol>
+<li>对class_logits做softmax，得到每一个box的score；</li>
+<li>对box_reg和anchor角点坐标做decode，得到每一个final_box的角点坐标；</li>
+<li>low score过滤；</li>
+<li>low WH过滤；</li>
+<li>针对每一个类别做nms，并且取nms之后的前100个box；</li>
+</ol>
+<p><strong>本阶段数据转化结果</strong></p>
+<ul>
+<li><strong>box_reg</strong>: tensor(8732x4) + <strong>anchor</strong>: tensor(8732x4) -&gt; <strong>final_boxes</strong>: tensor(100x4)</li>
+<li><strong>objectness</strong>: tensor(8732x21) -&gt; <strong>final_scores</strong>: tensor(100x1)</li>
+<li><strong>box_label</strong>: tensor(8732x21) -&gt; <strong>final_labels</strong>: tensor(100x1)</li>
+</ul>
+<blockquote>
+<p>和FasterRCNN相同，这里的BoxLabel由规则生成，final_labels指的是预测信息，根据上图中box在一个detection的box序列中的相对位置确定。这就跟以往的经验不同了，这里并没有对一个detection所有框的score取最大值，然后将21个类别退化为1，而是将detection的每一列也就是每一个预测框作为一个单独的个体。就是说最终的100个预测框中完全有可能同时存在两个产生自同一个detection。</p>
+</blockquote>
+<h3 id="6A-2-PostTransform"><a href="#6A-2-PostTransform" class="headerlink" title="6A.2 PostTransform"></a>6A.2 PostTransform</h3><p>将detection三要素中的box坐标根据原图缩放前和缩放后的比例进行等比例缩放即可。</p>
+<h2 id="6B-SSD损失计算"><a href="#6B-SSD损失计算" class="headerlink" title="6B. SSD损失计算"></a>6B. SSD损失计算</h2><p>当在训练模式下工作时，需要进行SSD损失计算。与FasterRCNN损失类似，SSD损失同样分为两部分，坐标损失和分类损失。首先捋一下两部分各自的真实信息和预测信息是什么：</p>
+<ol>
+<li>坐标回归参数的预测信息，Predictor输出的box_reg；</li>
+<li>坐标回归参数的真实信息GT_regs，用anchor和与之匹配的GTbox进行encode得到；</li>
+<li>预测框类别的预测信息，Predictor输出的objectness；</li>
+<li>预测框类别的真实信息GT_labels，先将anchor和GTbox进行匹配，然后用匹配之后的IOU值的大小来判定proposal是否值得拥有与之匹配的GTbox的label，若值得(IOU&gt;0.5)则anchor的真实label就是GTbox的label，否则为0；</li>
+</ol>
+<p>捋清楚了上述信息之后，即可将对应数据代入到FasterRCNN的损失函数中进行计算，得到SSD的最终损失。</p>
+<p>另外，具体还有一些细节需要注意：</p>
+<ul>
+<li>定位损失和分类损失SSD取1:1。</li>
+<li>定位损失只统计真实标签不为0的anchor，或者说基于这个anchor产生的GT_reg和box_reg，即所谓正样本。</li>
+<li>分类损失统计全部的正样本，然后再选取3倍的负样本。并且负样本不是像FasterRCNN那样随机选取，而是选取负样本中损失最大的那些。例如这一个batch有10个正样本，那么就应该选取交叉熵损失最大的30个负样本。而且负样本的数量不应超过8732。据原论文称可以这样做可以加速收敛。</li>
+</ul>
+<p><strong>本阶段数据转化结果</strong></p>
+<ul>
+<li><strong>box_label</strong>: tensor(8732x21) + <strong>GT_labels</strong>: tensor(8732x21) -&gt; $L_{cls}$</li>
+<li><strong>box_reg</strong>: tensor(8732x4) + <strong>GT_regs</strong>: tensor(8732x4) -&gt; $L_{box}$</li>
+</ul>
+<blockquote>
+<p>同样跟FasterRCNN一样，可以看到真实信息和预测信息之间差了一个classnum的维度，在计算$L_{cls}$时不要紧，因为交叉熵计算用到的GT_label是one-hot的形式，pytorch的实现机制自己会进行合理的计算。</p>
+<p>在计算$L_{box}$时，要增加一个classnum上的索引将其退化为1，从而与GT_regs保持一致。索引的来源是GT_label的one-hot向量中1的位置，所以也就是说将GT_reg拓展为four-hot即可。</p>
+</blockquote>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/">工作技能</a>
+                    
+                      <a class="hover-with-bg" href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">神经网络</a>
+                    
+                      <a class="hover-with-bg" href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B/">目标检测</a>
+                    
+                      <a class="hover-with-bg" href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B/SSD/">SSD</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">神经网络</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">卷积神经网络</a>
+                    
+                      <a class="hover-with-bg" href="/tags/CNN/">CNN</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B/">目标检测</a>
+                    
+                      <a class="hover-with-bg" href="/tags/SSD/">SSD</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2021/03/27/YOLO%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90-0/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">YOLO源码分析（零） —— 理论基础</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/03/02/Faster-RCNN%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90-1/">
+                        <span class="hidden-mobile">Faster RCNN源码分析（一）—— 图像预处理</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="twikoo"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/twikoo@1.4.1/dist/twikoo.all.min.js', function() {
+        var options = Object.assign(
+          {"envId":"twikoo-5gimyzvb3631ef62","region":"ap-shanghai","path":"window.location.pathname"},
+          {
+            el: '#twikoo',
+            path: 'window.location.pathname'
+          }
+        )
+        twikoo.init(options)
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <small><span>——————————我是有底线的——————————</span></small> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- LeanCloud 统计PV -->
+        <span id="leancloud-site-pv-container" style="display: none">
+            总访问量 
+            <span id="leancloud-site-pv"></span>
+             次
+          </span>
+      
+      
+        <!-- LeanCloud 统计UV -->
+        <span id="leancloud-site-uv-container" style="display: none">
+            总访客数 
+            <span id="leancloud-site-uv"></span>
+             人
+          </span>
+      
+
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.3/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.1/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+  <script defer src="/js/leancloud.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.1.4/es5/tex-svg.js" ></script>
+
+  
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/shizuku.model.json"},"display":{"position":"left","width":200,"height":400},"mobile":{"show":false,"scale":0.5},"log":false});</script></body>
+</html>
