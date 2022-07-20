@@ -11,7 +11,7 @@ tags:
   - 编译
 ---
 ## 前言
-本文是[Linux下C++的编译、链接以及包管理](mark)一文的支线，最好先去看下前文。
+本文是[Linux下C++的编译、链接以及包管理](http://guohongming.cn/2022/07/17/Linux%E4%B8%8BC-%E7%9A%84%E7%BC%96%E8%AF%91%E3%80%81%E9%93%BE%E6%8E%A5%E4%BB%A5%E5%8F%8A%E5%8C%85%E7%AE%A1%E7%90%86/)一文的支线，最好先去看下前文。
 
 简单说conan就是一个C++的包管理工具，包含包的封装、存储、发布、使用等一整套体系。
 
@@ -28,7 +28,7 @@ conan相对而言是一个比较成功的尝试，现公司也在主推这个，
 
 ## Terminology
 名不正则言不顺，首先还是来整理一下conan关键的概念：
-- **package**：即[之前](mark)说过的一个包，主要由库和同文件组成。
+- **package**：即[之前](http://guohongming.cn/2022/07/17/Linux%E4%B8%8BC-%E7%9A%84%E7%BC%96%E8%AF%91%E3%80%81%E9%93%BE%E6%8E%A5%E4%BB%A5%E5%8F%8A%E5%8C%85%E7%AE%A1%E7%90%86/)说过的一个包，主要由库和同文件组成。
 - **recipe**：实体是一个conanfile.py，每个包一个，在里面实现了一个辅助包管理的类；这个类的成员用来记录这个包的属性信息（settings和options），类的方法则对应编译、打包、上传等包管理操作。在终端中使用conan系列命令时，其实就是在调用这个方法。
 - **package id**：在进行打包操作时，conan会检查包当前recipe中的settings和options属性，将它们hash成一个字符串，作为这个包针对这张recipe的唯一标识；
 - **paackge reference**: 在conan的语境中，如何引用一个包（比如在为一个包指定其依赖时），格式是`package_name/version@user/channel`，例如`w3_opencv/4.2.0@pjw3/dev`，其中user和channel就是单纯的标识符，没太多含义。
