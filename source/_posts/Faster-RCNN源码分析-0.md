@@ -30,7 +30,7 @@ date: 2021-03-01 18:22:23
 ## 1. 从dataset加载图像
 首先要从把标注好的图像文件以及标注xml文件读取进来。
 
-参考[这里](https://guohongming.xyz/2021/08/12/%E8%87%AA%E5%AE%9A%E4%B9%89%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B%E6%95%B0%E6%8D%AE%E9%9B%86/)自定义的dataset类，可以知道，dataloader每次迭代返回的是，dataset类`__getitem__`方法的返回值经过自定义的collate_fn包装过的结果，也就是image tensor的tuple，targets dict的tuple。
+参考[这里](https://guohongming.cn/2021/08/12/%E8%87%AA%E5%AE%9A%E4%B9%89%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B%E6%95%B0%E6%8D%AE%E9%9B%86/)自定义的dataset类，可以知道，dataloader每次迭代返回的是，dataset类`__getitem__`方法的返回值经过自定义的collate_fn包装过的结果，也就是image tensor的tuple，targets dict的tuple。
 
 而后在送入模型之前，还将tuple转为list，便于cat/stack之类的操作。
 
@@ -39,7 +39,7 @@ date: 2021-03-01 18:22:23
 **本阶段数据转化结果:**
 - **image**: jpg -> [tensor(3x350x450), tensor(3x375x500)]，3x375x450指图像的原始尺寸
 
-- **target**: xml -> [dict1, dict2]，dict的结构详见[这里](https://guohongming.xyz/2021/08/12/%E8%87%AA%E5%AE%9A%E4%B9%89%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B%E6%95%B0%E6%8D%AE%E9%9B%86/)
+- **target**: xml -> [dict1, dict2]，dict的结构详见[这里](https://guohongming.cn/2021/08/12/%E8%87%AA%E5%AE%9A%E4%B9%89%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B%E6%95%B0%E6%8D%AE%E9%9B%86/)
 
 ## 2. 图像预处理
 原始图像的尺寸是不保证一致的，因此送入模型的图像都要先进行尺寸缩放、padding等操作。
