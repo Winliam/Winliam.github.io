@@ -13,7 +13,7 @@ timezone: ''
 
 # URL
 ## Set your site url here. For example, if you use GitHub Page, set url as 'https://username.github.io/project'
-url: http://www.guohongming.xyz
+url: http://www.guohongming.cn
 permalink: :year/:month/:day/:title/
 permalink_defaults:
 pretty_urls:
@@ -106,8 +106,8 @@ language: zh-CN
 ## Docs: https://hexo.io/docs/one-command-deployment
 deploy:
   type: git
-  # repo: git@github.com:Winliam/Winliam.github.io.git
-  repo: https://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@github.com/Winliam/Winliam.github.io.git
+  repo: git@github.com:Winliam/Winliam.github.io.git
+  # repo: https://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@github.com/Winliam/Winliam.github.io.git
   # repo: https://winliam@github.com/Winliam/Winliam.github.io.git
   branch: main
 

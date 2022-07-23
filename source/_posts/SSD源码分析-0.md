@@ -30,11 +30,11 @@ date: 2021-03-15 18:22:23
 
 
 ## 1. 从dataset加载图像
-首先要从把标注好的图像文件以及标注xml文件读取进来，经过一系列图像预处理操作转化为tensor格式，大致流程跟[之前](https://guohongming.xyz/2021/09/01/Faster-RCNN%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90-0/)Faster RCNN差不多。
+首先要从把标注好的图像文件以及标注xml文件读取进来，经过一系列图像预处理操作转化为tensor格式，大致流程跟[之前](https://guohongming.cn/2021/09/01/Faster-RCNN%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90-0/)Faster RCNN差不多。
 
 但是，FasterRCNN的图像预处理有两次：
 - 第一次是在创建dataset类实例的时候，就是说从dataset类`__getitem__`方法返回的图像数据先经过了一次transform。这一次主要是to_tensor和随机水平翻转（预测模式无）。
-- 然后在送入模型之前又通过单独的GeneralizedRCNNTransform类，再transform一次。这一次的细节看[这里](https://guohongming.xyz/2021/08/15/Faster-RCNN%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90-1/)
+- 然后在送入模型之前又通过单独的GeneralizedRCNNTransform类，再transform一次。这一次的细节看[这里](https://guohongming.cn/2021/08/15/Faster-RCNN%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90-1/)
 
 回到SSD，预处理只有一次，全部集中在dataset类中实现，而且花样比较多(加*项为训练模式独有)：
 
@@ -93,7 +93,7 @@ PIL image格式转成tensor，换言之，之前的操作都是以PIL image格�
 - **GTbox**: tensor(1x4) -> tensor(8732x4)
 
 ## 2. FeatureExtractor
-其实还是一个Backbone的概念，目的是为了从原始图像中提取出Feature map。这里还是以[ResNet50](https://guohongming.xyz/2021/08/08/ResNet/)为例，取其第一个卷积层conv1以及后续的3组Residual结构作为Backbone。
+其实还是一个Backbone的概念，目的是为了从原始图像中提取出Feature map。这里还是以[ResNet50](https://guohongming.cn/2021/08/08/ResNet/)为例，取其第一个卷积层conv1以及后续的3组Residual结构作为Backbone。
 
 其中值得注意的是，第3组Residual结构conv4_x不是照搬过来的，而是将其这一组的6个Residual结构中的第一个的步距由2调整为1。原理这一个Residual结构因为身处组内第一的位置，因此要承担调整HW尺寸不断折半的任务，但是这里调整了stride，不用折半了。
 
