@@ -197,7 +197,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      1.6k 字
+      1.8k 字
     </span>
   
 
@@ -207,7 +207,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      20
+      22
        分钟
     </span>
   
@@ -292,6 +292,11 @@
 <li>针对迭代器定义了<code>++</code>前置自增运算符；——用来递增迭代器</li>
 <li>针对迭代器定义了<code>*</code>解引用操作符；——用来访问容器元素</li>
 </ol>
+<h3 id="0做除数"><a href="#0做除数" class="headerlink" title="0做除数"></a>0做除数</h3><p>无论整型还是浮点型，只要是0以字面值的形式做除数，那么编译都会报错；<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-comment">//以下两种形式均无法通过编译</span><br>std::cout &lt;&lt; <span class="hljs-number">1</span>/<span class="hljs-number">0</span> &lt;&lt; std::endl;<br>std::cout &lt;&lt; <span class="hljs-number">1</span>/<span class="hljs-number">0.0</span> &lt;&lt; std::endl;<br></code></pre></td></tr></table></figure><br>但如果是以变量的形式做除数，那么编译可通过，运行是否抛出异常则要看变量的类型;</p>
+<ul>
+<li>变量为整型，运行报错，<code>division by zero</code></li>
+<li>变量为浮点型，运行不报错，只是除法运算的结果为<code>inf</code><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-comment">//编译不报错，运行报错</span><br><span class="hljs-type">int</span> a = <span class="hljs-number">0</span>;<br>std::cout &lt;&lt; <span class="hljs-number">1</span>/a &lt;&lt; std::endl;<br><br><span class="hljs-comment">//编译不报错，运行也不报错</span><br><span class="hljs-type">double</span> b = <span class="hljs-number">0</span>;<br>std::cout &lt;&lt; <span class="hljs-number">1</span>/b &lt;&lt; std::endl;<br></code></pre></td></tr></table></figure></li>
+</ul>
 
             </div>
             <hr>

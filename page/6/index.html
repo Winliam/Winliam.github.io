@@ -194,6 +194,188 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
+        <a href="/2020/02/15/CNN%E7%9A%84%E6%95%B0%E5%AD%A6%E5%8E%9F%E7%90%86/" target="_self">
+          CNN的数学原理
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/02/15/CNN%E7%9A%84%E6%95%B0%E5%AD%A6%E5%8E%9F%E7%90%86/" target="_self">
+          
+          
+            
+          
+          二维卷积的数学原理不管信号处理中“卷积”和“相关”的定义如何，至少在CNN中卷积的含义是明确的。就是
+
+将卷积核(一个尺寸较小的方阵)与矩阵$\boldsymbol{A}$左上角对齐
+两个矩阵逐元素相乘后求和，作为结果矩阵$\boldsymbol{B}$的左上角第一个元素
+向右/下移动卷积核的位置，重复2，直到卷积核到达矩阵$\boldsymbol{A}$的右下角
+
+
+
+由此带来了padding和
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-02-15 17:35" pubdate>
+              2020-02-15
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/">工作技能</a>
+            
+              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">神经网络</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a>
+            
+              <a href="/tags/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">卷积神经网络</a>
+            
+              <a href="/tags/CNN/">CNN</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2020/01/06/argparse%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%94%A8%E6%B3%95/" target="_self">
+          argparse的基本用法
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/01/06/argparse%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%94%A8%E6%B3%95/" target="_self">
+          
+          
+            
+          
+          用途及原理为python脚本运行时所添加额外命令行参数提供解释。大致原理是为一个parser对象添加一些属性，然后这个parser对象在接受一系列参数（默认是命令行参数）之后，就拥有了一系列属性，然后程序就可以用这些属性来做事了。就是说，信息从命令行传递到了脚本内。
+示例12345678910111213141516171819202122# 创建对象import argparseparser =
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-01-06 16:35" pubdate>
+              2020-01-06
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/">工作技能</a>
+            
+              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/python%E7%AC%94%E8%AE%B0/">python笔记</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/python/">python</a>
+            
+              <a href="/tags/argparse/">argparse</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2019/12/25/note_of_shell/" target="_self">
+          Shell笔记
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2019/12/25/note_of_shell/" target="_self">
+          
+          
+            
+          
+          shell解释器的种类
+一个shell脚本可以被不同的解释器解释执行，常见的解释器有sh、bash、zsh、dash。可以使用以下命令查看本机的shell解释器配置：12345678#本机可用的shell解释器cat /etc/shells#当前默认设置，一般在第一行cat /etc/passwd#当前设置echo $SHELL
+一个shell脚本具体被哪一个解释器解释执行，依次看：
+cmd命令指
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2019-12-25 17:13" pubdate>
+              2019-12-25
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/">工作技能</a>
+            
+              <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E8%83%BD/shell%E7%AC%94%E8%AE%B0/">shell笔记</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/shell/">shell</a>
+            
+              <a href="/tags/bash/">bash</a>
+            
+              <a href="/tags/%E9%87%8D%E5%AE%9A%E5%90%91/">重定向</a>
+            
+              <a href="/tags/nohup/">nohup</a>
+            
+              <a href="/tags/%E5%90%8E%E5%8F%B0/">后台</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
         <a href="/2019/12/09/CSAPP%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E6%80%BB%E7%BB%93/" target="_self">
           CSAPP并发编程总结
         </a>
